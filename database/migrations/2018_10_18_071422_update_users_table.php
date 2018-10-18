@@ -32,6 +32,13 @@ class UpdateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('user_name');
+            $table->dropColumn('token');
+            $table->dropColumn('status');
+            $table->dropForeign(['role_id']);
+            $table->string('name');
+            $table->timestamp('email_verified_at')->nullable();
+        });
     }
 }
