@@ -2,8 +2,8 @@
 
 namespace App\Repositories\Interfaces;
 
-interface JobStyleRepository
+interface JobTypeRepository
 {
-	// 
+	//
 }
 
