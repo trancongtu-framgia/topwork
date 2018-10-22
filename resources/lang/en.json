@@ -1,0 +1,13 @@
+{
+    "login": "Login",
+    "sign up": "Sign up",
+    "LOGIN TO YOUR ACCOUNT": "LOGIN TO YOUR ACCOUNT",
+    "Forgot Password": "Forgot Password",
+    "Register Now": "Register Now",
+    "Remember me": "Remember me",
+    "Don’t have an account": "Don’t have an account ?",
+    "comment login": "In case you are using a public/shared computer <br/>we recommend that you logout to prevent any un-authorized access to your account",
+    "email cant blank": "The email can't blank.",
+    "password cant bank": "The password can't blank.",
+    "These credentials do not match our records": "Email or password does not match, please re-enter."
+}

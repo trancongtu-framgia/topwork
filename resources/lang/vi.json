@@ -1,0 +1,13 @@
+{
+    "login": "Đăng nhập",
+    "sign up": "Đăng ký",
+    "LOGIN TO YOUR ACCOUNT": "ĐĂNG NHẬP VÀO TÀI KHOẢN CỦA BẠN",
+    "Forgot Password": "Quên mật khẩu",
+    "Remember me": "Ghi nhớ đăng nhập",
+    "Register Now": "Đăng kí ngay",
+    "Don’t have an account": "Không có tài khoản ?",
+    "comment login": "Trong trường hợp bạn đang sử dụng máy tính công cộng / dùng chung,<br/> chúng tôi khuyên bạn nên đăng xuất để ngăn mọi truy cập không được ủy quyền vào tài khoản của bạn",
+    "email cant blank": "Email không được để trống.",
+    "password cant bank": "Password không được để trống.",
+    "These credentials do not match our records": "Email hoặc Password không khớp, vui lòng nhập lại."
+}
