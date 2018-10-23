@@ -1,7 +1,5 @@
 <?php
 
-    Route::resource('job-types', 'JobTypeController');
-
     Route::get('change-lang/{lang}', 'LangController@changeLang')->name('change-lang');
 
     Auth::routes();
@@ -14,5 +12,9 @@
         ],
         function () {
             Route::get('/', 'AdminController@index')->name('admin.index');
+
+            Route::resource('roles', 'RoleController');
+
+            Route::resource('job-types', 'JobTypeController');
         }
     );

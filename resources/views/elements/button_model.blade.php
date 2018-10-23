@@ -11,7 +11,7 @@
                         <div class="modal-footer">
                             <div class="row">
                                 <div class="col-md-6 text-right">
-                                    {{ Form::open([ 'method' =>'delete', 'url' => route($nameRoute . '.destroy', $data->id) ]) }}
+                                    {{ Form::open([ 'method' =>'delete', 'url' => route($nameRoute, $data->id) ]) }}
                                         {{ Form::submit('Yes', ['class' => 'btn btn-default']) }}
                                     {{ Form::close() }}
                                 </div>
