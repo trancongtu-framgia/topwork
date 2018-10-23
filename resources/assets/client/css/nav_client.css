@@ -1,8 +1,9 @@
-.client_nav {
-    width: 120px;
-}
 #div_footer{
     margin-top: 0px;
     padding-top: 0px;
     border-top: 0px solid #ffffff;
+}
+.jp_navi_right_btn_wrapper li a {
+    text-transform:none;
+    width: 120px;
 }
