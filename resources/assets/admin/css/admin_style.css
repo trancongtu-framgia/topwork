@@ -1,3 +1,10 @@
 .username-padding {
     padding-left: 10px;
 }
+.form-control, .form-control[readonly] {
+    width: 688px;
+    margin-left: 30px;
+}
+.m-body .m-content {
+    margin-left: 50px;
+}

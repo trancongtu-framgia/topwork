@@ -36,36 +36,46 @@
 <!-- begin:: Page -->
 <div class="m-grid m-grid--hor m-grid--root m-page">
     <!-- BEGIN: Header -->
-    @include('admin.layouts.header')
-    <!-- END: Header -->
+@include('admin.layouts.header')
+<!-- END: Header -->
     <!-- begin::Body -->
     <div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body">
         <!-- BEGIN: Left Aside -->
-        @include('admin.layouts.left_sidebar')
-        <!-- END: Left Aside -->
+    @include('admin.layouts.left_sidebar')
+    <!-- END: Left Aside -->
         <div class="m-grid__item m-grid__item--fluid m-wrapper">
-            <!-- BEGIN: Subheader -->
-            <div class="m-subheader ">
-                <div class="d-flex align-items-center">
-                    <div class="mr-auto">
-                        <h3 class="m-subheader__title ">
-                            @yield('base.title_page')
-                        </h3>
+            <div class="m-content">
+                <div class="m-portlet m-portlet--mobile ">
+                    <div class="m-portlet__head">
+                        <div class="m-portlet__head-caption">
+                            <div class="m-portlet__head-title">
+                                <h3 class="m-portlet__head-text">
+                                    @yield('base.title')
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="m-portlet__head-tools">
+                            <div class="m_datatable m-datatable m-datatable--default
+                                m-datatable--error m-datatable--loaded"
+                                 id="m_datatable_latest_orders">
+                                @yield('base.function')
+                            </div>
+                        </div>
                     </div>
-                    <div>
+                    <div class="m-portlet__body">
+                        <!--begin: Datatable -->
+                    @include('flash::message')
+                    @yield('base.content')
+                    <!--end: Datatable -->
                     </div>
                 </div>
-            </div>
-            <!-- END: Subheader -->
-            <div class="m-content">
-                @yield('base.content')
             </div>
         </div>
     </div>
     <!-- end:: Body -->
     <!-- begin::Footer -->
-    @include('admin.layouts.footer')
-    <!-- end::Footer -->
+@include('admin.layouts.footer')
+<!-- end::Footer -->
 </div>
 <!-- end:: Page -->
 <!-- begin::Quick Nav -->

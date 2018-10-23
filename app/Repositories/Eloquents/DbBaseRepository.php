@@ -31,7 +31,7 @@ class DbBaseRepository {
     {
         $obj = $this->model->where($key, $value);
         
-        return $obj->update($data);
+        return $obj->update($data->toArray());
     }
 
     public function destroy($key, $value)
