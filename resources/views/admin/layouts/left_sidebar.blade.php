@@ -19,7 +19,8 @@
                 <div class="m-menu__submenu "><span class="m-menu__arrow"></span>
                     <ul class="m-menu__subnav">
                         <li class="m-menu__item  m-menu__item--parent" aria-haspopup="true">
-                            <span class="m-menu__link"><span class="m-menu__link-text">{{ __('Resources') }}</span></span>
+                            <span class="m-menu__link"><span
+                                        class="m-menu__link-text">{{ __('Resources') }}</span></span>
                         </li>
                         <li class="m-menu__item " aria-haspopup="true">
                             <a href="#" class="m-menu__link ">
@@ -35,8 +36,8 @@
                 </div>
             </li>
             <li class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1">
-                <a href="inner.html" class="m-menu__link">
-                    <span class="m-menu__link-text">{{ __('Finance') }}</span>
+                <a href="" class="m-menu__link">
+                    <span class="m-menu__link-text">{{ __('Category') }}</span>
                 </a>
             </li>
         </ul>
