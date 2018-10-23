@@ -10,13 +10,13 @@
          id="m_datatable_latest_orders">
         <table class="table">
             <thead>
-            <tr>
-                <th>{{ __('STT') }}</th>
-                <th>{{ __('Name') }}</th>
-                <th>{{ __('Description') }}</th>
-                <th>{{ __('Edit') }}</th>
-                <th>{{ __('Delete') }}</th>
-            </tr>
+                <tr>
+                    <th>{{ __('STT') }}</th>
+                    <th>{{ __('Name') }}</th>
+                    <th>{{ __('Description') }}</th>
+                    <th>{{ __('Edit') }}</th>
+                    <th>{{ __('Delete') }}</th>
+                </tr>
             </thead>
             <tbody>
             @foreach ($jobTypes as $key => $jobType)
@@ -31,7 +31,7 @@
                         </a>
                     </td>
                     <td>
-                        @include('elements.button_model', ['nameRoute' => 'job-types', 'data' => $jobType])
+                        @include('elements.button_model', ['nameRoute' => 'job-types.destroy', 'data' => $jobType])
                     </td>
                 </tr>
             @endforeach

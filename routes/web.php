@@ -16,5 +16,7 @@
             Route::resource('roles', 'RoleController');
 
             Route::resource('job-types', 'JobTypeController');
+
+            Route::resource('locations', 'LocationController');
         }
     );
