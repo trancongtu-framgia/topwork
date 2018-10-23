@@ -1,0 +1,17 @@
+#login_btn{
+    color: #fff;
+    width: 100%;
+    height: 50px;
+    padding: 6px 25px;
+    line-height: 36px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    background: #23c0e9;
+    font-size: 16px;
+    border: 1px solid #23c0e9;
+    text-align: center;
+    text-transform: uppercase;
+}
+#login_btn:hover {
+    background-color: #06b8e9;
+}
