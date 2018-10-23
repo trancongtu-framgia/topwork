@@ -24,9 +24,7 @@
                 <td>{{ $category->parent_category }}</td>
                 <td>
                     <a href="{{ route('categories.edit', ['id' => $category->id]) }}">{{ __('Edit') }}</a>&nbsp;&nbsp;
-                    {{ Form::open(['method' => 'DELETE', 'route' => ['categories.destroy', $category->id]]) }}
-                    {{ Form::submit('Delete', ['class' => 'btn btn-danger']) }}
-                    {{ Form::close() }}
+                   @include('elements.button_model', ['nameRoute' => 'categories.destroy', 'data' => $category])
                 </td>
             </tr>
         @endforeach
