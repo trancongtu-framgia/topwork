@@ -23,7 +23,7 @@
                                 <a href="#" class="m-nav__link m-dropdown__toggle">
                                     <span class="m-topbar__userpic">
                                         <img src="{{ asset('assets/admin/images/avatar.png') }}"
-                                                 class="m--img-rounded m--marginless m--img-centered" alt=""/>
+                                             class="m--img-rounded m--marginless m--img-centered" alt=""/>
                                     </span>
                                     <span class="m-nav__link-icon m-topbar__usericon  m--hide">
                                         <span class="m-nav__link-icon-wrapper">
@@ -81,11 +81,18 @@
                                                     <li class="m-nav__separator m-nav__separator--fit">
                                                     </li>
                                                     <li class="m-nav__item">
-                                                        <a href="snippets/pages/user/login-1.html"
-                                                           class="btn m-btn--pill    btn-secondary m-btn
-                                                               m-btn--custom m-btn--label-brand m-btn--bolder">
-                                                            Logout
+                                                        <a class="m-nav__link" href="{{ route('logout') }}"
+                                                           onclick="event.preventDefault();
+                                                            document.getElementById('logout-form').submit();">
+
+                                                            {{ __('Logout') }}
                                                         </a>
+                                                        {!! Form::open([
+                                                            'route' => 'logout',
+                                                            'method' => 'post',
+                                                             'id' => 'logout-form',
+                                                        ]) !!}
+                                                        {!! Form::close() !!}
                                                     </li>
                                                 </ul>
                                             </div>
