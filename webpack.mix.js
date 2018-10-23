@@ -42,6 +42,7 @@ mix.styles(
         'resources/assets/client/css/flaticon.css',
         'resources/assets/client/css/style_II.css',
         'resources/assets/client/css/responsive2.css',
+        'node_modules/jquery-confirm/dist/jquery-confirm.min.css',
         'resources/assets/client/css/nav_client.css',
         'resources/assets/client/css/login.css',
     ], 'public/css/app_client.css');

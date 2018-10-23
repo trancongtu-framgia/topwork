@@ -23,4 +23,9 @@ class User extends Authenticatable
         'token',
     ];
 
+    public function userRole()
+    {
+        return $this->belongsTo('App\Models\Role', 'role_id', 'id');
+    }
+
 }
