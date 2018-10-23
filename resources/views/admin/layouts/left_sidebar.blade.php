@@ -40,6 +40,21 @@
                     <span class="m-menu__link-text">{{ __('Category') }}</span>
                 </a>
             </li>
+            <li class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1">
+                <a href="{{ route('locations.index') }}" class="m-menu__link">
+                    <span class="m-menu__link-text">{{ __('Location') }}</span>
+                </a>
+            </li>
+            <li class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1">
+                <a href="{{ route('job-types.index') }}" class="m-menu__link">
+                    <span class="m-menu__link-text">{{ __('Job Type') }}</span>
+                </a>
+            </li>
+            <li class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1">
+                <a href="{{ route('roles.index') }}" class="m-menu__link">
+                    <span class="m-menu__link-text">{{ __('Role') }}</span>
+                </a>
+            </li>
         </ul>
     </div>
     <!-- END: Aside Menu -->
