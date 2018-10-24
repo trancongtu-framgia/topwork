@@ -60,8 +60,13 @@ class LoginController extends Controller
             'password' => $request->password,
             'status' => self::USER_STATUS,
         ], $request->remember)) {
+            $role = Auth::user()->userRole->name;
+            if ($role == config('app.admin_role')) {
+                return redirect()->route('admin.index');
+            } elseif ($role == config('app.company_role')) {
+                return redirect()->route('companies.index');
+            }
 
-            return redirect()->route('admin.index');
         }
 
         return $this->sendFailedLoginResponse($request);

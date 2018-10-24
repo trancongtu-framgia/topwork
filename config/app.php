@@ -2,6 +2,10 @@
 
 return [
     'media_url' => '/images/header/',
+    'admin_role' => 'admin',
+    'candidate_role' => 'candidate',
+    'company_role' => 'company',
+
     /*
     |--------------------------------------------------------------------------
     | Application Name
