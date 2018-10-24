@@ -6,7 +6,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title">{{ __('Bắt đầu nhập / Có đồng ý không') }}</h4>
+                            <h4 class="modal-title">{{ __('Bắt đầu xóa/ Có đồng ý không') }}</h4>
                         </div>
                         <div class="modal-footer">
                             <div class="row">
