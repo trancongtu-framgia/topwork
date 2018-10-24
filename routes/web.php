@@ -6,9 +6,6 @@ Route::get('change-lang/{lang}', 'LangController@changeLang')->name('change-lang
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-
-
 Route::group([
         'prefix' => 'admin',
         'middleware' => 'auth',
@@ -28,5 +25,15 @@ Route::group([
             Route::put('update/{id}', 'CategoryController@update')->name('categories.update');
             Route::delete('destroy/{id}', 'CategoryController@destroy')->name('categories.destroy');
         });
+    }
+);
+Route::group(
+    [
+        'prefix' => 'companies'
+    ],
+    function () {
+        Route::get('/', 'CompanyController@index')->name('companies.index');
+        Route::get('/edit', 'CompanyController@edit')->name('companies.edit');
+        Route::put('/update', 'CompanyController@update')->name('companies.update');
     }
 );

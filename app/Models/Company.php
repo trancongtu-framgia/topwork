@@ -24,4 +24,9 @@ class Company extends Model
         'description',
         'logo_url',
     ];
+
+    public function companyUser()
+    {
+        return $this->belongsTo('App\User','user_id', 'id');
+    }
 }
