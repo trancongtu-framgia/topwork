@@ -15,6 +15,7 @@ class User extends Authenticatable
         'email',
         'status',
         'role_id',
+        'name',
     ];
 
     protected $hidden = [
@@ -26,6 +27,11 @@ class User extends Authenticatable
     public function userRole()
     {
         return $this->belongsTo('App\Models\Role', 'role_id', 'id');
+    }
+
+    public function userCompany()
+    {
+        return $this->hasOne('App\Models\Company', 'user_id', 'id');
     }
 
 }

@@ -13,5 +13,8 @@
     "conten_logout": "Are you sure to logout ?",
     "ok": "Oke",
     "cancel": "Cancel",
-    "logout": "Login"
+    "logout": "Login",
+    "overview": "Overview",
+    "Home": "Home",
+    "update profile": "Update Profile"
 }

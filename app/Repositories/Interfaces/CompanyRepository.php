@@ -2,8 +2,10 @@
 
 namespace App\Repositories\Interfaces;
 
-interface CompanyRepository
+
+interface CompanyRepository extends BaseRepository
 {
-	// 
+    public function getProfile($id);
+
 }
 

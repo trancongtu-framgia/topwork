@@ -16,14 +16,13 @@
                     <div class="mainmenu">
                         <ul class="float_left">
                             <li class="has-mega gc_main_navigation">
-                                <a href="#" class="gc_main_navigation"> {{ __('Home') }}&nbsp;
+                                <a href="{{ route('companies.index') }}" class="gc_main_navigation"> {{ __('Home') }}&nbsp;
                                     <i class="fa fa-angle-down"></i>
                                 </a>
                                 <!-- mega menu start -->
                                 <ul>
-                                    <li class="parent"><a href="index.html">{{ __('Home1') }}</a></li>
-                                    <li class="parent"><a href="index_II.html">{{ __('Home2') }}</a></li>
-                                    <li class="parent"><a href="index_map.html">{{ __('Home3') }}</a></li>
+                                    <li class="parent"><a href="{{ route('companies.edit') }}">{{ __('update profile') }}</a></li>
+
                                 </ul>
                             </li>
                             <li>

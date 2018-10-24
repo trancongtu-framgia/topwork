@@ -45,6 +45,7 @@ mix.styles(
         'node_modules/jquery-confirm/dist/jquery-confirm.min.css',
         'resources/assets/client/css/nav_client.css',
         'resources/assets/client/css/login.css',
+        'resources/assets/client/css/client.css',
     ], 'public/css/app_client.css');
 
 mix.copyDirectory('resources/assets/client/images', 'public/assets/clients/images');

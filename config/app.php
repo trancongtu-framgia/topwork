@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'media_url' => '/images/header/',
+    'client_media_url' => '/assets/clients/images/',
     'admin_role' => 'admin',
     'candidate_role' => 'candidate',
     'company_role' => 'company',

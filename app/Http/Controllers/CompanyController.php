@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use Illuminate\Http\Request;
+use App\Repositories\Interfaces\CompanyRepository;
+use Auth;
 
 class CompanyController extends Controller
 {
@@ -12,9 +14,16 @@ class CompanyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    private $company;
+
+    public function __construct(CompanyRepository  $companyRepository)
+    {
+        $this->company = $companyRepository;
+    }
+
     public function index()
     {
-        return view('clients.companies.index');
+        return view('clients.companies.index', ['data' => $this->company->getProfile(Auth::id())]);
     }
 
     /**
@@ -49,24 +58,13 @@ class CompanyController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Company  $company
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Company $company)
+    public function edit()
     {
-        //
+        $company = $this->company->get('id', Auth::id());
+        
+        return view('clients.companies.update', ['company' => $company]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Company  $company
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Company $company)
     {
         //
