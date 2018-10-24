@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model
 {
     protected $table = 'users';
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -19,4 +19,14 @@ class User extends Model
         'status',
         'role_id',
     ];
+
+    public function candidate()
+    {
+        return $this->hasOne('App\Models\Candidate');
+    }
+
+    public function cvs()
+    {
+        return $this->hasMany('App\Models\Cv');
+    }
 }

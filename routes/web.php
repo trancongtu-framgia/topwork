@@ -6,6 +6,9 @@ Route::get('change-lang/{lang}', 'LangController@changeLang')->name('change-lang
 
 Auth::routes();
 
+
+Route::get('/home', 'HomeController@index')->name('home');
+
 Route::group([
         'prefix' => 'admin',
         'middleware' => 'auth',
@@ -27,6 +30,7 @@ Route::group([
         });
     }
 );
+
 Route::group(
     [
         'prefix' => 'companies'
@@ -37,3 +41,14 @@ Route::group(
         Route::put('/update', 'CompanyController@update')->name('companies.update');
     }
 );
+
+    Route::group(
+        [
+            'prefix' => 'client-candidate'
+        ], function () {
+            Route::get('candidates/pro-file/{id}', 'CandidateController@getInfoCandidate')->name('candidate.getInfo');
+
+            Route::get('candidates/edit-pro-file/{id}', 'CandidateController@getEditInfoCandidate')->name('candidate.getEditInfo');
+
+            Route::put('candidates/{id}', 'CandidateController@putEditInfoCandidate')->name('candidate.putEditInfo');
+    });
