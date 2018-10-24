@@ -4,6 +4,5 @@ namespace App\Repositories\Interfaces;
 
 interface JobSkillRepository
 {
-	// 
+	//
 }
-
