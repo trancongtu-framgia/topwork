@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Candidate;
 use Illuminate\Http\Request;
 use App\Repositories\Interfaces\CandidateRepository;
+use App\Http\Requests\UpdateCandidateRequest;
 
 class CandidateController extends Controller
 {
@@ -103,7 +104,7 @@ class CandidateController extends Controller
         return view('clients.candidates.edit', compact('user'));
     }
 
-    public function putEditInfoCandidate(Request $request, int $id)
+    public function putEditInfoCandidate(UpdateCandidateRequest $request, int $id)
     {
         $candidate = $this->candidateRepository->updateInfoCandidate($request, 'id', $id);
 

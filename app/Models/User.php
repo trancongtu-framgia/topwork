@@ -18,6 +18,7 @@ class User extends Model
         'email',
         'status',
         'role_id',
+        'name',
     ];
 
     public function candidate()

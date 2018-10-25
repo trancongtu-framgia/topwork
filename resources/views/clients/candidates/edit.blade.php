@@ -1,6 +1,16 @@
 @extends('clients.layouts.master')
 @section('js_client')
     <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script>
+        CKEDITOR.replace( 'description', {
+            filebrowserBrowseUrl: '{{ asset('ckfinder/ckfinder.html') }}',
+            filebrowserImageBrowseUrl: '{{ asset('ckfinder/ckfinder.html?type=Images') }}',
+            filebrowserFlashBrowseUrl: '{{ asset('ckfinder/ckfinder.html?type=Flash') }}',
+            filebrowserUploadUrl: '{{ asset('ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files') }}',
+            filebrowserImageUploadUrl: '{{ asset('ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images') }}',
+            filebrowserFlashUploadUrl: '{{ asset('ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash') }}'
+        });
+    </script>
 @endsection
 @section('content')
     {{ Form::model($user->candidate, ['url' => route('candidate.putEditInfo', $user->candidate->id), 'enctype' => 'multipart/form-data', 'method' => 'PUT', 'class' => 'form-horizontal form-label-left']) }}
@@ -15,13 +25,12 @@
                             @else
                                 <img src="{{ asset(config('app.candidate_media_url') . 'user.png') }}" alt="profile_img">
                             @endif
-                            <h2>{{ $user->candidate->name }}</h2>
-                            <p>{{ __('UI/UX Designer in Dewas') }}</p>
+                            <h2>{{ $user->name }}</h2>
                             <ul>
                                 @if ($user->candidate->facebook)
                                     <li><a href="{{ $user->candidate->facebook }}"><i class="fa fa-facebook"></i></a></li>
                                 @endif
-                                @if ($user->candidate->twister)
+                                @if ($user->candidate->twitter)
                                     <li><a href="{{ $user->candidate->twitter }}"><i class="fa fa-twitter"></i></a></li>
                                 @endif
                                 @if ($user->candidate->youtube)
@@ -45,7 +54,8 @@
                                     <td class="td-w25">{{ __('Full name') }}</td>
                                     <td class="td-w10">:</td>
                                     <td class="td-w65">
-                                        {{ Form::text('name', null, ['class' => 'form-control', 'maxlength' => 100]) }}
+                                        {{ Form::text('name', $user->name, ['class' => 'form-control', 'maxlength' => 100]) }}
+                                        {!! $errors->first('name', '<span class="red">:message</span>') !!}
                                     </td>
                                 </tr>
                                 <tr>
@@ -53,6 +63,7 @@
                                     <td class="td-w10">:</td>
                                     <td class="td-w65">
                                         {{ Form::date('dob', null, ['class' => 'form-control', 'maxlength' => 100]) }}
+                                        {!! $errors->first('dob', '<span class="red">:message</span>') !!}
                                     </td>
                                 </tr>
                                 <tr>
@@ -60,6 +71,7 @@
                                     <td class="td-w10">:</td>
                                     <td class="td-w65">
                                         {{ Form::text('address', null, ['class' => 'form-control', 'maxlength' => 100]) }}
+                                        {!! $errors->first('address', '<span class="red">:message</span>') !!}
                                     </td>
                                 </tr>
                                 <tr>
@@ -67,6 +79,7 @@
                                     <td class="td-w10">:</td>
                                     <td class="td-w65">
                                         {{ Form::text('phone', null, ['class' => 'form-control', 'maxlength' => 100]) }}
+                                        {!! $errors->first('phone', '<span class="red">:message</span>') !!}
                                     </td>
                                 </tr>
                                 <tr>
@@ -74,6 +87,7 @@
                                     <td class="td-w10">:</td>
                                     <td class="td-w65">
                                         {{ Form::text('facebook', null, ['class' => 'form-control', 'maxlength' => 100]) }}
+                                        {!! $errors->first('facebook', '<span class="red">:message</span>') !!}
                                     </td>
                                 </tr>
                                 <tr>
@@ -81,13 +95,15 @@
                                     <td class="td-w10">:</td>
                                     <td class="td-w65">
                                         {{ Form::text('youtube', null, ['class' => 'form-control', 'maxlength' => 100]) }}
+                                        {!! $errors->first('youtube', '<span class="red">:message</span>') !!}
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="td-w25">{{ __('twitter') }}</td>
                                     <td class="td-w10">:</td>
                                     <td class="td-w65">
-                                        {{ Form::text('twister', null, ['class' => 'form-control', 'maxlength' => 100]) }}
+                                        {{ Form::text('twitter', null, ['class' => 'form-control', 'maxlength' => 100]) }}
+                                        {!! $errors->first('twitter', '<span class="red">:message</span>') !!}
                                     </td>
                                 </tr>
                                 <tr>
@@ -95,6 +111,7 @@
                                     <td class="td-w10">:</td>
                                     <td class="td-w65">
                                         {{ Form::textarea('experience', null, ['class' => 'form-control', 'maxlength' => 100]) }}
+                                        {!! $errors->first('experience', '<span class="red">:message</span>') !!}
                                     </td>
                                 </tr>
                                 <tr>
@@ -102,7 +119,8 @@
                                     <td class="td-w10">:</td>
                                     <td class="td-w65">
                                         <div class="form-control">
-                                            {{ Form::file('avatar_url', null) }}
+                                            {{ Form::file('avatar', null) }}
+                                            {!! $errors->first('avatar', '<span class="red">:message</span>') !!}
                                         </div>
                                     </td>
                                 </tr>
@@ -117,12 +135,14 @@
                                     <div class="panel panel-default">
                                         <div class="panel-heading bell">
                                             <h4 class="panel-title">
-                                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion_threeLeft" href="#collapseTwentyLeftThree" aria-expanded="false">Frofile Detail</a>
+                                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion_threeLeft" href="#collapseTwentyLeftThree" aria-expanded="false">
+                                                    {{ __('Profile Detail') }}
+                                                </a>
                                             </h4>
                                         </div>
                                         <div id="collapseTwentyLeftThree" class="panel-collapse collapse" aria-expanded="false" role="tablist">
                                             <div class="panel-body">
-                                                {{ Form::textarea('description', null, ['class' => 'form-control ckeditor', 'maxlength' => 100]) }}
+                                                {{ Form::textarea('description', null, ['id' => 'description'], ['class' => 'form-control ckeditor', 'maxlength' => 100]) }}
                                             </div>
                                         </div>
                                     </div>

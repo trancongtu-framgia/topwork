@@ -6,7 +6,6 @@ use App\Models\User;
 
 $factory->define(Candidate::class, function (Faker $faker) {
     return [
-        'name' => $faker->name,
         'user_id' => User::all()->random()->id,
         'dob' => $faker->dateTime,
         'address' => $faker->address,
@@ -15,7 +14,7 @@ $factory->define(Candidate::class, function (Faker $faker) {
         'description' => $faker->text(15),
         'facebook' => $faker->url,
         'youtube' => $faker->url,
-        'twiter' => $faker->url,
+        'twitter' => $faker->url,
         'experience' => $faker->text(200),
     ];
 });

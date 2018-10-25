@@ -14,7 +14,6 @@ class Candidate extends Model
      * @var array
      */
     protected $fillable = [
-        'name',
         'user_id',
         'dob',
         'address',
@@ -23,7 +22,7 @@ class Candidate extends Model
         'description',
         'facebook',
         'youtube',
-        'twister',
+        'twitter',
         'experience',
     ];
 

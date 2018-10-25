@@ -5,7 +5,7 @@ return [
     'admin_role' => 'admin',
     'candidate_role' => 'candidate',
     'company_role' => 'company',
-    'candidate_media_url' => '/public/upload/image_candidate/',
+    'candidate_media_url' => 'public/upload/image_candidate/',
 
     /*
     |--------------------------------------------------------------------------
