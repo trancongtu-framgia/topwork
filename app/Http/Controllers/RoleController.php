@@ -23,7 +23,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = $this->roleRepository->getListRoles(self::PER_PAGE);
+        $roles = $this->roleRepository->getAll(self::PER_PAGE);
 
         return view('admin.roles.index', compact('roles'));
     }
@@ -46,7 +46,7 @@ class RoleController extends Controller
      */
     public function store(CreateRoleRequest $request)
     {
-        $role = $this->roleRepository->createRole($request->all());
+        $role = $this->roleRepository->create($request->all());
         if ($role) {
             flash(__('Add role successfully'))->success();
 
@@ -66,7 +66,7 @@ class RoleController extends Controller
      */
     public function edit(int $id)
     {
-        $role = $this->roleRepository->getRole('id', $id);
+        $role = $this->roleRepository->get('id', $id);
 
         return view('admin.roles.edit', compact('role'));
     }
@@ -80,7 +80,7 @@ class RoleController extends Controller
      */
     public function update(UpdateRoleRequest $request, int $id)
     {
-        $role = $this->roleRepository->updateRole($request->validated(), 'id', $id);
+        $role = $this->roleRepository->update($request->validated(), 'id', $id);
         if ($role) {
             flash(__('Update role success'))->success();
         } else {
@@ -98,7 +98,7 @@ class RoleController extends Controller
      */
     public function destroy(int $id)
     {
-        $role = $this->roleRepository->deleteRole('id', $id);
+        $role = $this->roleRepository->delete('id', $id);
         if ($role) {
             flash(__('Delete role success'))->success();
         } else {

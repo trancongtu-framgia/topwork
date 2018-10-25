@@ -25,7 +25,7 @@ class JobTypeController extends Controller
      */
     public function index()
     {
-        $jobTypes = $this->jobTypeRepository->getListJobType(self::PER_PAGE);
+        $jobTypes = $this->jobTypeRepository->get(self::PER_PAGE);
 
         return view('admin.job_types.index', compact('jobTypes'));
     }
@@ -48,7 +48,7 @@ class JobTypeController extends Controller
      */
     public function store(CreateJobTypeRequest $request)
     {
-        $jobType = $this->jobTypeRepository->createJobType($request->all());
+        $jobType = $this->jobTypeRepository->create($request->all());
         if ($jobType) {
             flash(__('Add Job Type succes'))->success();
         } else {
@@ -66,7 +66,7 @@ class JobTypeController extends Controller
      */
     public function edit(int $id)
     {
-        $jobType = $this->jobTypeRepository->getJobType('id', $id);
+        $jobType = $this->jobTypeRepository->get('id', $id);
 
         return view('admin.job_types.edit', compact('jobType'));
     }
@@ -80,7 +80,7 @@ class JobTypeController extends Controller
      */
     public function update(UpdateJobTypeRequest $request, int $id)
     {
-        $jobType = $this->jobTypeRepository->updateJobType($request, 'id', $id);
+        $jobType = $this->jobTypeRepository->update($request->validated(), 'id', $id);
         if ($jobType) {
             flash(__('Update Job Type succes'))->success();
 
@@ -100,7 +100,7 @@ class JobTypeController extends Controller
      */
     public function destroy(int $id)
     {
-        $jobType = $this->jobTypeRepository->deleteJobType('id', $id);
+        $jobType = $this->jobTypeRepository->delete('id', $id);
         if ($jobType) {
             flash(__('Delete Job Type succes'))->success();
         } else {

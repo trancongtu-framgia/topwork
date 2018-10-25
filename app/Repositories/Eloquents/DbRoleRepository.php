@@ -18,28 +18,33 @@ class DbRoleRepository extends DbBaseRepository implements RoleRepository
         $this->model = $model;
     }
 
-    public function getListRoles($per)
+    public function getAll($per)
     {
-        return $this->paginateList($per);
+        return $this->basePaginateList($per);
     }
 
-    public function createRole($param)
+    public function get($key, $value)
     {
-        return $this->create($param);
+        return $this->baseFindBy($key, $value);
     }
 
-    public function getRole($key, $value)
+    public function delete($key, $value)
     {
-        return $this->findBy($key, $value);
+        return $this->baseDestroy($key, $value);
     }
 
-    public function updateRole($data, $key, $value)
+    public function getAllWithOutPaginate()
     {
-        return $this->update($data, $key, $value);
+        return $this->model::pluck('name', 'id');
     }
 
-    public function deleteRole($key, $value)
+    public function create($param)
     {
-        return $this->destroy($key, $value);
+        return $this->baseCreate($param);
+    }
+
+    public function update($data, $key, $value)
+    {
+        return $this->baseUpdate($data, $key, $value);
     }
 }

@@ -57,6 +57,8 @@ class DbCompanyRepository extends DbBaseRepository implements CompanyRepository
 
         return $data;
     }
-
-
+    public function getCompanyName(int $companyId)
+    {
+        return $this->get('user_id', $companyId)->companyUser->name;
+    }
 }

@@ -19,28 +19,33 @@ class DbLocationRepository extends DbBaseRepository implements LocationRepositor
         $this->model = $model;
     }
 
-    public function getListLocations($per)
+    public function getAll($per)
     {
-        return $this->paginateList($per);
+        return $this->basePaginateList($per);
     }
 
-    public function createLocation($param)
+    public function get($key, $value)
     {
-        return $this->create($param);
+        return $this->baseFindBy($key, $value);
     }
 
-    public function getLocation($key, $value)
+    public function delete($key, $value)
     {
-        return $this->findBy($key, $value);
+        return $this->baseDestroy($key, $value);
     }
 
-    public function updateLocation($data, $key, $value)
+    public function getAllWithOutPaginate()
     {
-        return $this->update($data, $key, $value);
+        return $this->model::pluck('name', 'id');
     }
 
-    public function deleteLocation($key, $value)
+    public function create($param)
     {
-        return $this->destroy($key, $value);
+        return $this->baseCreate($param);
+    }
+
+    public function update($data, $key, $value)
+    {
+        return $this->baseUpdate($data, $key, $value);
     }
 }
