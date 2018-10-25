@@ -22,3 +22,52 @@ function logout(content, cancel, ok) {
         }
     });
 }
+
+$( document ).ready(function() {
+    $('#btn-search-client').click(function () {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        var location = $('#location-search').val();
+       $.ajax({
+           url: route('home.search'),
+           type: 'POST',
+           data: {location: location},
+           success: function (data) {
+               alert(data);
+
+           }
+       });
+    });
+    //search
+    var engine2 = new Bloodhound({
+        remote: {
+            url: route('home.searchJob') + '?value=%QUERY%',
+            wildcard: '%QUERY%'
+        },
+        datumTokenizer: Bloodhound.tokenizers.whitespace('value'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace
+    });
+
+    $('#search-input').typeahead({
+        hint: true,
+        highlight: true,
+        minLength: 1
+    }, [
+        {
+            source: engine2.ttAdapter(),
+            name: 'skill',
+            display: function(data) {
+                return data.name;
+            },
+            templates: {
+                suggestion: function (data) {
+                    return '<a href="javascript:void(0)" class="list-group-item">' + data.name + '</a>';
+                }
+            }
+        }
+    ]);
+
+});

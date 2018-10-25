@@ -1,13 +1,7 @@
 <?php
-
-Route::get('/', 'HomeController@index')->middleware('check.admin');
-
 Route::get('change-lang/{lang}', 'LangController@changeLang')->name('change-lang');
 
 Auth::routes();
-
-
-Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group([
     'prefix' => 'admin',
@@ -28,16 +22,6 @@ Route::group([
             Route::put('update/{id}', 'CategoryController@update')->name('categories.update');
             Route::delete('destroy/{id}', 'CategoryController@destroy')->name('categories.destroy');
         });
-        Route::group([
-            'prefix' => 'skills',
-        ], function () {
-            Route::get('/', 'SkillController@index')->name('skills.index');
-            Route::get('/create', 'SkillController@create')->name('skills.create');
-            Route::post('/', 'SkillController@store')->name('skills.store');
-            Route::get('edit/{id}', 'SkillController@edit')->name('skills.edit');
-            Route::put('update/{id}', 'SkillController@update')->name('skills.update');
-            Route::delete('destroy/{id}', 'SkillController@destroy')->name('skills.destroy');
-        });
     }
 );
 
@@ -48,6 +32,43 @@ Route::group([
         Route::get('/', 'CompanyController@index')->name('companies.index');
         Route::get('/edit', 'CompanyController@edit')->name('companies.edit');
         Route::put('/update', 'CompanyController@update')->name('companies.update');
+    }
+);
+
+
+Route::group([
+        'prefix' => 'client-candidate',
+    ], function () {
+    Route::get('candidates/pro-file/{id}', 'CandidateController@getInfoCandidate')->name('candidate.getInfo');
+
+    Route::get('candidates/edit-pro-file/{id}', 'CandidateController@getEditInfoCandidate')->name('candidate.getEditInfo');
+
+    Route::put('candidates/{id}', 'CandidateController@putEditInfoCandidate')->name('candidate.putEditInfo');
+});
+
+Route::group([
+    'prefix' => 'jobs',
+], function () {
+    Route::get('/', 'JobController@index')->name('jobs.index');
+    Route::get('/create', 'JobController@create')->name('jobs.create');
+    Route::post('/', 'JobController@store')->name('jobs.store');
+    Route::get('edit/{id}', 'JobController@edit')->name('jobs.edit');
+    Route::put('update/{id}', 'JobController@update')->name('jobs.update');
+    Route::delete('destroy/{id}', 'JobController@destroy')->name('jobs.destroy');
+    Route::get('/detail/{id}', 'JobController@show')->name('jobs.detail');
+    Route::get('/apply/{id}', 'ApplicationController@create')->name('applications.create');
+});
+
+
+Route::get('/', 'HomeController@index')->name('home.index');
+
+Route::group([
+        'prefix' => 'home',
+        'middleware' => 'check.admin',
+    ],
+    function () {
+        Route::post('/search', 'HomeController@search')->name('home.search');
+        Route::get('/search/job', 'HomeController@searchJob')->name('home.searchJob');
     }
 );
 
@@ -73,3 +94,4 @@ Route::group([
     Route::get('/detail/{id}', 'JobController@show')->name('jobs.detail');
     Route::get('/apply/{id}', 'ApplicationController@create')->name('applications.create');
 });
+

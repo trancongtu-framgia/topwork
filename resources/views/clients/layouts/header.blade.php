@@ -11,41 +11,32 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="jp_header_form_wrapper">
-                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                            <input type="text" placeholder="Keyword e.g. (Job Title, Description, Tags)">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            {!! Form::text('search', null,
+                                [
+                                    'type' => 'search',
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Keyword e.g. (Job Title, Description, Tags)',
+                                    'autocomplete' => 'off',
+                                    'id' => 'search-input'
+                                ])
+                            !!}
+
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                             <div class="jp_form_location_wrapper">
                                 <i class="fa fa-dot-circle-o first_icon"></i>
-                                <select>
-                                    <option>Select Location</option>
-                                    <option>Select Location</option>
-                                    <option>Select Location</option>
-                                    <option>Select Location</option>
-                                    <option>Select Location</option>
-                                </select>
-                                <i class="fa fa-angle-down second_icon"></i>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                            <div class="jp_form_exper_wrapper">
-                                <i class="fa fa-dot-circle-o first_icon"></i>
-                                <select>
-                                    <option>Experience</option>
-                                    <option>Experience</option>
-                                    <option>Experience</option>
-                                    <option>Experience</option>
-                                    <option>Experience</option>
-                                </select>
+                                {!! Form::select('location', $location , null, ['placeholder' => __('Pick a location'), 'id' => 'location-search']); !!}
                                 <i class="fa fa-angle-down second_icon"></i>
                             </div>
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                             <div class="jp_form_btn_wrapper">
                                 <ul>
-                                    <li><a href="#"><i class="fa fa-search"></i> {{__('Search')}}</a></li>
+                                    <li><a href="javascript:void(0)" id="btn-search-client"><i class="fa fa-search"></i> {{ __('search') }}</a></li>
                                 </ul>
                             </div>
                         </div>

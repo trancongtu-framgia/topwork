@@ -61,7 +61,7 @@ class CompanyController extends Controller
     public function edit()
     {
         $company = $this->company->get('id', Auth::id());
-        
+
         return view('clients.companies.update', ['company' => $company]);
     }
 

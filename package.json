@@ -20,9 +20,9 @@
         "vue": "^2.5.7"
     },
     "dependencies": {
-        "ckeditor": "^4.10.1",
         "font-awesome": "^4.7.0",
         "jquery-confirm": "^3.3.2",
-        "jquery-ui-dist": "^1.12.1"
+        "jquery-ui-dist": "^1.12.1",
+        "typeahead.js": "^0.11.1"
     }
 }

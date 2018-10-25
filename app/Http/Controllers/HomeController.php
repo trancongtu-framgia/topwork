@@ -2,83 +2,54 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Skill;
 use Illuminate\Http\Request;
+use App\Repositories\Interfaces\LocationRepository;
+use App\Repositories\Interfaces\SkillRepository;
+use App\Repositories\Interfaces\CategoryRepository;
+use phpDocumentor\Reflection\Location;
 
 class HomeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    private $location;
+    private $skill;
+    private $category;
+    public function __construct(
+        LocationRepository $locationRepository,
+        SkillRepository $skillRepository,
+        CategoryRepository $categoryRepository
+    ) {
+        $this->location = $locationRepository;
+        $this->skill = $skillRepository;
+        $this->category = $categoryRepository;
+    }
+
     public function index()
     {
-        return view('clients.index');
+        $location = $this->location->getAllWithOutPaginate();
+
+        return view('clients.index', compact('location'));
+    }
+    public function search(Request $request)
+    {
+        return $request->location;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function searchJob(Request $request)
     {
-        //
+        $data = '';
+        $skills = $this->skill->searchSkill($request->value);
+        if ($skills) {
+            $data = $skills;
+        } else {
+            $categories = $this->category->searchCategory($request->value);
+            if ($categories) {
+                $data = $categories;
+            }
+        }
+
+        return response()->json($data);
+
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

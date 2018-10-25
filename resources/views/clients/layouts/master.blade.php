@@ -9,6 +9,7 @@
     <meta name="keywords" content="Job Pro" />
     <meta name="author" content="" />
     <meta name="MobileOptimized" content="320" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!--srart theme style -->
     @include('clients.layouts.css')
     <!-- favicon links -->

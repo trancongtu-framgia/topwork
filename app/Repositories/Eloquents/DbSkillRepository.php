@@ -48,4 +48,10 @@ class DbSkillRepository extends DbBaseRepository implements SkillRepository
     {
         return $this->model::pluck('name', 'id');
     }
+
+    public function searchSkill($keyword)
+    {
+        return $this->model->search($keyword)->get();
+    }
+
 }
