@@ -24,7 +24,7 @@ class LocationController extends Controller
      */
     public function index()
     {
-        $locations = $this->locationRepository->getListLocations(self::PER_PAGE);
+        $locations = $this->locationRepository->getAll(self::PER_PAGE);
 
         return view('admin.locations.index', compact('locations'));
     }
@@ -47,7 +47,7 @@ class LocationController extends Controller
      */
     public function store(CreateLocationRequest $request)
     {
-        $location = $this->locationRepository->createLocation($request->all());
+        $location = $this->locationRepository->create($request->all());
         if ($location) {
             flash(__('Add location successfully'))->success();
 
@@ -67,7 +67,7 @@ class LocationController extends Controller
      */
     public function edit(int $id)
     {
-        $location = $this->locationRepository->getLocation('id', $id);
+        $location = $this->locationRepository->get('id', $id);
 
         return view('admin.locations.edit', compact('location'));
     }
@@ -81,7 +81,7 @@ class LocationController extends Controller
      */
     public function update(UpdateLocationRequest $request, $id)
     {
-        $location = $this->locationRepository->updateLocation($request->validated(), 'id', $id);
+        $location = $this->locationRepository->update($request->validated(), 'id', $id);
 
         if ($location) {
             flash(__('Update location success'))->success();
@@ -100,7 +100,7 @@ class LocationController extends Controller
      */
     public function destroy(int $id)
     {
-        $location = $this->locationRepository->deleteLocation('id', $id);
+        $location = $this->locationRepository->delete('id', $id);
 
         if ($location) {
             flash(__('Delete location success'))->success();

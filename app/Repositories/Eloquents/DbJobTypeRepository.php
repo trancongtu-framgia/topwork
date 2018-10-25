@@ -18,28 +18,33 @@ class DbJobTypeRepository extends DbBaseRepository implements JobTypeRepository
         $this->model = $model;
     }
 
-    public function getListJobType($per)
+    public function getAll($per)
     {
-        return $this->paginateList($per);
+        return $this->basePaginateList($per);
     }
 
-    public function createJobType($request)
+    public function get($key, $value)
     {
-        return $this->create($request);
+        return $this->baseFindBy($key, $value);
     }
 
-    public function getJobType($key, $value)
+    public function delete($key, $value)
     {
-        return $this->findBy($key, $value);
+        return $this->baseDestroy($key, $value);
     }
 
-    public function updateJobType($data, $key, $value)
+    public function getAllWithOutPaginate()
     {
-        return $this->update($data, $key, $value);
+        return $this->model::pluck('name', 'id');
     }
 
-    public function deleteJobType($key, $value)
+    public function create($param)
     {
-        return $this->destroy($key, $value);
+        return $this->baseCreate($param);
+    }
+
+    public function update($data, $key, $value)
+    {
+        return $this->baseUpdate($data, $key, $value);
     }
 }
