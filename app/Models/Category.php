@@ -18,4 +18,9 @@ class Category extends Model
         'parent_id',
         'description',
     ];
+
+    public function categorySkills()
+    {
+        return $this->hasMany('App\Models\Skill', 'category_id', 'id');
+    }
 }

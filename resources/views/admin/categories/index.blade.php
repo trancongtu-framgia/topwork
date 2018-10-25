@@ -23,7 +23,9 @@
                 <td>{{ $category->description }}</td>
                 <td>{{ $category->parent_category }}</td>
                 <td>
-                    <a href="{{ route('categories.edit', ['id' => $category->id]) }}">{{ __('Edit') }}</a>&nbsp;&nbsp;
+                    <a href="{{ route('categories.edit', ['id' => $category->id]) }}">{{ __('Edit') }}</a>
+                </td>
+                <td>
                    @include('elements.button_model', ['nameRoute' => 'categories.destroy', 'data' => $category])
                 </td>
             </tr>

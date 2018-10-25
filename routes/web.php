@@ -28,6 +28,16 @@ Route::group([
             Route::put('update/{id}', 'CategoryController@update')->name('categories.update');
             Route::delete('destroy/{id}', 'CategoryController@destroy')->name('categories.destroy');
         });
+        Route::group([
+            'prefix' => 'skills',
+        ], function () {
+            Route::get('/', 'SkillController@index')->name('skills.index');
+            Route::get('/create', 'SkillController@create')->name('skills.create');
+            Route::post('/', 'SkillController@store')->name('skills.store');
+            Route::get('edit/{id}', 'SkillController@edit')->name('skills.edit');
+            Route::put('update/{id}', 'SkillController@update')->name('skills.update');
+            Route::delete('destroy/{id}', 'SkillController@destroy')->name('skills.destroy');
+        });
     }
 );
 

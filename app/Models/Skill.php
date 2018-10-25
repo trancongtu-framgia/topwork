@@ -17,4 +17,9 @@ class Skill extends Model
         'name',
         'category_id',
     ];
+
+    public function skillCategory()
+    {
+        return $this->belongsTo('\App\Models\Category', 'category_id', 'id');
+    }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Interfaces;
 
-interface SkillRepository
+interface SkillRepository extends BaseRepository
 {
 	// 
 }
