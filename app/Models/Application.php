@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Application extends Model
 {
     protected $table = 'applications';
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -21,4 +21,14 @@ class Application extends Model
         'status',
         'self_introduction',
     ];
+
+    public  function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
+
+    public function job()
+    {
+        return $this->belongsTo('App\Models\Job');
+    }
 }

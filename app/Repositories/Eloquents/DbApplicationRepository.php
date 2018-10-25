@@ -3,20 +3,22 @@
 namespace App\Repositories\Eloquents;
 
 use App\Models\Application;
-use App\Repositories\Eloquents\DbBaseRepository;
 use App\Repositories\Interfaces\ApplicationRepository;
+use App\Repositories\Interfaces\JobRepository;
 
 class DbApplicationRepository extends DbBaseRepository implements ApplicationRepository
 {
     protected $model;
+    protected $jobRepository;
 
     /**
      * @param Application $model
      *
      */
-    function __construct(Application $model)
+    function __construct(Application $model, JobRepository $jobRepository)
     {
         $this->model = $model;
+        $this->jobRepository = $jobRepository;
     }
 
     public function getAll($per)

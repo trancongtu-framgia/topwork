@@ -40,7 +40,7 @@
                         </div>
                         <div style="text-align: center">
                             {{ Form::button(__('Save'), ['type' => 'submit', 'name' => 'submit_save', 'class' => 'btn btn-success allbutton'] ) }}
-                            <a class="btn btn-primary" href="{{ route('candidate.getInfo', $user->id) }}">{{ __('Cancel') }}</a>
+                            <a class="btn btn-primary" href="{{ route('candidate.getInfo', $user->token) }}">{{ __('Cancel') }}</a>
                         </div>
                     </div>
                 </div>

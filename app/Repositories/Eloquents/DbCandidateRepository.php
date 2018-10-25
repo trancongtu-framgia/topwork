@@ -25,7 +25,7 @@ class DbCandidateRepository extends DbBaseRepository implements CandidateReposit
 
     public function showInfoCandidate($key)
     {
-        return $this->userModel->find($key)->first();
+        return $this->userModel->where('token', $key)->first();
     }
 
     public function updateInfoCandidate($data, $key, $value)

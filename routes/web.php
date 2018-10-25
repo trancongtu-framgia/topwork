@@ -6,8 +6,7 @@ Auth::routes();
 Route::group([
     'prefix' => 'admin',
     'middleware' => 'auth',
-],
-    function () {
+], function () {
         Route::get('/', 'AdminController@index')->name('admin.index');
         Route::resource('roles', 'RoleController');
         Route::resource('job-types', 'JobTypeController');
@@ -22,11 +21,23 @@ Route::group([
             Route::put('update/{id}', 'CategoryController@update')->name('categories.update');
             Route::delete('destroy/{id}', 'CategoryController@destroy')->name('categories.destroy');
         });
+
     }
 );
 
 Route::group([
-        'prefix' => 'companies'
+    'prefix' => 'skills',
+], function () {
+    Route::get('/', 'SkillController@index')->name('skills.index');
+    Route::get('/create', 'SkillController@create')->name('skills.create');
+    Route::post('/', 'SkillController@store')->name('skills.store');
+    Route::get('edit/{id}', 'SkillController@edit')->name('skills.edit');
+    Route::put('update/{id}', 'SkillController@update')->name('skills.update');
+    Route::delete('destroy/{id}', 'SkillController@destroy')->name('skills.destroy');
+});
+
+Route::group([
+        'prefix' => 'companies',
     ],
     function () {
         Route::get('/', 'CompanyController@index')->name('companies.index');
@@ -34,7 +45,6 @@ Route::group([
         Route::put('/update', 'CompanyController@update')->name('companies.update');
     }
 );
-
 
 Route::group([
         'prefix' => 'client-candidate',
@@ -58,7 +68,6 @@ Route::group([
     Route::get('/detail/{id}', 'JobController@show')->name('jobs.detail');
     Route::get('/apply/{id}', 'ApplicationController@create')->name('applications.create');
 });
-
 
 Route::get('/', 'HomeController@index')->name('home.index');
 
@@ -73,16 +82,6 @@ Route::group([
 );
 
 Route::group([
-        'prefix' => 'client-candidate',
-    ], function () {
-    Route::get('candidates/pro-file/{id}', 'CandidateController@getInfoCandidate')->name('candidate.getInfo');
-
-    Route::get('candidates/edit-pro-file/{id}', 'CandidateController@getEditInfoCandidate')->name('candidate.getEditInfo');
-
-    Route::put('candidates/{id}', 'CandidateController@putEditInfoCandidate')->name('candidate.putEditInfo');
-});
-
-Route::group([
     'prefix' => 'jobs',
 ], function () {
     Route::get('/', 'JobController@index')->name('jobs.index');
@@ -95,3 +94,10 @@ Route::group([
     Route::get('/apply/{id}', 'ApplicationController@create')->name('applications.create');
 });
 
+Route::group([
+    'prefix' => 'client-applications',
+], function () {
+    Route::get('applications/get-list/{id}', 'ApplicationController@getListCandidateApplication')->name('application.getList');
+    Route::get('applications/get-candidate-by-job/{id}', 'ApplicationController@getCandidateByJob')->name('ajax.getCandidateByJob');
+    Route::get('applications/get-all-candidate-by-user/{id}', 'ApplicationController@getCandidateByUser')->name('ajax.getAllCandidateByUser');
+});
