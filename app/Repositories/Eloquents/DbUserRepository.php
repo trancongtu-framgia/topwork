@@ -3,7 +3,6 @@
 namespace App\Repositories\Eloquents;
 
 use App\Models\User;
-use App\Repositories\Eloquents\DbBaseRepository;
 use App\Repositories\Interfaces\UserRepository;
 
 class DbUserRepository extends DbBaseRepository implements UserRepository
@@ -17,5 +16,30 @@ class DbUserRepository extends DbBaseRepository implements UserRepository
     function __construct(User $model)
     {
         $this->model = $model;
+    }
+
+    public function getAll($per)
+    {
+        // TODO: Implement getAll() method.
+    }
+
+    public function create($param)
+    {
+        // TODO: Implement create() method.
+    }
+
+    public function get($key, $value)
+    {
+        return $this->get($key, $value);
+    }
+
+    public function update($data, $key, $value)
+    {
+        return $this->update($data, $key, $value);
+    }
+
+    public function delete($key, $value)
+    {
+        // TODO: Implement delete() method.
     }
 }

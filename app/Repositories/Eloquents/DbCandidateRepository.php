@@ -5,6 +5,8 @@ namespace App\Repositories\Eloquents;
 use App\Models\Candidate;
 use App\Models\User;
 use App\Repositories\Interfaces\CandidateRepository;
+use DB;
+use Mockery\Exception;
 
 class DbCandidateRepository extends DbBaseRepository implements CandidateRepository
 {
@@ -28,30 +30,37 @@ class DbCandidateRepository extends DbBaseRepository implements CandidateReposit
 
     public function updateInfoCandidate($data, $key, $value)
     {
-        $candidate = $this->model->find($value);
-        $candidate->name = $data->name;
-        $candidate->dob = $data->dob;
-        $candidate->user_id = $candidate->user_id;
-        $candidate->address = $data->address;
-        $candidate->phone = $data->phone;
-        $candidate->description = $data->description;
-        $candidate->facebook = $data->facebook;
-        $candidate->youtube = $data->youtube;
-        $candidate->twiter = $data->twister;
-        $candidate->experience = $data->experience;
+        $update = DB::transaction(function () use ($data, $value) {
+            try {
+                $candidate = $this->model->find($value);
+                if ($data->hasFile('avatar')) {
+                    $file = $data->file('avatar');
+                    $name = $file->getClientOriginalName();
+                    $image = str_random(4) . '_' . $name;
+                    $file->move(config('app.candidate_media_url'), $image);
+                    if (!empty($candidate->avatar_url)) {
+                        unlink(config('app.candidate_media_url') . $candidate->avatar_url);
+                    }
+                    $data['avatar_url'] = $image;
+                }
+                $saveCandidate = $candidate->update($data->toArray());
 
-        if ($data->hasFile('avatar_url')) {
-            $file = $data->file('avatar_url');
-            $name = $file->getClientOriginalName();
-            $image = str_random(4) . '_' . $name;
-            $file->move('public/upload/image_candidate/', $image);
-            if (!empty($candidate->image)) {
-                unlink('public/upload/image_candidate/' . $candidate->image);
+                if (!empty($candidate->user_id)) {
+                    $user = $this->userModel->find($candidate->user_id);
+                    $saveUser = $user->update($data->toArray());
+                } else {
+                    return false;
+                }
+                DB::commit();
+
+                return true;
+            } catch (Exception $exception) {
+                DB::rollback();
+
+                return ['errorMessage' => $exception->getMessage()];
             }
-            $candidate->avatar_url = $image;
-        }
-        $result = $candidate->save();
+        });
 
-        return $result;
+        return $update;
     }
 }
