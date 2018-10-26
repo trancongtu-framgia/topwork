@@ -5,7 +5,6 @@ return [
     'admin_role' => 'admin',
     'candidate_role' => 'candidate',
     'company_role' => 'company',
-    'candidate_media_url' => 'public/upload/image_candidate/',
 
     /*
     |--------------------------------------------------------------------------
@@ -151,8 +150,6 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        Collective\Html\HtmlServiceProvider::class,
-
         /*
          * Package Service Providers...
          */
@@ -166,6 +163,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        Tightenco\Ziggy\ZiggyServiceProvider::class,
+        Laravel\Scout\ScoutServiceProvider::class,
 
     ],
 

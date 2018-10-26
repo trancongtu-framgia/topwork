@@ -10,3 +10,9 @@
 .logo_company {
     width: 250px !important;
 }
+.twitter-typeahead {
+    width: 100%;
+}
+.tt-menu {
+    width: 100%;
+}

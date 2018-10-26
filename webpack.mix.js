@@ -28,6 +28,7 @@ mix.scripts(
         'resources/assets/client/js/jquery.magnific-popup.js',
         'resources/assets/client/js/custom_II.js',
         'resources/assets/client/js/client.js',
+        'node_modules/typeahead.js/dist/typeahead.bundle.js',
     ], 'public/js/app_client.js');
 
 mix.styles(

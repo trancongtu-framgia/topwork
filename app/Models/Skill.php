@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class Skill extends Model
 {
     protected $table = 'skills';
-    
+    use Searchable;
     /**
      * The attributes that are mass assignable.
      *
@@ -17,9 +18,18 @@ class Skill extends Model
         'name',
         'category_id',
     ];
-
-    public function skillCategory()
+    public function searchableAs()
     {
-        return $this->belongsTo('\App\Models\Category', 'category_id', 'id');
+        return 'skills';
     }
+
+    public function toSearchableArray()
+    {
+        $array = $this->toArray();
+
+        // Customize array...
+
+        return $array;
+    }
+
 }
