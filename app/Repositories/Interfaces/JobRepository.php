@@ -2,8 +2,7 @@
 
 namespace App\Repositories\Interfaces;
 
-interface JobRepository
+interface JobRepository extends BaseRepository
 {
-	// 
+    public function getAllJobByCompany(int $companyId, int $per);
 }
-
