@@ -17,7 +17,8 @@ class Application extends Model
         'date',
         'user_id',
         'job_id',
-        'cv_id',
+        'cv_url',
         'status',
+        'self_introduction',
     ];
 }

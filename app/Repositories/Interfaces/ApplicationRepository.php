@@ -4,5 +4,5 @@ namespace App\Repositories\Interfaces;
 
 interface ApplicationRepository extends BaseRepository
 {
-	// 
+    public function checkDuplicate(int $user_id, int $job_id);
 }
