@@ -10,9 +10,9 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group([
-        'prefix' => 'admin',
-        'middleware' => 'auth',
-    ],
+    'prefix' => 'admin',
+    'middleware' => 'auth',
+],
     function () {
         Route::get('/', 'AdminController@index')->name('admin.index');
         Route::resource('roles', 'RoleController');
@@ -41,8 +41,7 @@ Route::group([
     }
 );
 
-Route::group(
-    [
+Route::group([
         'prefix' => 'companies'
     ],
     function () {
@@ -52,13 +51,25 @@ Route::group(
     }
 );
 
-    Route::group(
-        [
-            'prefix' => 'client-candidate'
-        ], function () {
-            Route::get('candidates/pro-file/{id}', 'CandidateController@getInfoCandidate')->name('candidate.getInfo');
+Route::group([
+        'prefix' => 'client-candidate',
+    ], function () {
+    Route::get('candidates/pro-file/{id}', 'CandidateController@getInfoCandidate')->name('candidate.getInfo');
 
-            Route::get('candidates/edit-pro-file/{id}', 'CandidateController@getEditInfoCandidate')->name('candidate.getEditInfo');
+    Route::get('candidates/edit-pro-file/{id}', 'CandidateController@getEditInfoCandidate')->name('candidate.getEditInfo');
 
-            Route::put('candidates/{id}', 'CandidateController@putEditInfoCandidate')->name('candidate.putEditInfo');
-    });
+    Route::put('candidates/{id}', 'CandidateController@putEditInfoCandidate')->name('candidate.putEditInfo');
+});
+
+Route::group([
+    'prefix' => 'jobs',
+], function () {
+    Route::get('/', 'JobController@index')->name('jobs.index');
+    Route::get('/create', 'JobController@create')->name('jobs.create');
+    Route::post('/', 'JobController@store')->name('jobs.store');
+    Route::get('edit/{id}', 'JobController@edit')->name('jobs.edit');
+    Route::put('update/{id}', 'JobController@update')->name('jobs.update');
+    Route::delete('destroy/{id}', 'JobController@destroy')->name('jobs.destroy');
+    Route::get('/detail/{id}', 'JobController@show')->name('jobs.detail');
+    Route::get('/apply/{id}', 'ApplicationController@create')->name('applications.create');
+});

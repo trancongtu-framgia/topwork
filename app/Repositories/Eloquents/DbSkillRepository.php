@@ -11,7 +11,7 @@ class DbSkillRepository extends DbBaseRepository implements SkillRepository
     protected $model;
 
     /**
-     *  @param Skill $model
+     * @param Skill $model
      *
      */
     function __construct(Skill $model)
@@ -42,5 +42,10 @@ class DbSkillRepository extends DbBaseRepository implements SkillRepository
     public function delete($key, $value)
     {
         return $this->baseDestroy($key, $value);
+    }
+
+    public function getAllWithOutPaginate()
+    {
+        return $this->model::pluck('name', 'id');
     }
 }

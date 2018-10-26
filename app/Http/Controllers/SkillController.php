@@ -129,4 +129,11 @@ class SkillController extends Controller
             return redirect()->route('skills.index');
         }
     }
+
+    public function getSkillByCategory(int $categoryId)
+    {
+        $skills = $this->skillRepository->baseFindAllBy('category_id', $categoryId)->pluck('id', 'name');
+
+        return response()->json($skills);
+    }
 }
