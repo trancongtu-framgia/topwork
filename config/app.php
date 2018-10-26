@@ -5,7 +5,9 @@ return [
     'admin_role' => 'admin',
     'candidate_role' => 'candidate',
     'company_role' => 'company',
-
+    'cv_base_url' => 'cvs',
+    'job_application_new_status' => 0,
+    'job_application_seen_status' => 1,
     /*
     |--------------------------------------------------------------------------
     | Application Name

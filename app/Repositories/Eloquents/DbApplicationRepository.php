@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Repositories\Eloquents;
 
 use App\Models\Application;
@@ -10,7 +11,7 @@ class DbApplicationRepository extends DbBaseRepository implements ApplicationRep
     protected $model;
 
     /**
-     *  @param Application $model
+     * @param Application $model
      *
      */
     function __construct(Application $model)
@@ -41,5 +42,12 @@ class DbApplicationRepository extends DbBaseRepository implements ApplicationRep
     public function delete($key, $value)
     {
         return $this->baseDestroy($key, $value);
+    }
+
+    public function checkDuplicate(int $user_id, int $job_id): bool
+    {
+        $count = $this->model::Where('user_id', $user_id)->where('job_id', $job_id)->get()->count();
+
+        return $count === 0 ? true : false;
     }
 }
