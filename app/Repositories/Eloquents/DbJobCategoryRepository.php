@@ -50,4 +50,17 @@ class DbJobCategoryRepository extends DbBaseRepository implements JobCategoryRep
             $this->create(['job_id' => $jobId, 'category_id' => $category]);
         }
     }
+
+    public function getJobIdByCategory($categoryId)
+    {
+        $jobs = $this->model->where('category_id', $categoryId)->get();
+        $listIdJob = [];
+        if ($jobs) {
+            foreach ($jobs as $job) {
+                $listIdJob[] = $job->job_id;
+            }
+        }
+
+        return $listIdJob;
+    }
 }

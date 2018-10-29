@@ -32,10 +32,11 @@ class HomeController extends Controller
 
     public function index()
     {
+        $categories = $this->category->getAllWithOutPaginate();
         $jobs = $this->jobRepository->getAll(self::RECORD_PER_PAGE);
         $location = $this->location->getAllWithOutPaginate();
 
-        return view('clients.index', compact('location', 'jobs'));
+        return view('clients.index', compact('location', 'jobs', 'categories'));
     }
 
     public function search(Request $request)

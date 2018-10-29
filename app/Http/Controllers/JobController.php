@@ -180,4 +180,11 @@ class JobController extends Controller
             return redirect()->route('jobs.index');
         }
     }
+
+    public function getJobByCategory(Request $request)
+    {
+        $jobs = $this->jobRepository->getJobByCategory($request->categoryId, self::RECORD_PER_PAGE, $request->fullUrl());
+
+        return view('clients.home.jobContentSearchByCategory', compact('jobs'));
+    }
 }

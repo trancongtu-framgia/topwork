@@ -79,6 +79,8 @@ Route::group([
     Route::delete('destroy/{id}', 'JobController@destroy')->name('jobs.destroy');
     Route::get('/detail/{id}', 'JobController@show')->name('jobs.detail');
     Route::get('/apply/{id}', 'ApplicationController@create')->name('applications.create');
+    Route::get('/get-jobs-by-category', 'JobController@getJobByCategory')->name('job.getJobByCategory');
+
 });
 
 Route::group([

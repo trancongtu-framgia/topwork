@@ -10,6 +10,7 @@ use App\Repositories\Interfaces\JobSkillRepository;
 use App\Repositories\Interfaces\JobTypeRepository;
 use App\Repositories\Interfaces\SkillRepository;
 use App\Repositories\Interfaces\UserRepository;
+use App\Repositories\Interfaces\JobCategoryRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 
@@ -21,6 +22,7 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
     protected $skill;
     protected $jobType;
     protected $user;
+    protected $jobCategory;
     private const FORMAT_DATE = 'Y-m-d';
 
     /**
@@ -33,7 +35,8 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
         CompanyRepository $companyRepository,
         SkillRepository $skillRepository,
         JobTypeRepository $jobTypeRepository,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        JobCategoryRepository $jobCategoryRepository
     ) {
         $this->model = $model;
         $this->jobSkillRepository = $jobSkillRepository;
@@ -41,6 +44,7 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
         $this->skill = $skillRepository;
         $this->jobType = $jobTypeRepository;
         $this->user = $userRepository;
+        $this->jobCategory = $jobCategoryRepository;
     }
 
     public function getAll($per)
@@ -161,8 +165,8 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
         //tim kiem theo company
         $companies = $this->user->searchCompanyByName($keyword);
         if ($companies) {
-            foreach ($companies as $Company) {
-                $jobCompanies = $this->model->where('user_id', $Company->id)->get();
+            foreach ($companies as $company) {
+                $jobCompanies = $this->model->where('user_id', $company->id)->get();
                 foreach ($jobCompanies as $jobCompany) {
                     if (!in_array($jobCompany->id, $listJobId)) {
                         $listJobId[] = $jobCompany->id;
@@ -208,8 +212,8 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
     private function getJobByDate($jobs, $per, $url)
     {
         $listJobs = [];
-        foreach ($jobs as $j) {
-            $job = $this->get('id', $j);
+        foreach ($jobs as $job) {
+            $job = $this->get('id', $job);
             if ($job) {
                 if ($this->compareDateJob($job->out_date)) {
                     $listJobs[] = $job;
@@ -229,5 +233,12 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
         }
 
         return false;
+    }
+
+    public function getJobByCategory($categoryId, $per, $url)
+    {
+        $listJobs = $this->jobCategory->getJobIdByCategory($categoryId);
+
+        return $this->getJobByDate($listJobs, $per, $url);
     }
 }
