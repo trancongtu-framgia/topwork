@@ -6,40 +6,57 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="jp_job_heading_wrapper">
                         <div class="jp_job_heading">
-                            <h1><span>3,000+</span> Browse Jobs</h1>
-                            <p>Find Jobs, Employment & Career Opportunities</p>
+                            <h1><span>3,000+</span> {{ __('jobs') }}</h1>
                         </div>
                     </div>
                 </div>
-
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="jp_header_form_wrapper">
+                        {!! Form::open(['route' => 'home.search', 'method' => 'GET', 'id' => 'form_search']) !!}
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                            {!! Form::text('search', null,
+                            {!! Form::text('keyword',
+                                (isset($_GET['keyword']) && $_GET['keyword'] != '') ? $_GET['keyword'] : '' ,
                                 [
                                     'type' => 'search',
                                     'class' => 'form-control',
-                                    'placeholder' => 'Keyword e.g. (Job Title, Description, Tags)',
+                                    'placeholder' => __('keyword_search'),
                                     'autocomplete' => 'off',
-                                    'id' => 'search-input'
+                                    'id' => 'search-input',
                                 ])
                             !!}
-
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                             <div class="jp_form_location_wrapper">
                                 <i class="fa fa-dot-circle-o first_icon"></i>
-                                {!! Form::select('location', $location , null, ['placeholder' => __('Pick a location'), 'id' => 'location-search']); !!}
+                                @php
+                                    $locationValue = null;
+                                        if (isset($_GET['location']) && $_GET['location'] != '') {
+                                            if (array_key_exists($_GET['location'], $location->toArray())) {
+                                                $locationValue = $_GET['location'];
+                                            }
+                                        }
+                                @endphp
+                                {!! Form::select('location', $location , $locationValue,
+                                        [
+                                            'placeholder' => __('Pick a location'),
+                                            'id' => 'location-search',
+                                        ]);
+                                 !!}
                                 <i class="fa fa-angle-down second_icon"></i>
                             </div>
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                             <div class="jp_form_btn_wrapper">
                                 <ul>
-                                    <li><a href="javascript:void(0)" id="btn-search-client"><i class="fa fa-search"></i> {{ __('search') }}</a></li>
+                                    <li>
+                                        <a href="javascript:void(0)" id="btn-search-client">
+                                            <i class="fa fa-search"></i> {{ __('search') }}
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
+                        {!! Form::close() !!}
                     </div>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -61,4 +78,3 @@
         </div>
     </div>
 </div>
-

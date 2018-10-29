@@ -9,4 +9,7 @@ interface JobRepository extends BaseRepository
     public function getAllJob($key, $value, $per);
 
     public function getJobByUser($key, $value);
+
+    public function searchJob($keyword, $location, $per, $url);
+
 }
