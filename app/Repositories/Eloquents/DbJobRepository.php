@@ -77,4 +77,14 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
 
         return $jobsWithSkill;
     }
+
+    public function getAllJob($key, $value, $per)
+    {
+        return $this->model->where($key, $value)->orderBy('id', 'desc')->paginate($per);
+    }
+
+    public function getJobByUser($key, $value)
+    {
+        return $this->baseFindAllBy($key, $value);
+    }
 }

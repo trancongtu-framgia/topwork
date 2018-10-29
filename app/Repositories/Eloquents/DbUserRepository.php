@@ -30,12 +30,12 @@ class DbUserRepository extends DbBaseRepository implements UserRepository
 
     public function get($key, $value)
     {
-        return $this->get($key, $value);
+        return $this->baseFindBy($key, $value);
     }
 
     public function update($data, $key, $value)
     {
-        return $this->update($data, $key, $value);
+        return $this->baseUpdate($data, $key, $value);
     }
 
     public function delete($key, $value)

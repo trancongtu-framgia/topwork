@@ -90,14 +90,14 @@ class CandidateController extends Controller
         //
     }
 
-    public function getInfoCandidate(int $id)
+    public function getInfoCandidate(string $id)
     {
         $user = $this->candidateRepository->showInfoCandidate($id);
 
         return view('clients.candidates.index', compact('user'));
     }
 
-    public function getEditInfoCandidate(int $id)
+    public function getEditInfoCandidate(string $id)
     {
         $user = $this->candidateRepository->showInfoCandidate($id);
 

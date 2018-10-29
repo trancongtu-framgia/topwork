@@ -17,24 +17,25 @@ class ApplicationController extends Controller
     protected $applicationRepository;
     protected $companyRepository;
     protected $applicationService;
+    protected const PER_PAGE = 5;
+
+    public function __construct(
+        ApplicationRepository $applicationRepository,
+        JobRepository $jobRepository,
+        CompanyRepository $companyRepository,
+        ApplicationService $applicationService
+    ) {
+        $this->applicationRepository = $applicationRepository;
+        $this->jobRepository = $jobRepository;
+        $this->companyRepository = $companyRepository;
+        $this->applicationService = $applicationService;
+    }
 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function __construct(
-        JobRepository $jobRepository,
-        ApplicationRepository $applicationRepository,
-        CompanyRepository $companyRepository,
-        ApplicationService $applicationService
-    ) {
-        $this->jobRepository = $jobRepository;
-        $this->applicationRepository = $applicationRepository;
-        $this->companyRepository = $companyRepository;
-        $this->applicationService = $applicationService;
-    }
-
     public function index()
     {
         //
@@ -132,5 +133,37 @@ class ApplicationController extends Controller
     public function destroy(Application $application)
     {
         //
+    }
+
+    public function getListCandidateApplication(string $id)
+    {
+        $jobs = $this->jobRepository->getAllJob('user_id', $id, self::PER_PAGE);
+
+        return view('clients.applications.index', compact('jobs'));
+    }
+
+    public function getCandidateByJob($value)
+    {
+        if (!empty($value)) {
+            $jobArr = [];
+            $jobIds = explode(',', $value);
+            foreach ($jobIds as $jobId) {
+                $job = $this->jobRepository->get('id', $jobId);
+                $jobArr[] = $job;
+            }
+
+            return view('clients.applications.ajax', compact('jobArr'));
+        }
+    }
+
+    public function getCandidateByUser($id)
+    {
+        $jobs = $this->jobRepository->getJobByUser('user_id', $id);
+        $jobArr = [];
+        foreach ($jobs as $key => $job) {
+            $jobArr[] = $job;
+        }
+
+        return view('clients.applications.ajax', compact('jobArr'));
     }
 }

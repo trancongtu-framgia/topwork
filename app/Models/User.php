@@ -30,4 +30,14 @@ class User extends Model
     {
         return $this->hasMany('App\Models\Cv');
     }
+
+    public function jobs()
+    {
+        return $this->hasMany('App\Models\Job');
+    }
+
+    public function application()
+    {
+        return $this->belongsTo('App\Models\Application');
+    }
 }

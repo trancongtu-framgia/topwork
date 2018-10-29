@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Job extends Model
 {
     protected $table = 'jobs';
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -24,4 +24,14 @@ class Job extends Model
         'experience',
         'out_date',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\Job');
+    }
+
+    public function applications()
+    {
+        return $this->hasMany('App\Models\Application');
+    }
 }
