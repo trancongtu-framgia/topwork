@@ -7,4 +7,6 @@ interface SkillRepository extends BaseRepository
     public function getAllWithOutPaginate();
 
     public function searchSkill($keyword);
+
+    public function searchSkillByName($name);
 }

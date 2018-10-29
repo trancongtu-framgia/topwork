@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Eloquents;
 
-use App\Models\User;
+use App\User;
 use App\Repositories\Interfaces\UserRepository;
 
 class DbUserRepository extends DbBaseRepository implements UserRepository
@@ -41,5 +41,10 @@ class DbUserRepository extends DbBaseRepository implements UserRepository
     public function delete($key, $value)
     {
         // TODO: Implement delete() method.
+    }
+
+    public function searchCompanyByName($keyword)
+    {
+        return $this->model->where('name', 'like', '%' . $keyword . '%' )->get();
     }
 }

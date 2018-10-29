@@ -7,29 +7,69 @@ use App\Repositories\Eloquents\DbBaseRepository;
 use App\Repositories\Interfaces\CompanyRepository;
 use App\Repositories\Interfaces\JobRepository;
 use App\Repositories\Interfaces\JobSkillRepository;
+use App\Repositories\Interfaces\JobTypeRepository;
+use App\Repositories\Interfaces\SkillRepository;
+use App\Repositories\Interfaces\UserRepository;
+use Illuminate\Pagination\LengthAwarePaginator;
+
 
 class DbJobRepository extends DbBaseRepository implements JobRepository
 {
     protected $model;
     protected $jobSkillRepository;
     protected $companyRepository;
+    protected $skill;
+    protected $jobType;
+    protected $user;
+    private const FORMAT_DATE = 'Y-m-d';
 
     /**
      * @param Job $model
      *
      */
-    function __construct(Job $model, JobSkillRepository $jobSkillRepository, CompanyRepository $companyRepository)
-    {
+    function __construct(
+        Job $model,
+        JobSkillRepository $jobSkillRepository,
+        CompanyRepository $companyRepository,
+        SkillRepository $skillRepository,
+        JobTypeRepository $jobTypeRepository,
+        UserRepository $userRepository
+    ) {
         $this->model = $model;
         $this->jobSkillRepository = $jobSkillRepository;
         $this->companyRepository = $companyRepository;
+        $this->skill = $skillRepository;
+        $this->jobType = $jobTypeRepository;
+        $this->user = $userRepository;
     }
 
     public function getAll($per)
     {
-        $jobs = $this->basePaginateList($per);
+        $listJob = [];
+        $jobs = $this->model->all();
+        if ($jobs) {
+            foreach ($jobs as $job) {
+                if ($this->compareDateJob($job->out_date)) {
+                    $listJob[] = $job;
+                }
+            }
+        }
 
-        return $this->getJobWithSkillName($jobs);
+        return $this->paginatorJob($this->getJobWithSkillName($listJob), $per);
+    }
+
+    public function paginatorJob($listJob, $per, $url = null)
+    {
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $itemCollection = collect($listJob);
+        $perPage = $per;
+        $currentPageItems = $itemCollection->slice(($currentPage * $perPage) - $perPage, $perPage);
+        $paginatedItems = new LengthAwarePaginator($currentPageItems, count($itemCollection), $perPage);
+        if ($url) {
+            $paginatedItems->withPath($url);
+        }
+
+        return $paginatedItems;
     }
 
     public function create($param)
@@ -65,8 +105,10 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
         foreach ($jobs as $job) {
             $skillName = [];
             $skills = $this->jobSkillRepository->findAllByJobId($job->id);
-            foreach ($skills as $skill) {
-                $skillName[] = $skill->skillJobs->name;
+            if ($skills) {
+                foreach ($skills as $skill) {
+                    $skillName[] = $skill->skillJobs->name;
+                }
             }
             $jobsWithSkill[] = [
                 'job' => $job,
@@ -86,5 +128,106 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
     public function getJobByUser($key, $value)
     {
         return $this->baseFindAllBy($key, $value);
+    }
+
+    public function searchJob($keyword, $location, $per, $url)
+    {
+        //tim kiem theo skill
+        $skillSearch = $this->skill->searchSkillByName($keyword);
+        $listJobId = [];
+        $listJob = [];
+        if ($skillSearch) {
+            $jobSkills = $this->jobSkillRepository->findAllJobBySkill($skillSearch);
+            foreach ($jobSkills as $jobSkill) {
+                if (!in_array($jobSkill, $listJobId)) {
+                    $listJobId[] = $jobSkill;
+                }
+            }
+
+        }
+        //tim kiem theo job_type
+        $jobTypeSearch = $this->jobType->searchJobTypeByName($keyword);
+        if ($jobTypeSearch) {
+            foreach ($jobTypeSearch as $jt) {
+                $jobs = $this->model->where('job_type_id', $jt->id)->get();
+                foreach ($jobs as $job) {
+                    if (!in_array($job->id, $listJobId)) {
+                        $listJobId[] = $job->id;
+                    }
+                }
+
+            }
+        }
+        //tim kiem theo company
+        $companies = $this->user->searchCompanyByName($keyword);
+        if ($companies) {
+            foreach ($companies as $Company) {
+                $jobCompanies = $this->model->where('user_id', $Company->id)->get();
+                foreach ($jobCompanies as $jobCompany) {
+                    if (!in_array($jobCompany->id, $listJobId)) {
+                        $listJobId[] = $jobCompany->id;
+                    }
+                }
+            }
+        }
+        //tim kiem theo tite job
+        $jobTitles = $this->model->where('title', 'like', '%' . $keyword . '%')->get();
+        if ($jobTitles) {
+            foreach ($jobTitles as $jobTitle) {
+                if (!in_array($jobTitle->id, $listJobId)) {
+                    $listJobId[] = $jobTitle->id;
+                }
+            }
+        }
+        //tim kiem theo location
+        if (isset($location) && !empty($listJobId)) {
+            foreach ($listJobId as $ljd) {
+                $activeJobs = $this->model->where(['id' => $ljd, 'location_id' => $location])->first();
+                if ($activeJobs) {
+                    if (!in_array($activeJobs->id, $listJob)) {
+                        $listJob[] = $activeJobs->id;
+                    }
+                }
+            }
+        } elseif ($location) {
+            $activeJobs = $this->model->where('location_id', $location)->get();
+            if ($activeJobs) {
+                foreach ($activeJobs as $activeJob) {
+                    if (!in_array($activeJob->id, $listJob)) {
+                        $listJob[] = $activeJob->id;
+                    }
+                }
+            }
+        } elseif (!empty($listJobId)) {
+            $listJob = $listJobId;
+        }
+
+        return $this->getJobByDate($listJob, $per, $url);
+    }
+
+    private function getJobByDate($jobs, $per, $url)
+    {
+        $listJobs = [];
+        foreach ($jobs as $j) {
+            $job = $this->get('id', $j);
+            if ($job) {
+                if ($this->compareDateJob($job->out_date)) {
+                    $listJobs[] = $job;
+                }
+            }
+        }
+
+        return $this->paginatorJob($this->getJobWithSkillName($listJobs), $per, $url);
+    }
+
+    private function compareDateJob($outDate)
+    {
+        $dateCurrent = strtotime(date(self::FORMAT_DATE));
+        $outDate = strtotime($outDate);
+        if ($outDate >= $dateCurrent) {
+            return true;
+        }
+
+        return false;
     }
 }

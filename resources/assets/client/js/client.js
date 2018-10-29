@@ -25,21 +25,7 @@ function logout(content, cancel, ok) {
 
 $( document ).ready(function() {
     $('#btn-search-client').click(function () {
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        var location = $('#location-search').val();
-       $.ajax({
-           url: route('home.search'),
-           type: 'POST',
-           data: {location: location},
-           success: function (data) {
-               alert(data);
-
-           }
-       });
+        $('#form_search').submit();
     });
     //search
     var engine2 = new Bloodhound({

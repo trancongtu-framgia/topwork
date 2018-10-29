@@ -47,4 +47,9 @@ class DbJobTypeRepository extends DbBaseRepository implements JobTypeRepository
     {
         return $this->baseUpdate($data, $key, $value);
     }
+
+    public function searchJobTypeByName($keyword)
+    {
+        return $this->model->where('name', 'like', '%' . $keyword .'%')->get();
+    }
 }

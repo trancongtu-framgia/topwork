@@ -63,7 +63,7 @@ Route::group([
         'middleware' => 'check.admin',
     ],
     function () {
-        Route::post('/search', 'HomeController@search')->name('home.search');
+        Route::get('/search', 'HomeController@search')->name('home.search');
         Route::get('/search/job', 'HomeController@searchJob')->name('home.searchJob');
     }
 );

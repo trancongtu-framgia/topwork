@@ -14,6 +14,7 @@ use App\Repositories\Interfaces\JobTypeRepository;
 use App\Repositories\Interfaces\LocationRepository;
 use App\Repositories\Interfaces\SkillRepository;
 use App\Repositories\Interfaces\UserRepository;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class JobController extends Controller
@@ -63,15 +64,10 @@ class JobController extends Controller
     {
         $companyId = Auth::id();
         $jobs = $this->jobRepository->getAllJobByCompany($companyId, self::RECORD_PER_PAGE);
-
+        
         return view('clients.jobs.index', compact('jobs'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $categories = $this->categoryRepository->getAllWithOutPaginate()->toArray();
@@ -123,8 +119,11 @@ class JobController extends Controller
         $company = $this->companyRepository->get('user_id', $job->user_id);
         $skills = $this->jobSkillRepository->findAllByJobId($job->id);
         $roleName = Auth::user()->userRole->name;
-        foreach ($skills as $skill) {
-            $skillName[] = $skill->skillJobs->name;
+        $skillName = [];
+        if ($skills) {
+            foreach ($skills as $skill) {
+                $skillName[] = $skill->skillJobs->name;
+            }
         }
         $jobDetail = [
             'job' => $job,

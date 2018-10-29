@@ -16,5 +16,11 @@
     "logout": "Đăng xuất",
     "overview": "Tổng quan",
     "Home": "Trang chủ",
-    "update profile": "Cập nhật hồ sơ"
+    "update profile": "Cập nhật hồ sơ",
+    "keyword_search": "Tìm kiếm theo kỹ năng, chức vụ, công ty",
+    "Pick a location": "Chọn nơi làm việc",
+    "search": "Tìm kiếm",
+    "We found :total jobs for you": "Chúng tôi tìm thấy <span> :total </span> việc cho bạn",
+    "You are Watching :firstItem to :lastItem": "Bạn đang xem từ  <span> :firstItem </span> đến <span>:lastItem </span>",
+    "jobs": "Công việc"
 }
