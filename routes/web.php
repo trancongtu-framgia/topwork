@@ -31,7 +31,7 @@ Route::group([
         Route::get('edit/{id}', 'SkillController@edit')->name('skills.edit');
         Route::put('update/{id}', 'SkillController@update')->name('skills.update');
         Route::delete('destroy/{id}', 'SkillController@destroy')->name('skills.destroy');
-        Route::post('/category/{id}', 'SkillController@getSkillByCategory');
+        Route::get('/get-skill-by-category', 'SkillController@getSkillByCategory')->name('skills.getSkillByCategory');
     });
 }
 );

@@ -6,6 +6,7 @@ use App\Http\Requests\SkillRequest;
 use App\Models\Skill;
 use App\Repositories\Eloquents\DbCategoryRepository;
 use App\Repositories\Eloquents\DbSkillRepository;
+use Illuminate\Http\Request;
 
 class SkillController extends Controller
 {
@@ -130,9 +131,9 @@ class SkillController extends Controller
         }
     }
 
-    public function getSkillByCategory(int $categoryId)
+    public function getSkillByCategory(Request $request)
     {
-        $skills = $this->skillRepository->baseFindAllBy('category_id', $categoryId)->pluck('id', 'name');
+        $skills = $this->skillRepository->getSkillByCategory($request->categoryId);
 
         return response()->json($skills);
     }

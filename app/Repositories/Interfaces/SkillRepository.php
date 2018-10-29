@@ -9,4 +9,6 @@ interface SkillRepository extends BaseRepository
     public function searchSkill($keyword);
 
     public function searchSkillByName($name);
+
+    public function getSkillByCategory($categories);
 }

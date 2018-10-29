@@ -1,4 +1,11 @@
 @extends('clients.layouts.master')
+@section('css_client')
+    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/select2/dist/css/select2.min.css') }}" />
+@endsection
+@section('js_client')
+    <script src="{{ asset('plugins/select2/dist/js/select2.min.js') }}"></script>
+    <script src="{{ asset('js/job.js') }}"></script>
+@endsection
 @section('content')
 @section('breadcrumb_title')
     {{ __('Job Detail') }}
