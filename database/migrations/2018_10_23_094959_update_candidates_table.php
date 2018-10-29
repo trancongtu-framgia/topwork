@@ -30,7 +30,7 @@ class UpdateCandidatesTable extends Migration
     public function down()
     {
         Schema::table('candidates', function (Blueprint $table) {
-            $table->integer('phone');
+            $table->integer('phone')->change();
             $table->dropColumn('facebook');
             $table->dropColumn('youtube');
             $table->dropColumn('twitter');

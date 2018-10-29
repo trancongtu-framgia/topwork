@@ -9,6 +9,8 @@ use App\Repositories\Interfaces\ApplicationRepository;
 use App\Repositories\Interfaces\CompanyRepository;
 use App\Repositories\Interfaces\JobRepository;
 use Illuminate\Database\Eloquent\Collection;
+use App\Repositories\Interfaces\CandidateRepository;
+use App\Repositories\Interfaces\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,18 +20,24 @@ class ApplicationController extends Controller
     protected $applicationRepository;
     protected $companyRepository;
     protected $applicationService;
+    protected $candidateRepository;
+    protected $userRepository;
     protected const PER_PAGE = 5;
 
     public function __construct(
         JobRepository $jobRepository,
         ApplicationRepository $applicationRepository,
         CompanyRepository $companyRepository,
-        ApplicationService $applicationService
+        ApplicationService $applicationService,
+        CandidateRepository $candidateRepository,
+        UserRepository $userRepository
     ) {
         $this->jobRepository = $jobRepository;
         $this->applicationRepository = $applicationRepository;
         $this->companyRepository = $companyRepository;
         $this->applicationService = $applicationService;
+        $this->candidateRepository = $candidateRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function index()
@@ -97,9 +105,17 @@ class ApplicationController extends Controller
      * @param  \App\Models\Application $application
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Application $application)
+    public function update(Request $request, int $id)
     {
-        //
+        $application = $this->applicationRepository->update($request->toArray(), 'id', $id);
+
+        if ($application) {
+            flash(__('Update application success'))->success();
+        } else {
+            flash(__('Update application failed, Please try again'))->error();
+        }
+
+        return redirect()->route('application.getDetailCandidate', $request->token . '?job=' . $request->job);
     }
 
     /**
@@ -115,7 +131,7 @@ class ApplicationController extends Controller
 
     public function getListCandidateApplication(string $id)
     {
-        $jobs = $this->jobRepository->getAllJob('user_id', $id, self::PER_PAGE);
+        $jobs = $this->getJobByTokenUser($id);
 
         return view('clients.applications.index', compact('jobs'));
     }
@@ -143,5 +159,39 @@ class ApplicationController extends Controller
         }
 
         return view('clients.applications.ajax', compact('jobArr'));
+    }
+
+    public function getDetailCandidateApply(Request $request, $token)
+    {
+        $jobId = $request->job;
+        $user = $this->candidateRepository->showInfoCandidate($token);
+        $jobs = $this->jobRepository->get('id', $jobId);
+        $application = $this->applicationRepository->getApplicationByUserAndJob($jobId, $user->id);
+        $addChecked = $this->addChecked($application);
+
+        return view('clients.applications.detail', compact('user', 'jobs', 'application'));
+    }
+
+    public function downloadCv($fileName)
+    {
+        $file = config('app.cv_base_url') . $fileName;
+        $name = basename($file);
+
+        return response()->download($file, $name);
+    }
+
+    private function getJobByTokenUser($token)
+    {
+        $user = $this->userRepository->get('token', $token);
+        $jobs = $this->jobRepository->getAllJob('user_id', $user->id, self::PER_PAGE);
+
+        return $jobs;
+    }
+
+    private function addChecked($application)
+    {
+        $application->status = config('app.candidate_apply_checked');
+
+        return $this->applicationRepository->update($application->toArray(), 'id', $application->id);
     }
 }
