@@ -7,34 +7,34 @@ Route::group([
     'prefix' => 'admin',
     'middleware' => 'auth',
 ], function () {
-        Route::get('/', 'AdminController@index')->name('admin.index');
-        Route::resource('roles', 'RoleController');
-        Route::resource('job-types', 'JobTypeController');
-        Route::resource('locations', 'LocationController');
-        Route::group([
-            'prefix' => 'categories',
-        ], function () {
-            Route::get('/', 'CategoryController@index')->name('categories.index');
-            Route::get('/create', 'CategoryController@create')->name('categories.create');
-            Route::post('/', 'CategoryController@store')->name('categories.store');
-            Route::get('edit/{id}', 'CategoryController@edit')->name('categories.edit');
-            Route::put('update/{id}', 'CategoryController@update')->name('categories.update');
-            Route::delete('destroy/{id}', 'CategoryController@destroy')->name('categories.destroy');
-        });
+    Route::get('/', 'AdminController@index')->name('admin.index');
+    Route::resource('roles', 'RoleController');
+    Route::resource('job-types', 'JobTypeController');
+    Route::resource('locations', 'LocationController');
+    Route::group([
+        'prefix' => 'categories',
+    ], function () {
+        Route::get('/', 'CategoryController@index')->name('categories.index');
+        Route::get('/create', 'CategoryController@create')->name('categories.create');
+        Route::post('/', 'CategoryController@store')->name('categories.store');
+        Route::get('edit/{id}', 'CategoryController@edit')->name('categories.edit');
+        Route::put('update/{id}', 'CategoryController@update')->name('categories.update');
+        Route::delete('destroy/{id}', 'CategoryController@destroy')->name('categories.destroy');
+    });
 
+    Route::group([
+        'prefix' => 'skills',
+    ], function () {
+        Route::get('/', 'SkillController@index')->name('skills.index');
+        Route::get('/create', 'SkillController@create')->name('skills.create');
+        Route::post('/', 'SkillController@store')->name('skills.store');
+        Route::get('edit/{id}', 'SkillController@edit')->name('skills.edit');
+        Route::put('update/{id}', 'SkillController@update')->name('skills.update');
+        Route::delete('destroy/{id}', 'SkillController@destroy')->name('skills.destroy');
+        Route::post('/category/{id}', 'SkillController@getSkillByCategory');
+    });
     }
 );
-
-Route::group([
-    'prefix' => 'skills',
-], function () {
-    Route::get('/', 'SkillController@index')->name('skills.index');
-    Route::get('/create', 'SkillController@create')->name('skills.create');
-    Route::post('/', 'SkillController@store')->name('skills.store');
-    Route::get('edit/{id}', 'SkillController@edit')->name('skills.edit');
-    Route::put('update/{id}', 'SkillController@update')->name('skills.update');
-    Route::delete('destroy/{id}', 'SkillController@destroy')->name('skills.destroy');
-});
 
 Route::group([
         'prefix' => 'companies',
@@ -54,19 +54,6 @@ Route::group([
     Route::get('candidates/edit-pro-file/{id}', 'CandidateController@getEditInfoCandidate')->name('candidate.getEditInfo');
 
     Route::put('candidates/{id}', 'CandidateController@putEditInfoCandidate')->name('candidate.putEditInfo');
-});
-
-Route::group([
-    'prefix' => 'jobs',
-], function () {
-    Route::get('/', 'JobController@index')->name('jobs.index');
-    Route::get('/create', 'JobController@create')->name('jobs.create');
-    Route::post('/', 'JobController@store')->name('jobs.store');
-    Route::get('edit/{id}', 'JobController@edit')->name('jobs.edit');
-    Route::put('update/{id}', 'JobController@update')->name('jobs.update');
-    Route::delete('destroy/{id}', 'JobController@destroy')->name('jobs.destroy');
-    Route::get('/detail/{id}', 'JobController@show')->name('jobs.detail');
-    Route::get('/apply/{id}', 'ApplicationController@create')->name('applications.create');
 });
 
 Route::get('/', 'HomeController@index')->name('home.index');

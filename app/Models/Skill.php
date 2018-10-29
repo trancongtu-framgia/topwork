@@ -32,4 +32,13 @@ class Skill extends Model
         return $array;
     }
 
+    public function skillCategory()
+    {
+        return $this->belongsTo('\App\Models\Category', 'category_id', 'id');
+    }
+
+    public function skillJobs()
+    {
+        return $this->hasMany('\App\Models\JobSkill', 'skill_id', 'id');
+    }
 }

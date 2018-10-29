@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\JobRequest;
 use App\Models\Job;
+use App\Repositories\Interfaces\ApplicationRepository;
 use App\Repositories\Interfaces\CategoryRepository;
 use App\Repositories\Interfaces\CompanyRepository;
 use App\Repositories\Interfaces\JobCategoryRepository;
@@ -27,6 +28,8 @@ class JobController extends Controller
     private $locationRepository;
     private $userRepository;
     private $companyRepository;
+    private $applicationRepository;
+
     /**
      * Display a listing of the resource.
      *
@@ -41,7 +44,8 @@ class JobController extends Controller
         JobSkillRepository $jobSkillRepository,
         LocationRepository $locationRepository,
         UserRepository $userRepository,
-        CompanyRepository $companyRepository
+        CompanyRepository $companyRepository,
+        ApplicationRepository $applicationRepository
     ) {
         $this->jobRepository = $jobRepository;
         $this->categoryRepository = $categoryRepository;
@@ -52,6 +56,7 @@ class JobController extends Controller
         $this->locationRepository = $locationRepository;
         $this->userRepository = $userRepository;
         $this->companyRepository = $companyRepository;
+        $this->applicationRepository = $applicationRepository;
     }
 
     public function index()
@@ -117,6 +122,7 @@ class JobController extends Controller
         $job = $this->jobRepository->get('id', $jobId);
         $company = $this->companyRepository->get('user_id', $job->user_id);
         $skills = $this->jobSkillRepository->findAllByJobId($job->id);
+        $roleName = Auth::user()->userRole->name;
         foreach ($skills as $skill) {
             $skillName[] = $skill->skillJobs->name;
         }
@@ -124,9 +130,11 @@ class JobController extends Controller
             'job' => $job,
             'skills' => $skillName,
             'company_name' => $this->companyRepository->getCompanyName($job->user_id),
+            'can_apply' => $this->applicationRepository->checkDuplicate(Auth::id(), $job->id),
+            'role_name' => $roleName,
         ];
 
-        return view('clients.home.detail', compact('jobDetail', 'company'));
+        return view('clients.jobs.detail', compact('jobDetail', 'company'));
     }
 
     /**
@@ -160,8 +168,8 @@ class JobController extends Controller
      */
     public function destroy(int $jobId)
     {
-        $recenlyDeletedJob = $this->jobRepository->delete('id', $jobId);
-        if ($recenlyDeletedJob) {
+        $recentlyDeletedJob = $this->jobRepository->delete('id', $jobId);
+        if ($recentlyDeletedJob) {
             flash(__('Delete successfully'))->success();
             $this->jobSkillRepository->delete('job_id', $jobId);
             $this->jobCategoryRepository->delete('job_id', $jobId);
