@@ -14,4 +14,9 @@ class Location extends Model
      * @var array
      */
     protected $fillable = ['name'];
+
+    public function locationJob()
+    {
+        return $this->hasMany('\App\Models\Job', 'job_id', 'id');
+    }
 }

@@ -27,11 +27,26 @@ class Job extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\Models\Job');
+        return $this->belongsTo('App\User');
     }
 
     public function applications()
     {
         return $this->hasMany('App\Models\Application');
+    }
+
+    public function locationJobs()
+    {
+        return $this->belongsTo('\App\Models\Location', 'location_id', 'id');
+    }
+
+    public function userJob()
+    {
+        return $this->belongsTo('\App\User', 'user_id', 'id');
+    }
+
+    public function jobTypeJobs()
+    {
+        return $this->belongsTo('\App\Models\JobType', 'job_type_id', 'id');
     }
 }

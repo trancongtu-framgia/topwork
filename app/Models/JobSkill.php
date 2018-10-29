@@ -17,4 +17,9 @@ class JobSkill extends Model
         'job_id',
         'skill_id',
     ];
+
+    public function skillJobs()
+    {
+        return $this->belongsTo('\App\Models\Skill', 'skill_id', 'id');
+    }
 }

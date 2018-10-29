@@ -7902,3 +7902,18 @@ input[type="checkbox"]:checked + label:after {
 	float:left;
 	width:100%;
 }
+.mt-10 {
+    margin-top: 10px;
+}
+.disabled_button {
+    background-color: #9e9391 !important;
+}
+.red {
+    color: red;
+}
+.white_important {
+    color: white !important;
+}
+.mt-0 {
+    margin-top: 0px !important;
+}
