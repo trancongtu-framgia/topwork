@@ -7,9 +7,12 @@ use App\Http\Requests\ApplicationRequest;
 use App\Models\Application;
 use App\Repositories\Interfaces\ApplicationRepository;
 use App\Repositories\Interfaces\CompanyRepository;
+use App\Repositories\Interfaces\UserRepository;
 use App\Repositories\Interfaces\JobRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Jobs\SendEmailToCandidate;
+use App\Jobs\SendEmailToCompany;
 
 class ApplyJobController extends Controller
 {
@@ -17,6 +20,7 @@ class ApplyJobController extends Controller
     protected $applicationRepository;
     protected $companyRepository;
     protected $applicationService;
+    protected $userRepository;
     private const RECORD_PER_PAGE = 5;
     /**
      * Display a listing of the resource.
@@ -27,12 +31,14 @@ class ApplyJobController extends Controller
         JobRepository $jobRepository,
         ApplicationRepository $applicationRepository,
         CompanyRepository $companyRepository,
-        ApplicationService $applicationService
+        ApplicationService $applicationService,
+        UserRepository $userRepository
     ) {
         $this->jobRepository = $jobRepository;
         $this->applicationRepository = $applicationRepository;
         $this->companyRepository = $companyRepository;
         $this->applicationService = $applicationService;
+        $this->userRepository = $userRepository;
     }
 
     public function index()
@@ -73,8 +79,8 @@ class ApplyJobController extends Controller
     {
         $candidateId = Auth::id();
         $validatedData = $request->validated();
-
         $jobId = $validatedData['job_id'];
+
         if ($this->applicationRepository->checkDuplicate($candidateId, $jobId)) {
             $validatedData['user_id'] = $candidateId;
             $uploadedCv = $validatedData['cv_url'];
@@ -84,6 +90,14 @@ class ApplyJobController extends Controller
             $recentlyAddedApplication = $this->applicationRepository->create($validatedData);
 
             if ($recentlyAddedApplication) {
+                try {
+                    $candidate = $this->getInfoCandidate($candidateId);
+                    $company = $this->getInfoCompany($jobId);
+                    dispatch((new SendEmailToCandidate($candidate, $company)));
+                    dispatch((new SendEmailToCompany($company, $candidate)));
+                } catch (\Exception $e) {
+                    return redirect()->back();
+                }
                 return redirect()->route('jobs.detail', ['id' => $jobId])
                     ->with('status', __('Job applied'));
             } else {
@@ -139,5 +153,22 @@ class ApplyJobController extends Controller
     public function destroy(Application $application)
     {
         //
+    }
+
+    private function getInfoCandidate($id)
+    {
+        $candidate = $this->userRepository->get('id', $id);
+
+        return $candidate;
+    }
+
+    private function getInfoCompany($id)
+    {
+        $data = [
+            'job' => $this->jobRepository->get('id', $id),
+            'company' => $this->jobRepository->get('id', $id)->user,
+        ];
+
+        return $data;
     }
 }

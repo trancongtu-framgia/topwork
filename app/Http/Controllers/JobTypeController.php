@@ -25,7 +25,7 @@ class JobTypeController extends Controller
      */
     public function index()
     {
-        $jobTypes = $this->jobTypeRepository->get(self::PER_PAGE);
+        $jobTypes = $this->jobTypeRepository->getAll(self::PER_PAGE);
 
         return view('admin.job_types.index', compact('jobTypes'));
     }
