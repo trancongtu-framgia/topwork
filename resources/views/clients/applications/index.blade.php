@@ -1,5 +1,14 @@
 @extends('clients.layouts.master')
 @section('content')
+@section('breadcrumb_title')
+    {{ __('All Applied Candidate') }}
+@endsection
+@section('breadcrumb_step')
+    <ul>
+        <li class="set_padding">{{ __('All Applied Candidate') }}</li>
+    </ul>
+@endsection
+@include('clients.layouts.breadcrumb')
     <div class="jp_cp_profile_main_wrapper">
         <div class="container">
             <div class="row">
@@ -44,16 +53,19 @@
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <div class="jp_recent_resume_box_wrapper @if ($application->status == config('app.candidate_apply_checked'))  candidate_checked @endif">
                                         <div class="jp_recent_resume_img_wrapper">
-                                            <img
-                                                src="{{ asset(config('app.candidate_media_url') . $application->user->candidate->avatar_url) }}" width="80" height="100" alt="resume_img">
+                                            @if ($application->user->candidate->avatar_url)
+                                                <img src="{{ asset(config('app.candidate_media_url') . $application->user->candidate->avatar_url) }}" class="candidate_list_img" alt="resume_img">
+                                            @else
+                                                <img src="{{ asset(config('app.candidate_media_url') . 'user.png') }}" class="candidate_list_img" alt="resume_img">
+                                            @endif
                                         </div>
                                         <div class="jp_recent_resume_cont_wrapper">
                                             <h3>{{ $application->user->name }}</h3>
-                                            <p><a href="#">{{ __('Name Job:') . $application->job->title }}</a></p>
-                                            <p><a href="#"><i class="fa fa-info-circle"></i>{{ __('Apply Date:') . $application->created_at }}</a></p>
-                                            <p><a href="#"><i class="fa fa-map-marker"></i>{{ __('Location:') . $application->job->locationJobs->name }}</a></p>
+                                            <p><a href="#" class="set_padding">{{ __('Name Job:') }}</a>{{ $application->job->title }}</p>
+                                            <p><a href="#"><i class="fa fa-info-circle"></i><span class="set_padding">{{ __('Apply Date:') }}</span>{{ $application->created_at }}</a></p>
+                                            <p><a href="#"><i class="fa fa-map-marker"></i><span class="set_padding">{{ __('Location:') }}</span>{{ $application->job->locationJobs->name }}</a></p>
                                             @if ($application->note)
-                                            <p><a href="#"><i class="fa fa-th-large"></i>{{ __('Note:') . $application->note }}</a></p>
+                                            <p><a href="#"><i class="fa fa-th-large"></i><span class="set_padding">{{ __('Note:') }}</span>{{ $application->note }}</a></p>
                                             @endif
                                         </div>
                                         <div class="jp_recent_resume_btn_wrapper">

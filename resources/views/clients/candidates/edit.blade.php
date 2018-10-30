@@ -1,18 +1,28 @@
 @extends('clients.layouts.master')
 @section('js_client')
-    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('plugins/ckeditor/ckeditor.js') }}"></script>
     <script>
         CKEDITOR.replace( 'description', {
-            filebrowserBrowseUrl: '{{ asset('ckfinder/ckfinder.html') }}',
-            filebrowserImageBrowseUrl: '{{ asset('ckfinder/ckfinder.html?type=Images') }}',
-            filebrowserFlashBrowseUrl: '{{ asset('ckfinder/ckfinder.html?type=Flash') }}',
-            filebrowserUploadUrl: '{{ asset('ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files') }}',
-            filebrowserImageUploadUrl: '{{ asset('ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images') }}',
-            filebrowserFlashUploadUrl: '{{ asset('ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash') }}'
+            filebrowserBrowseUrl: '{{ asset('plugins/ckfinder/ckfinder.html') }}',
+            filebrowserImageBrowseUrl: '{{ asset('plugins/ckfinder/ckfinder.html?type=Images') }}',
+            filebrowserFlashBrowseUrl: '{{ asset('plugins/ckfinder/ckfinder.html?type=Flash') }}',
+            filebrowserUploadUrl: '{{ asset('plugins/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files') }}',
+            filebrowserImageUploadUrl: '{{ asset('plugins/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images') }}',
+            filebrowserFlashUploadUrl: '{{ asset('plugins/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash') }}'
         });
     </script>
 @endsection
 @section('content')
+@section('breadcrumb_title')
+    {{ __('Candidate Profile') }}
+@endsection
+@section('breadcrumb_step')
+    <ul>
+        <li class="set_padding">{{ __('Candidate Profile') }}<i class="fa fa-angle-right"></i></li>
+        <li class="set_padding">{{ __('Edit Candidate Profile') }}</li>
+    </ul>
+@endsection
+@include('clients.layouts.breadcrumb')
     {{ Form::model($user->candidate, ['url' => route('candidate.putEditInfo', $user->candidate->id), 'enctype' => 'multipart/form-data', 'method' => 'PUT', 'class' => 'form-horizontal form-label-left']) }}
     <div class="jp_cp_profile_main_wrapper">
         <div class="container">
@@ -39,8 +49,8 @@
                             </ul>
                         </div>
                         <div style="text-align: center">
-                            {{ Form::button(__('Save'), ['type' => 'submit', 'name' => 'submit_save', 'class' => 'btn btn-success allbutton'] ) }}
-                            <a class="btn btn-primary" href="{{ route('candidate.getInfo', $user->token) }}">{{ __('Cancel') }}</a>
+                            {{ Form::button(__('Save'), ['type' => 'submit', 'name' => 'submit_save', 'class' => 'btn btn-primary allbutton'] ) }}
+                            <a class="btn btn-danger" href="{{ route('candidate.getInfo', $user->token) }}">{{ __('Back') }}</a>
                         </div>
                     </div>
                 </div>
@@ -99,7 +109,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="td-w25">{{ __('twitter') }}</td>
+                                    <td class="td-w25">{{ __('Twitter') }}</td>
                                     <td class="td-w10">:</td>
                                     <td class="td-w65">
                                         {{ Form::text('twitter', null, ['class' => 'form-control', 'maxlength' => 100]) }}

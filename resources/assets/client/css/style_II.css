@@ -7922,5 +7922,13 @@ input[type="checkbox"]:checked + label:after {
     margin-top: 80px;
 }
 .candidate_checked {
-    background-color: gainsboro;
+    background-color: #f7f7f7;
+}
+.candidate_list_img {
+    width: 80px;
+    height: 100px;
+}
+.set_padding {
+    padding-left: 10px;
+    padding-right: 10px;
 }
