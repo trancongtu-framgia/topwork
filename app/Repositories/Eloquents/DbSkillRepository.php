@@ -59,4 +59,25 @@ class DbSkillRepository extends DbBaseRepository implements SkillRepository
         return $this->model->where('name', 'like', '%' . $name . '%')->get();
     }
 
+    public function getSkillByCategory($categories)
+    {
+        $listSkills = [];
+        if ($categories) {
+            foreach ($categories as $category) {
+                $skills = $this->model->where('category_id', $category)->get();
+                if ($skills) {
+                    foreach ($skills as $skill) {
+                        if (!array_key_exists($skill->id, $listSkills)) {
+                            $listSkills[] = [
+                                'id' => $skill->id,
+                                'name' => $skill->name,
+                            ];
+                        }
+                    }
+                }
+            }
+        }
+
+        return $listSkills;
+    }
 }

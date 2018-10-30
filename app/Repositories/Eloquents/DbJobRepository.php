@@ -246,7 +246,6 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
 
         return $this->getJobByDate($listJobs, $per, $url);
     }
-
     public function getAllApplication(int $userId)
     {
         $applications = $this->applicationRepository->getAllAppliedJobByUser($userId);

@@ -46,15 +46,23 @@
         <p>{{ __('All fields are mandetory') }}</p>
     </div>
     <div class="jp_adp_form_wrapper">
-        {!! Form::select('category_ids[]', $categories, ['-' => '-----------------'],['id' => 'category_selector', 'class' => 'form-control', 'placeholder' => __('Category'), 'multiple' => 'multiple']) !!}
+        {!! Form::select('category_ids[]', $categories, ['-' => '-----------------'],
+                [
+                    'id' => 'category_selector',
+                    'class' => 'form-control',
+                    'placeholder' => __('Category'),
+                    'multiple' => 'multiple',
+                ])
+        !!}
         {!! $errors->first('category_ids[]', '<span class="red">:message</span>') !!}
     </div>
     <div class="jp_adp_form_wrapper">
-        {!! Form::select('job_type_id', $jobTypes, null,['class' => 'form-control', 'placeholder' => __('Job Type')]) !!}
+        {!! Form::select('job_type_id', $jobTypes, null,['class' => 'form-control']) !!}
         {!! $errors->first('job_type_id', '<span class="red">:message</span>') !!}
     </div>
     <div class="jp_adp_form_wrapper">
-        {!! Form::select('job_skill_ids[]', $skills, ['-' => '-----------------'], ['id' => 'job_skill_selector' ,'class' => 'form-control', 'placeholder' => __('Job Skill'), 'multiple' => 'multiple']) !!}
+        <select name="job_skill_ids[]" id="job_skill_selector" class="form-control" multiple>
+        </select>
         {!! $errors->first('job_skill_ids[]', '<span class="red">:message</span>') !!}
     </div>
     <div class="jp_adp_form_wrapper">
