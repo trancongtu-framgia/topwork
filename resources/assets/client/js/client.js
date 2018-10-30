@@ -22,6 +22,29 @@ function logout(content, cancel, ok) {
         }
     });
 }
+function getJobByCategory(category) {
+    var box = $(category);
+    if (box.is(':checked')) {
+        var group = 'input:checkbox[name=\'' + box.attr('name') + '\']';
+        $(group).prop('checked', false);
+        box.prop('checked', true);
+        getJob(box.val());
+    } else {
+        box.prop('checked', false);
+    }
+
+}
+
+function getJob(categoryId) {
+    $.ajax({
+        url: route('job.getJobByCategory'),
+        type: 'GET',
+        data: {categoryId: categoryId},
+        success: function (data) {
+            $('#conten-job').html(data);
+        }
+    });
+}
 
 $( document ).ready(function() {
     $('#btn-search-client').click(function () {

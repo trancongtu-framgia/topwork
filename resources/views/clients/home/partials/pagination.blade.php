@@ -1,3 +1,4 @@
+@if ($jobs->lastPage() > 1)
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden-sm hidden-xs">
     <div class="pager_wrapper gc_blog_pagination">
         <ul class="pagination">
@@ -19,3 +20,4 @@
         </ul>
     </div>
 </div>
+@endif
