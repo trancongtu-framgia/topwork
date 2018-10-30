@@ -24,6 +24,16 @@ class Job extends Model
         'out_date',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
+    public function applications()
+    {
+        return $this->hasMany('App\Models\Application');
+    }
+
     public function locationJobs()
     {
         return $this->belongsTo('\App\Models\Location', 'location_id', 'id');

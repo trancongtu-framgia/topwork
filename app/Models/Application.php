@@ -20,6 +20,7 @@ class Application extends Model
         'cv_url',
         'status',
         'self_introduction',
+        'note',
     ];
 
     public  function user()

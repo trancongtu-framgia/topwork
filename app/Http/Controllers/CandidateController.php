@@ -6,6 +6,7 @@ use App\Models\Candidate;
 use Illuminate\Http\Request;
 use App\Repositories\Interfaces\CandidateRepository;
 use App\Http\Requests\UpdateCandidateRequest;
+use Illuminate\Support\Facades\Auth;
 
 class CandidateController extends Controller
 {
@@ -111,7 +112,7 @@ class CandidateController extends Controller
         if ($candidate) {
             flash(__('Edit Profile Success'))->success();
 
-            return redirect()->route('candidate.getInfo', $id);
+            return redirect()->route('candidate.getInfo', Auth::User()->token);
         } else {
             flash(__('Edit Profile Failed, Please try again!'))->error();
 

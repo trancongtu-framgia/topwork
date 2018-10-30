@@ -27,15 +27,12 @@
                         </div>
                     </div>
                     <div class="jp_add_resume_cont jp_add_resume_wrapper">
-                        @if(Auth::User()->userRole->name == config('app.candidate_role'))
                             <ul>
                                 <li><a href="{{ route('candidate.getEditInfo', $user->token) }}"><i class="fa fa-plus-circle"></i>{{ __('EDIT PROFILE') }}</a></li>
                             </ul>
-                        @else
                             <ul>
-                                <li><a href="{{ route('application.getList', Auth::User()->token) }}"><i class="fa fa-plus-circle"></i>{{ __('CANCEL') }}</a></li>
+                                <li><a href="{{ route('home.index') }}"><i class="fa fa-plus-circle"></i>{{ __('CANCEL') }}</a></li>
                             </ul>
-                        @endif
                     </div>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
