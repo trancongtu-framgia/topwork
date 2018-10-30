@@ -4,6 +4,7 @@ namespace App\Repositories\Eloquents;
 
 use App\Models\Job;
 use App\Repositories\Eloquents\DbBaseRepository;
+use App\Repositories\Interfaces\ApplicationRepository;
 use App\Repositories\Interfaces\CompanyRepository;
 use App\Repositories\Interfaces\JobRepository;
 use App\Repositories\Interfaces\JobSkillRepository;
@@ -23,6 +24,7 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
     protected $jobType;
     protected $user;
     protected $jobCategory;
+    protected $applicationRepository;
     private const FORMAT_DATE = 'Y-m-d';
 
     /**
@@ -36,7 +38,8 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
         SkillRepository $skillRepository,
         JobTypeRepository $jobTypeRepository,
         UserRepository $userRepository,
-        JobCategoryRepository $jobCategoryRepository
+        JobCategoryRepository $jobCategoryRepository,
+        ApplicationRepository $applicationRepository
     ) {
         $this->model = $model;
         $this->jobSkillRepository = $jobSkillRepository;
@@ -45,6 +48,7 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
         $this->jobType = $jobTypeRepository;
         $this->user = $userRepository;
         $this->jobCategory = $jobCategoryRepository;
+        $this->applicationRepository = $applicationRepository;
     }
 
     public function getAll($per)
@@ -118,6 +122,7 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
                 'job' => $job,
                 'skills' => $skillName,
                 'company_name' => $this->companyRepository->getCompanyName($job->user_id),
+                'company_logo' => $this->companyRepository->get('user_id', $job->user_id)->logo_url,
             ];
         }
 
@@ -240,5 +245,12 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
         $listJobs = $this->jobCategory->getJobIdByCategory($categoryId);
 
         return $this->getJobByDate($listJobs, $per, $url);
+    }
+
+    public function getAllApplication(int $userId)
+    {
+        $applications = $this->applicationRepository->getAllAppliedJobByUser($userId);
+
+        return $applications;
     }
 }

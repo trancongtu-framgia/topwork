@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\JobRequest;
 use App\Models\Job;
-use App\Repositories\Interfaces\ApplicationRepository;
 use App\Repositories\Interfaces\CategoryRepository;
 use App\Repositories\Interfaces\CompanyRepository;
 use App\Repositories\Interfaces\JobCategoryRepository;
@@ -14,6 +13,7 @@ use App\Repositories\Interfaces\JobTypeRepository;
 use App\Repositories\Interfaces\LocationRepository;
 use App\Repositories\Interfaces\SkillRepository;
 use App\Repositories\Interfaces\UserRepository;
+use App\Repositories\Interfaces\ApplicationRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,7 +30,6 @@ class JobController extends Controller
     private $userRepository;
     private $companyRepository;
     private $applicationRepository;
-
     /**
      * Display a listing of the resource.
      *
@@ -63,11 +62,17 @@ class JobController extends Controller
     public function index()
     {
         $companyId = Auth::id();
-        $jobs = $this->jobRepository->getAllJobByCompany($companyId, self::RECORD_PER_PAGE);
-        
+        $postedJobs = $this->jobRepository->getAllJobByCompany($companyId, self::RECORD_PER_PAGE);
+        $jobs = $this->jobRepository->paginatorJob($postedJobs, self::RECORD_PER_PAGE);
+
         return view('clients.jobs.index', compact('jobs'));
     }
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create()
     {
         $categories = $this->categoryRepository->getAllWithOutPaginate()->toArray();
@@ -118,7 +123,7 @@ class JobController extends Controller
         $job = $this->jobRepository->get('id', $jobId);
         $company = $this->companyRepository->get('user_id', $job->user_id);
         $skills = $this->jobSkillRepository->findAllByJobId($job->id);
-        $roleName = Auth::user()->userRole->name;
+        $roleName = Auth::check() ? Auth::user()->userRole->name : config('app.guest_role');
         $skillName = [];
         if ($skills) {
             foreach ($skills as $skill) {
@@ -129,7 +134,7 @@ class JobController extends Controller
             'job' => $job,
             'skills' => $skillName,
             'company_name' => $this->companyRepository->getCompanyName($job->user_id),
-            'can_apply' => $this->applicationRepository->checkDuplicate(Auth::id(), $job->id),
+            'can_apply' => Auth::check() ? $this->applicationRepository->checkDuplicate(Auth::id(), $job->id) : true,
             'role_name' => $roleName,
         ];
 
