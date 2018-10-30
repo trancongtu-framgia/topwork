@@ -3,22 +3,20 @@
 namespace App\Repositories\Eloquents;
 
 use App\Models\Application;
+use App\Repositories\Eloquents\DbBaseRepository;
 use App\Repositories\Interfaces\ApplicationRepository;
-use App\Repositories\Interfaces\JobRepository;
 
 class DbApplicationRepository extends DbBaseRepository implements ApplicationRepository
 {
     protected $model;
-    protected $jobRepository;
 
     /**
      * @param Application $model
      *
      */
-    function __construct(Application $model, JobRepository $jobRepository)
+    function __construct(Application $model)
     {
         $this->model = $model;
-        $this->jobRepository = $jobRepository;
     }
 
     public function getAll($per)
@@ -48,8 +46,13 @@ class DbApplicationRepository extends DbBaseRepository implements ApplicationRep
 
     public function checkDuplicate(int $user_id, int $job_id): bool
     {
-        $count = $this->model::Where('user_id', $user_id)->where('job_id', $job_id)->get()->count();
+        $count = $this->model::where('user_id', $user_id)->where('job_id', $job_id)->get()->count();
 
         return $count === 0 ? true : false;
+    }
+
+    public function getAllAppliedJobByUser(int $userId)
+    {
+        return $this->model::where('user_id', $userId)->get();
     }
 }

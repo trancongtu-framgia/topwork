@@ -8,18 +8,21 @@ use App\Models\Application;
 use App\Repositories\Interfaces\ApplicationRepository;
 use App\Repositories\Interfaces\CompanyRepository;
 use App\Repositories\Interfaces\JobRepository;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ApplicationController extends Controller
+class ApplyJobController extends Controller
 {
     protected $jobRepository;
     protected $applicationRepository;
     protected $companyRepository;
     protected $applicationService;
-    protected const PER_PAGE = 5;
-
+    private const RECORD_PER_PAGE = 5;
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function __construct(
         JobRepository $jobRepository,
         ApplicationRepository $applicationRepository,
@@ -34,7 +37,20 @@ class ApplicationController extends Controller
 
     public function index()
     {
-        //
+        $applications = $this->jobRepository->getAllApplication(Auth::id());
+        $allJobs = [];
+        foreach ($applications as $application) {
+            $allJobs[] = $this->jobRepository->get('id', $application->job_id);
+        }
+        $appliedJobs = $this->jobRepository->getJobWithSkillName($allJobs);
+
+        for ($i = 0; $i < count($applications); $i++) {
+            $appliedJobs[$i]['applied_date'] = $applications[$i]->created_at->format('d/m/Y');
+        }
+
+        $jobs = $this->jobRepository->paginatorJob($appliedJobs, self::RECORD_PER_PAGE);
+
+        return view('clients.applications.candidates.index', compact('jobs'));
     }
 
     /**
@@ -44,16 +60,6 @@ class ApplicationController extends Controller
      */
     public function create(int $jobId)
     {
-        $user = Auth::user();
-        $canApply = $this->applicationRepository->checkDuplicate($user->id, $jobId);
-        if ($canApply) {
-            $job = $this->jobRepository->get('id', $jobId);
-            $job = $this->jobRepository->getJobWithSkillName(new Collection([$job]))[0];
-
-            return view('clients.applications.create', compact('job', 'user', 'canApply'));
-        }
-
-        return redirect()->back();
     }
 
     /**
@@ -65,7 +71,29 @@ class ApplicationController extends Controller
 
     public function store(ApplicationRequest $request)
     {
-        //
+        $candidateId = Auth::id();
+        $validatedData = $request->validated();
+
+        $jobId = $validatedData['job_id'];
+        if ($this->applicationRepository->checkDuplicate($candidateId, $jobId)) {
+            $validatedData['user_id'] = $candidateId;
+            $uploadedCv = $validatedData['cv_url'];
+            $cvUrl = $this->applicationService->handleUploadedCv($uploadedCv);
+            $validatedData['cv_url'] = $cvUrl;
+            $validatedData['status'] = config('app.job_application_new_status');
+            $recentlyAddedApplication = $this->applicationRepository->create($validatedData);
+
+            if ($recentlyAddedApplication) {
+                return redirect()->route('jobs.detail', ['id' => $jobId])
+                    ->with('status', __('Job applied'));
+            } else {
+                return redirect()->route('jobs.detail', ['id' => $jobId])
+                    ->with('status', __('Apply failed'));
+            }
+        } else {
+            return redirect()->route('jobs.detail', ['id' => $jobId])
+                ->with('status', __('You have applied this job'));
+        }
     }
 
     /**
@@ -111,37 +139,5 @@ class ApplicationController extends Controller
     public function destroy(Application $application)
     {
         //
-    }
-
-    public function getListCandidateApplication(string $id)
-    {
-        $jobs = $this->jobRepository->getAllJob('user_id', $id, self::PER_PAGE);
-
-        return view('clients.applications.index', compact('jobs'));
-    }
-
-    public function getCandidateByJob($value)
-    {
-        if (!empty($value)) {
-            $jobArr = [];
-            $jobIds = explode(',', $value);
-            foreach ($jobIds as $jobId) {
-                $job = $this->jobRepository->get('id', $jobId);
-                $jobArr[] = $job;
-            }
-
-            return view('clients.applications.ajax', compact('jobArr'));
-        }
-    }
-
-    public function getCandidateByUser($id)
-    {
-        $jobs = $this->jobRepository->getJobByUser('user_id', $id);
-        $jobArr = [];
-        foreach ($jobs as $key => $job) {
-            $jobArr[] = $job;
-        }
-
-        return view('clients.applications.ajax', compact('jobArr'));
     }
 }

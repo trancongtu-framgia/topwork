@@ -5,20 +5,20 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class CheckAdminMiddleware
+class CheckCandidateMiddleware
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Closure $next
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
         if (Auth::check()) {
             $authenticatedUser = Auth::user();
-            if ($authenticatedUser->userRole->name != config('app.admin_role')) {
+            if ($authenticatedUser->userRole->name != config('app.candidate_role')) {
                 try {
                     return redirect()->back();
                 }

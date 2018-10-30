@@ -65,8 +65,9 @@ class LoginController extends Controller
                 return redirect()->route('admin.index');
             } elseif ($role == config('app.company_role')) {
                 return redirect()->route('companies.index');
+            } elseif ($role == config('app.candidate_role')) {
+                return redirect()->route('home.index');
             }
-
         }
 
         return $this->sendFailedLoginResponse($request);

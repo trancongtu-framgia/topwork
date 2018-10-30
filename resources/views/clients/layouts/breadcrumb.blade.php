@@ -10,7 +10,7 @@
                     <div class="jp_tittle_breadcrumb_main_wrapper">
                         <div class="jp_tittle_breadcrumb_wrapper">
                             <ul>
-                                <li><a href="{{ route('home') }}">{{ __('Home') }}</a><i class="fa fa-angle-right"></i></li>
+                                <li><a href="{{ route('home.index') }}">{{ __('Home') }}</a><i class="fa fa-angle-right"></i></li>
                                 @yield('breadcrumb_step')
                             </ul>
                         </div>

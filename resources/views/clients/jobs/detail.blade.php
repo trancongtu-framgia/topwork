@@ -9,7 +9,6 @@
     </ul>
 @endsection
     @include('clients.layouts.breadcrumb')
-    @include('clients.home.message')
     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
         <div class="jp_job_post_main_wrapper_cont jp_job_post_grid_main_wrapper_cont">
             <div class="mt-0 jp_job_post_main_wrapper">
