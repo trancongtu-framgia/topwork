@@ -4,7 +4,7 @@
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <div class="jp_top_header_left_wrapper">
                     <div class="jp_top_header_left_cont">
-                        <p><i class="fa fa-suitcase" aria-hidden="true"></i>&nbsp;&nbsp;Topwork Inc</p>
+                        <p><a href="{{ route('home.index') }}"><i class="fa fa-suitcase" aria-hidden="true"></i>&nbsp;&nbsp;Topwork Inc</a></p>
                     </div>
                 </div>
             </div>

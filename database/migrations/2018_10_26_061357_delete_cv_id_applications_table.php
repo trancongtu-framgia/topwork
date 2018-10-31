@@ -27,8 +27,8 @@ class DeleteCvIdApplicationsTable extends Migration
     public function down()
     {
         Schema::table('applications', function (Blueprint $table) {
-            $table->integer('job_id')->unsigned();
-            $table->foreign('job_id')->references('id')->on('jobs')->onDelete('cascade');
+            $table->integer('cv_id')->unsigned();
+            $table->foreign('cv_id')->references('id')->on('jobs')->onDelete('cascade');
         });
     }
 }

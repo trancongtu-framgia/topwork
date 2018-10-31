@@ -15,12 +15,12 @@
                 <div class="row">
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                         <div class="jp_job_post_side_img">
-                            <img src="" alt="post_img">
+                            <img class="img-responsive" src="{{ asset(config('app.client_media_url') . $jobDetail['company_logo']) }}" alt="post_img">
                         </div>
                         <div class="jp_job_post_right_cont">
                             <h4>{{ $jobDetail['job']->title }}</h4>
                             <p>
-                            <h5>{{ $jobDetail['company_name'] }}</h5>
+                            <h5><a href="{{ route('companies.show', $jobDetail['token']) }}">{{ $jobDetail['company_name'] }}</a></h5>
                             </p>
                             <ul>
                                 <li><i class="fa fa-usd"></i>&nbsp; {{ number_format($jobDetail['job']->salary_min) . ' - ' . number_format($jobDetail['job']->salary_max) }}</li>
@@ -64,6 +64,20 @@
                                             {{ __('Delete') }}
                                         </a>
                                     </li>
+                                @elseif ($jobDetail['role_name'] == config('app.guest_role'))
+                                    <li></li>
+                                    <li><a href="#">{{ $jobDetail['job']->jobTypeJobs->name }}</a></li>
+                                    @if ($jobDetail['can_apply'])
+                                        <li>
+                                            <a href="{{ route('applications.create', ['id' => $jobDetail['job']->id]) }}">
+                                                {{ __('Apply') }}
+                                            </a>
+                                        </li>
+                                    @endif
+                                @else
+                                    <li></li>
+                                    <li><a href="#">{{ $jobDetail['job']->jobTypeJobs->name }}</a></li>
+                                    <li></li>
                                 @endif
                             </ul>
                         </div>
@@ -72,7 +86,7 @@
                 <hr>
                 <div class="mt-5 jp_job_des">
                     <h2>{{ __('Job Description') }}</h2>
-                    <p>{{ $jobDetail['job']->description }}</p>
+                    <p>{!! $jobDetail['job']->description !!}</p>
                 </div>
             </div>
             <div class="jp_job_post_keyword_wrapper">
@@ -86,12 +100,12 @@
             </div>
             <div class="jp_jop_overview_img_wrapper">
                 <div class="jp_jop_overview_img">
-                    <img src="" alt="post_img">
+                    <img class="img-responsive" src="{{ asset(config('app.client_media_url') . $jobDetail['company_logo']) }}" alt="post_img">
                 </div>
             </div>
             <div class="jp_job_listing_single_post_right_cont">
                 <div class="jp_job_listing_single_post_right_cont_wrapper">
-                    <h4>{{ $jobDetail['company_name'] }}</h4>
+                    <h3><a href="{{ route('companies.show',  $jobDetail['token']) }}">{{ $jobDetail['company_name'] }}</a></h3>
                 </div>
             </div>
             <div class="jp_job_post_right_overview_btn_wrapper">
@@ -106,7 +120,7 @@
                     </div>
                     <div class="jp_listing_list_icon_cont_wrapper">
                         <ul>
-                            <li>{{ __('Location:') }}</li>
+                            <li>{{ __('Location') }}</li>
                             <li>{{ $company->country }}</li>
                         </ul>
                     </div>
@@ -115,7 +129,7 @@
                     </div>
                     <div class="jp_listing_list_icon_cont_wrapper">
                         <ul>
-                            <li>{{ __('Range:') }}</li>
+                            <li>{{ __('Range') }}</li>
                             <li>{{ $company->range }}</li>
                         </ul>
                     </div>
@@ -124,7 +138,7 @@
                     </div>
                     <div class="jp_listing_list_icon_cont_wrapper">
                         <ul>
-                            <li>{{ __('Working Day:') }}</li>
+                            <li>{{ __('Working Day') }}</li>
                             <li>{{ $company->working_day }}</li>
                         </ul>
                     </div>

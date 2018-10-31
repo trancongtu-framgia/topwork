@@ -26,7 +26,7 @@
                                     </a>
                                 </li>
                                 <li class="has-mega gc_main_navigation">
-                                    <a href="#" class="gc_main_navigation"> {{ __('Candidates') }}&nbsp;</a>
+                                    <a href="{{ route('application.getList', \Illuminate\Support\Facades\Auth::user()->token) }}" class="gc_main_navigation"> {{ __('Candidates') }}&nbsp;</a>
                                 </li>
                             </ul>
                         </div>
@@ -57,9 +57,6 @@
                                     <a href="{{ route('applyjobs.index') }}" class="gc_main_navigation"> {{ __('Applied Jobs') }}&nbsp;
                                     </a>
                                 </li>
-                                <li class="has-mega gc_main_navigation">
-                                    <a href="#" class="gc_main_navigation"> {{ __('Companies') }}&nbsp;</a>
-                                </li>
                             </ul>
                         </div>
                         <!-- mainmenu end -->
@@ -72,9 +69,7 @@
                     <div class="jp_navi_right_btn_wrapper">
                         <ul>
                             <li>
-                                <a href="{{ route('candidate.getInfo', [
-                                    'token' => \Illuminate\Support\Facades\Auth::user()->token,
-                                ]) }}">
+                                <a href="{{ route('candidate.getInfo', ['token' => Auth::user()->token]) }}">
                                     <i class="fa fa-user"></i>&nbsp; {{ __('My Online CV') }}
                                 </a>
                             </li>

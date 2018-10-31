@@ -3,7 +3,6 @@
 namespace App\Repositories\Eloquents;
 
 use App\Models\Job;
-use App\Repositories\Eloquents\DbBaseRepository;
 use App\Repositories\Interfaces\ApplicationRepository;
 use App\Repositories\Interfaces\CompanyRepository;
 use App\Repositories\Interfaces\JobRepository;
@@ -13,6 +12,7 @@ use App\Repositories\Interfaces\SkillRepository;
 use App\Repositories\Interfaces\UserRepository;
 use App\Repositories\Interfaces\JobCategoryRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
 
 
 class DbJobRepository extends DbBaseRepository implements JobRepository
@@ -40,7 +40,8 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
         UserRepository $userRepository,
         JobCategoryRepository $jobCategoryRepository,
         ApplicationRepository $applicationRepository
-    ) {
+    )
+    {
         $this->model = $model;
         $this->jobSkillRepository = $jobSkillRepository;
         $this->companyRepository = $companyRepository;
@@ -123,6 +124,9 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
                 'skills' => $skillName,
                 'company_name' => $this->companyRepository->getCompanyName($job->user_id),
                 'company_logo' => $this->companyRepository->get('user_id', $job->user_id)->logo_url,
+                'token' => $this->companyRepository->get('user_id', $job->user_id)->companyUser->token,
+                'role_name' => Auth::check() ? Auth::user()->userRole->name : config('app.guest_role'),
+                'can_apply' => Auth::check() ? $this->applicationRepository->checkDuplicate(Auth::id(), $job->id) : true,
             ];
         }
 
@@ -246,10 +250,18 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
 
         return $this->getJobByDate($listJobs, $per, $url);
     }
+
     public function getAllApplication(int $userId)
     {
         $applications = $this->applicationRepository->getAllAppliedJobByUser($userId);
 
         return $applications;
+    }
+
+    public function getLatestJobs(int $companyId)
+    {
+        return $this->model::where('user_id', $companyId)
+            ->orderBy('created_at', 'desc')
+            ->take(config('app.record_number'))->get();
     }
 }

@@ -5,12 +5,14 @@ return [
     'admin_role' => 'admin',
     'candidate_role' => 'candidate',
     'company_role' => 'company',
+    'guest_role' => 'guest',
     'cv_base_url' => 'cvs/',
     'job_application_new_status' => 0,
     'job_application_seen_status' => 1,
     'candidate_media_url' => 'public/upload/image_candidate/',
     'candidate_apply_check' => 0,
     'candidate_apply_checked' => 1,
+    'record_number' => 3,
     /*
     |--------------------------------------------------------------------------
     | Application Name

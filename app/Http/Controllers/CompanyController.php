@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
-use Illuminate\Http\Request;
 use App\Repositories\Interfaces\CompanyRepository;
-use Auth;
+use App\Repositories\Interfaces\JobRepository;
+use Illuminate\Http\Request;
+use App\Repositories\Interfaces\UserRepository;
+use Illuminate\Support\Facades\Auth;
 
 class CompanyController extends Controller
 {
@@ -15,15 +17,22 @@ class CompanyController extends Controller
      * @return \Illuminate\Http\Response
      */
     private $company;
+    protected $userRepository;
+    protected $jobRepository;
 
-    public function __construct(CompanyRepository  $companyRepository)
+    function __construct(CompanyRepository $companyRepository, UserRepository $userRepository, JobRepository $jobRepository)
     {
+        $this->userRepository = $userRepository;
         $this->company = $companyRepository;
+        $this->jobRepository = $jobRepository;
     }
 
     public function index()
     {
-        return view('clients.companies.index', ['data' => $this->company->getProfile(Auth::id())]);
+        $userId = $this->userRepository->get('token', Auth::user()->token)->id;
+        $company = $this->company->getProfile($userId);
+
+        return view('clients.companies.index', compact('company'));
     }
 
     /**
@@ -53,9 +62,17 @@ class CompanyController extends Controller
      * @param  \App\Models\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function show(Company $company)
+    public function show(string $token)
     {
-        //
+        try {
+            $userId = $this->userRepository->get('token', $token)->id;
+            $company = $this->company->getProfile($userId);
+            $relatedJobs = $this->jobRepository->getJobWithSkillName($this->jobRepository->getLatestJobs($userId));
+        } catch (\Exception $e) {
+            return redirect()->route('home.index');
+        }
+
+        return view('clients.companies.index', compact('company', 'relatedJobs'));
     }
 
     public function edit()
