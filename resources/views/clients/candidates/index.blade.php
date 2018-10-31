@@ -1,5 +1,14 @@
 @extends('clients.layouts.master')
 @section('content')
+@section('breadcrumb_title')
+    {{ __('Candidate Profile') }}
+@endsection
+@section('breadcrumb_step')
+    <ul>
+        <li class="set_padding">{{ __('Candidate Profile') }}</li>
+    </ul>
+@endsection
+@include('clients.layouts.breadcrumb')
     @include('flash::message')
     <div class="jp_cp_profile_main_wrapper">
         <div class="container">
@@ -28,10 +37,10 @@
                     </div>
                     <div class="jp_add_resume_cont jp_add_resume_wrapper">
                             <ul>
-                                <li><a href="{{ route('candidate.getEditInfo', $user->token) }}"><i class="fa fa-plus-circle"></i>{{ __('EDIT PROFILE') }}</a></li>
+                                <li><a href="{{ route('candidate.getEditInfo', $user->token) }}"><i class="fa fa-pencil-square-o set_padding" aria-hidden="true"></i>{{ __('EDIT PROFILE') }}</a></li>
                             </ul>
                             <ul>
-                                <li><a href="{{ route('home.index') }}"><i class="fa fa-plus-circle"></i>{{ __('CANCEL') }}</a></li>
+                                <li><a href="{{ route('home.index') }}"><i class="fa fa-backward set_padding" aria-hidden="true"></i>{{ __('BACK') }}</a></li>
                             </ul>
                     </div>
                 </div>
@@ -73,7 +82,7 @@
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
                             <div class="jp_cp_accor_heading_wrapper">
-                                <h2>Experience</h2>
+                                <h2>{{ __('Experience') }}</h2>
                                 <p>{{ $user->candidate->experience }}</p>
                             </div>
                         </div>

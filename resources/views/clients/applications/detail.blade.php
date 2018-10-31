@@ -1,5 +1,15 @@
 @extends('clients.layouts.master')
 @section('content')
+@section('breadcrumb_title')
+    {{ __('Cadidate applied infomation') }}
+@endsection
+@section('breadcrumb_step')
+    <ul>
+        <li class="set_padding">{{ __('All Applied Candidate') }}<i class="fa fa-angle-right"></i></li>
+        <li>{{ __('Cadidate applied infomation') }}</li>
+    </ul>
+@endsection
+@include('clients.layouts.breadcrumb')
     <div class="jp_listing_single_main_wrapper">
         <div class="container">
             <div class="row">
@@ -84,7 +94,7 @@
                                             <div id="collapseTwentyLeftThree3" class="panel-collapse collapse" aria-expanded="false" role="tablist" style="height: 0px;">
                                                 <div class="panel-body">
                                                     <a href="{{ route('application.download', $application->cv_url) }}">
-                                                        <input type="button" value="Download">
+                                                        <input class="btn btn-danger" type="button" value="Download">
                                                     </a>
                                                 </div>
                                             </div>
@@ -157,8 +167,8 @@
                                     <div class="jp_listing_right_bar_btn_wrapper">
                                         <div class="jp_listing_right_bar_btn">
                                             <ul>
-                                                <li><a href="{{ route('jobs.detail', $jobs->id) }}"><i class="fa fa-plus-circle"></i>{{ __('JOB DETAIL') }}</a></li>
-                                                <li><a href="{{ route('application.getList', Auth::User()->token) }}"><i class="fa fa-plus-circle"></i>{{ __('CANCEL') }}</a></li>
+                                                <li><a href="{{ route('jobs.detail', $jobs->id) }}"><i class="fa fa-plus-circle set_padding"></i>{{ __('JOB DETAIL') }}</a></li>
+                                                <li><a href="{{ route('application.getList', Auth::User()->token) }}"><i class="fa fa-backward set_padding" aria-hidden="true"></i>{{ __('BACK') }}</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -176,12 +186,12 @@
                                     <a href="">
                                         <div class="row">
                                             <div class="col-md-8">
-                                                <h4><i class="fa fa-plus-circle"></i>
+                                                <h4><i class="fa fa-plus-circle set_padding"></i>
                                                     {{ __('ADD NOTE') }}
                                                 </h4>
                                             </div>
                                             <div class="col-md-2">
-                                                {{ Form::button(__('Save'), ['type' => 'submit', 'name' => 'submit_save', 'class' => 'btn btn-success allbutton'] ) }}
+                                                {{ Form::button(__('Save'), ['type' => 'submit', 'name' => 'submit_save', 'class' => 'btn btn-danger allbutton'] ) }}
                                             </div>
                                         </div>
                                     </a>
