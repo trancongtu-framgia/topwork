@@ -7924,3 +7924,10 @@ input[type="checkbox"]:checked + label:after {
 .candidate_checked {
     background-color: gainsboro;
 }
+.send_mail_body {
+    text-align: center;
+}
+.send_mail_content {
+    color: red;
+    font-weight: bold;
+}
