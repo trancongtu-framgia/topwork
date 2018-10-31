@@ -7,16 +7,16 @@
                         <img class="img-responsive" src="{{ asset(config('app.client_media_url') . $job['company_logo']) }}" alt="post_img">
                     </div>
                     <div class="jp_job_post_right_cont">
-                        <h3>{{ $job['job']->title }}</h3>
+                        <h3 class="text-dark"><a href="{{ route('jobs.detail', ['id' => $job['job']->id]) }}">{{ $job['job']->title }}</a></h3>
                         <p>
-                            <h4>{{ $job['company_name'] }}</h4>
+                            <h4><a href="{{ route('companies.show', $job['token']) }}">{{ $job['company_name'] }}</a></h4>
                         </p>
                         <ul>
                             <li><i class="fa fa-usd"></i>&nbsp;
                                 {{ number_format($job['job']->salary_min) . ' - ' . number_format($job['job']->salary_max) }}
                             </li>
                             <li><i class="fa fa-map-marker"></i>&nbsp; {{ $job['job']->locationJobs->name }}</li>
-                            <li>{{__('Date applied: ') . $job['applied_date'] }}</li>
+                            <li>{{ __('Date applied: ') . $job['applied_date'] }}</li>
                         </ul>
                     </div>
                 </div>

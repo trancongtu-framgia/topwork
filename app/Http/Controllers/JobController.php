@@ -15,6 +15,7 @@ use App\Repositories\Interfaces\SkillRepository;
 use App\Repositories\Interfaces\UserRepository;
 use App\Repositories\Interfaces\ApplicationRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
 class JobController extends Controller
@@ -122,21 +123,7 @@ class JobController extends Controller
     {
         $job = $this->jobRepository->get('id', $jobId);
         $company = $this->companyRepository->get('user_id', $job->user_id);
-        $skills = $this->jobSkillRepository->findAllByJobId($job->id);
-        $roleName = Auth::check() ? Auth::user()->userRole->name : config('app.guest_role');
-        $skillName = [];
-        if ($skills) {
-            foreach ($skills as $skill) {
-                $skillName[] = $skill->skillJobs->name;
-            }
-        }
-        $jobDetail = [
-            'job' => $job,
-            'skills' => $skillName,
-            'company_name' => $this->companyRepository->getCompanyName($job->user_id),
-            'can_apply' => Auth::check() ? $this->applicationRepository->checkDuplicate(Auth::id(), $job->id) : true,
-            'role_name' => $roleName,
-        ];
+        $jobDetail = $this->jobRepository->getJobWithSkillName(new Collection([$job]))[0];
 
         return view('clients.jobs.detail', compact('jobDetail', 'company'));
     }

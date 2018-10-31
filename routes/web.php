@@ -38,6 +38,10 @@ Route::group([
 
 Route::group([
     'prefix' => 'companies',
+    'middleware' => [
+        'auth',
+        'check.company',
+    ]
 ],
     function () {
         Route::get('/', 'CompanyController@index')->name('companies.index');
@@ -51,19 +55,28 @@ Route::group([
 ], function () {
     Route::get('candidates/profile/{id}', 'CandidateController@getInfoCandidate')->name('candidate.getInfo');
 
-    Route::get('candidates/edit-profile/{id}', 'CandidateController@getEditInfoCandidate')->name('candidate.getEditInfo');
-
-    Route::put('candidates/{id}', 'CandidateController@putEditInfoCandidate')->name('candidate.putEditInfo');
+    Route::group([
+        'middleware' => [
+            'check.candidate',
+            'auth',
+        ]
+    ],
+        function () {
+            Route::get('candidates/edit-profile/{id}', 'CandidateController@getEditInfoCandidate')->name('candidate.getEditInfo');
+            Route::put('candidates/{id}', 'CandidateController@putEditInfoCandidate')->name('candidate.putEditInfo');
+        }
+    );
 });
 
-Route::get('/', 'HomeController@index')->name('home.index');
 
 Route::group([
-    'prefix' => 'home',
+    'prefix' => '',
 ],
     function () {
         Route::get('/search', 'HomeController@search')->name('home.search');
         Route::get('/search/job', 'HomeController@searchJob')->name('home.searchJob');
+        Route::get('/', 'HomeController@index')->name('home.index');
+        Route::get('/companies/detail/{token}', 'CompanyController@show')->name('companies.show');
     }
 );
 
@@ -91,7 +104,7 @@ Route::group([
 Route::group([
     'prefix' => 'applications',
     'middleware' => [
-        'auth'
+        'auth',
     ],
 ], function () {
     //------------Company
@@ -109,6 +122,10 @@ Route::group([
 
 Route::group([
     'prefix' => 'client-applications',
+    'middleware' => [
+        'auth',
+        'check.company',
+    ]
 ], function () {
     Route::get('applications/get-list/{id}', 'ApplicationController@getListCandidateApplication')->name('application.getList');
     Route::get('applications/get-candidate-by-job/{id}', 'ApplicationController@getCandidateByJob')->name('ajax.getCandidateByJob');

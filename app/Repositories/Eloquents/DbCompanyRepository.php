@@ -5,6 +5,7 @@ namespace App\Repositories\Eloquents;
 use App\Models\Company;
 use App\Repositories\Eloquents\DbBaseRepository;
 use App\Repositories\Interfaces\CompanyRepository;
+use App\Repositories\Interfaces\UserRepository;
 
 class DbCompanyRepository extends DbBaseRepository implements CompanyRepository
 {
@@ -14,9 +15,10 @@ class DbCompanyRepository extends DbBaseRepository implements CompanyRepository
      *  @param Company $model
      *
      */
-    function __construct(Company $model)
+    function __construct(Company $model, UserRepository $userRepository)
     {
         $this->model = $model;
+        $this->userRepository = $userRepository;
     }
 
     public function get($key, $value)
@@ -53,10 +55,12 @@ class DbCompanyRepository extends DbBaseRepository implements CompanyRepository
             'address' => $company->address,
             'logo' => $company->logo_url,
             'description' => $company->description,
+            'token' => $company->companyUser->token,
         ];
 
         return $data;
     }
+
     public function getCompanyName(int $companyId)
     {
         return $this->get('user_id', $companyId)->companyUser->name;

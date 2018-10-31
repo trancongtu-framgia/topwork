@@ -1,54 +1,83 @@
 @extends('clients.layouts.master')
 @section('content')
-    <div class="jp_cp_profile_main_wrapper content_client">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                    <div class="jp_cp_left_side_wrapper">
-                        <div class="jp_cp_left_pro_wallpaper">
-                            <img src="{{ asset(config('app.client_media_url') . $data['logo']) }}" class="logo_company">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                    <div class="jp_cp_right_side_wrapper">
-                        <div class="jp_cp_right_side_inner_wrapper">
-                            <h2 class="name_company">{{ $data['name'] }}</h2>
-                            <table>
-                                <tbody>
-                                <tr>
-                                    <td class="td-w25 company"><i class="fa fa-map-marker"></i></td>
-                                    <td class="td-w65">{{ $data['address'] }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="td-w25 company"><i class="fa fa-calendar"></i></td>
-                                    <td class="td-w65">{{ $data['working_day'] }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="td-w25 company"><i class="fa fa-users"></i></td>
-                                    <td class="td-w65">{{ $data['range'] }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="td-w25 company"><i class="fa fa-flag"></i></td>
-                                    <td class="td-w65">{{ $data['country'] }}</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-                            <div class="jp_cp_accor_heading_wrapper">
-                                <h2>{{ __('overview') }}</h2>
-                                <p>
-                                    {{ $data['description'] }}
-                                </p>
+@section('breadcrumb_title')
+    {{ __('Company Profile') }}
+@endsection
+@section('breadcrumb_step')
+    <ul>
+        <li>&nbsp;&nbsp;&nbsp;&nbsp;{{ __('Company Profile') }}</li>
+    </ul>
+@endsection
+@include('clients.layouts.breadcrumb')
+<div class="mt-35 col-lg-8 col-md-8 col-sm-12 col-xs-12">
+    <div class="jp_listing_left_sidebar_wrapper">
+        <div class="jp_job_des">
+            <h2>{{ __('Company Description') }}</h2>
+            <p>{!! $company['description'] !!}</p>
+        </div>
+    </div>
 
-                            </div>
-                        </div>
-                    </div>
+    @if (isset($relatedJobs))
+        <div class="mt-35 jp_job_des">
+            <h2>{{ __('Related Jobs') }}</h2>
+        </div>
+        @foreach ($relatedJobs as $job)
+            @include('clients.home.partials.job_element_retangle')
+        @endforeach
+    @endif
+</div>
+
+<div class="mt-35 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+    <div class="jp_rightside_job_categories_wrapper jp_rightside_listing_single_wrapper">
+        <div class="jp_rightside_job_categories_heading">
+            <h4>{{ __('Company Overview') }}</h4>
+        </div>
+        <div class="jp_jop_overview_img_wrapper">
+            <div class="jp_jop_overview_img">
+                <img class="img-responsive" src="{{ asset(config('app.client_media_url') . $company['logo']) }}" alt="post_img">
+            </div>
+        </div>
+        <div class="jp_job_listing_single_post_right_cont">
+            <div class="jp_job_listing_single_post_right_cont_wrapper">
+                <h3><a href="{{ route('companies.show', $company['token']) }}">{{ $company['name'] }}</a></h3>
+            </div>
+        </div>
+        <div class="jp_job_post_right_overview_btn_wrapper">
+            <div class="jp_job_post_right_overview_btn">
+
+            </div>
+        </div>
+        <div class="jp_listing_overview_list_outside_main_wrapper">
+            <div class="jp_listing_overview_list_main_wrapper">
+                <div class="jp_listing_list_icon">
+                    <i class="fa fa-map-marker"></i>
+                </div>
+                <div class="jp_listing_list_icon_cont_wrapper">
+                    <ul>
+                        <li>{{ __('Location') }}</li>
+                        <li>{{ $company['country'] }}</li>
+                    </ul>
+                </div>
+                <div class="jp_listing_list_icon">
+                    <i class="fa fa-info-circle"></i>
+                </div>
+                <div class="jp_listing_list_icon_cont_wrapper">
+                    <ul>
+                        <li>{{ __('Range') }}</li>
+                        <li>{{ $company['range'] }}</li>
+                    </ul>
+                </div>
+                <div class="jp_listing_list_icon">
+                    <i class="fa fa-info-circle"></i>
+                </div>
+                <div class="jp_listing_list_icon_cont_wrapper">
+                    <ul>
+                        <li>{{ __('Working Day') }}</li>
+                        <li>{{ $company['working_day'] }}</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
+</div>
 @endsection

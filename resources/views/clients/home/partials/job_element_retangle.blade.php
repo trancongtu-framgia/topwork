@@ -4,12 +4,12 @@
             <div class="row">
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                     <div class="jp_job_post_side_img">
-                        <img src="#" alt="post_img">
+                        <img class="img-responsive" src="{{ asset(config('app.client_media_url') . $job['company_logo']) }}" alt="post_img">
                     </div>
                     <div class="jp_job_post_right_cont">
-                        <h4>{{ $job['job']->title }}</h4>
+                        <h4 class="text-dark"><a href="{{ route('jobs.detail', ['id' => $job['job']->id]) }}">{{ $job['job']->title }}</a></h4>
                         <p>
-                            <h5>{{ $job['company_name'] }}</h5>
+                            <h4><a href="{{ route('companies.show',  $job['token']) }}">{{ $job['company_name'] }}</a></h4>
                         </p>
                         <ul>
                             <li>
@@ -27,11 +27,9 @@
                     <div class="jp_job_post_right_btn_wrapper">
                         <ul>
                             <li></li>
+                            <li><a href="#">{{ $job['job']->jobTypeJobs->name }}</a></li>
                             <li>
-                                <a href="#">{{ $job['job']->jobTypeJobs->name }}</a>
-                            </li>
-                            <li>
-                                <a href="{{ route('applications.create', ['id' => $job['job']->id]) }}">{{ __('Apply') }}</a>
+                                <a href="{{ route('jobs.detail', ['id' => $job['job']->id]) }}"> {{ __('Detail') }}</a>
                             </li>
                         </ul>
                     </div>
