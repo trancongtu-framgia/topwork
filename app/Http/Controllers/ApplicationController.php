@@ -13,6 +13,8 @@ use App\Repositories\Interfaces\CandidateRepository;
 use App\Repositories\Interfaces\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use DB;
+use Exception;
 
 class ApplicationController extends Controller
 {
@@ -22,7 +24,7 @@ class ApplicationController extends Controller
     protected $applicationService;
     protected $candidateRepository;
     protected $userRepository;
-    protected const PER_PAGE = 5;
+    protected const PER_PAGE = 10;
 
     public function __construct(
         JobRepository $jobRepository,
@@ -131,9 +133,14 @@ class ApplicationController extends Controller
 
     public function getListCandidateApplication(string $id)
     {
-        $jobs = $this->getJobByTokenUser($id);
+        try {
+            $jobs = $this->getJobByTokenUser($id);
 
-        return view('clients.applications.index', compact('jobs'));
+            return view('clients.applications.index', compact('jobs'));
+        } catch (\Exception $e) {
+            return redirect()->back();
+        }
+
     }
 
     public function getCandidateByJob($value)
@@ -163,21 +170,40 @@ class ApplicationController extends Controller
 
     public function getDetailCandidateApply(Request $request, $token)
     {
-        $jobId = $request->job;
-        $user = $this->candidateRepository->showInfoCandidate($token);
-        $jobs = $this->jobRepository->get('id', $jobId);
-        $application = $this->applicationRepository->getApplicationByUserAndJob($jobId, $user->id);
-        $addChecked = $this->addChecked($application);
+        $getDetail = DB::transaction( function () use ($request, $token){
+            try {
+                $jobId = $request->job;
+                $user = $this->candidateRepository->showInfoCandidate($token);
+                $jobs = $this->jobRepository->get('id', $jobId);
+                $application = $this->applicationRepository->getApplicationByUserAndJob($jobId, $user->id);
+                $addChecked = $this->addChecked($application);
+                DB::commit();
 
-        return view('clients.applications.detail', compact('user', 'jobs', 'application'));
+                return view('clients.applications.detail', compact('user', 'jobs', 'application'));
+            } catch (\Exception $e) {
+                DB::rollback();
+
+                return redirect()->back();
+            }
+        });
+
+        return $getDetail;
     }
 
     public function downloadCv($fileName)
     {
-        $file = config('app.cv_base_url') . $fileName;
-        $name = basename($file);
+        try {
+            if (file_exists(config('app.cv_base_url') . $fileName)) {
+                $file = config('app.cv_base_url') . $fileName;
+                $name = basename($file);
 
-        return response()->download($file, $name);
+                return response()->download($file, $name);
+            } else {
+                throw new Exception(__('Cannot find'));
+            }
+        } catch (\Exception $e) {
+            return redirect()->back();
+        }
     }
 
     private function getJobByTokenUser($token)

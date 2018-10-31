@@ -18,7 +18,7 @@
                         <div class="jp_cp_right_side_inner_wrapper">
                             <h2>{{ __('CANDIDATE DETAIL') }}</h2>
                             <div>
-                                @if ($user->candidate->avatar_url)
+                                @if (file_exists(config('app.candidate_media_url') . $user->candidate->avatar_url))
                                     <img class="style_img" src="{{ asset(config('app.candidate_media_url') . $user->candidate->avatar_url) }}" alt="profile_img">
                                 @else
                                     <img src="{{ asset(config('app.candidate_media_url') . 'user.png') }}" alt="profile_img">
@@ -51,6 +51,17 @@
                                     <td class="td-w10">:</td>
                                     <td class="td-w65">{{ $user->email }}</td>
                                 </tr>
+                                @if($application)
+                                <tr>
+                                    <td class="td-w25">{{ __('CV') }}</td>
+                                    <td class="td-w10">:</td>
+                                    <td class="td-w65">
+                                        <a href="{{ route('application.download', $application->cv_url) }}">
+                                            <input class="btn btn-danger" type="button" value="{{ __('Download') }}">
+                                        </a>
+                                    </td>
+                                </tr>
+                                @endif
                                 </tbody>
                             </table>
                         </div>
@@ -79,30 +90,6 @@
                                     </div>
                                 </div>
                             </div>
-                            @if($application)
-                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-                                <div class="accordion_wrapper abt_page_2_wrapper">
-                                    <div class="panel-group" id="accordion_threeLeft">
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading bell">
-                                                <h4 class="panel-title">
-                                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion_threeLeft" href="#collapseTwentyLeftThree3" aria-expanded="false">
-                                                        CV
-                                                    </a>
-                                                </h4>
-                                            </div>
-                                            <div id="collapseTwentyLeftThree3" class="panel-collapse collapse" aria-expanded="false" role="tablist" style="height: 0px;">
-                                                <div class="panel-body">
-                                                    <a href="{{ route('application.download', $application->cv_url) }}">
-                                                        <input class="btn btn-danger" type="button" value="Download">
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            @endif
                         </div>
                     </div>
                 </div>
@@ -138,7 +125,7 @@
                                         <div class="jp_listing_list_icon_cont_wrapper">
                                             <ul>
                                                 <li>{{ __('Out date') }}:</li>
-                                                <li>{{ $jobs->out_date }}</li>
+                                                <li>{{ date('d - m - Y', strtotime($jobs->out_date)) }}</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -159,7 +146,7 @@
                                         </div>
                                         <div class="jp_listing_list_icon_cont_wrapper">
                                             <ul>
-                                                <li>{{ __('Require Experience') }}:</li>
+                                                <li>{{ __('Experience Requirement') }}:</li>
                                                 <li>{{ $jobs->experience }}</li>
                                             </ul>
                                         </div>
@@ -191,7 +178,7 @@
                                                 </h4>
                                             </div>
                                             <div class="col-md-2">
-                                                {{ Form::button(__('Save'), ['type' => 'submit', 'name' => 'submit_save', 'class' => 'btn btn-danger allbutton'] ) }}
+                                                {{ Form::button(__('Save'), ['type' => 'submit', 'name' => 'submit_save', 'class' => 'btn btn-default allbutton'] ) }}
                                             </div>
                                         </div>
                                     </a>

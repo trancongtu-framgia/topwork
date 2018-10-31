@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Repositories\Interfaces\CandidateRepository;
 use App\Http\Requests\UpdateCandidateRequest;
 use Illuminate\Support\Facades\Auth;
+use Exception;
 
 class CandidateController extends Controller
 {
@@ -93,16 +94,31 @@ class CandidateController extends Controller
 
     public function getInfoCandidate(string $id)
     {
-        $user = $this->candidateRepository->showInfoCandidate($id);
-
-        return view('clients.candidates.index', compact('user'));
+        try {
+            $user = $this->candidateRepository->showInfoCandidate($id);
+            if (!empty($user)) {
+                return view('clients.candidates.index', compact('user'));
+            } else {
+                throw new Exception(__('Cannot find!'));
+            }
+        } catch (\Exception $e) {
+            return redirect()->back();
+        }
     }
 
     public function getEditInfoCandidate(string $id)
     {
-        $user = $this->candidateRepository->showInfoCandidate($id);
+        try {
+            $user = $this->candidateRepository->showInfoCandidate($id);
+            if (!empty($user)) {
+                return view('clients.candidates.edit', compact('user'));
+            } else {
+                throw new Exception(__('Cannot find!'));
+            }
+        } catch (\Exception $e) {
+            return redirect()->back();
+        }
 
-        return view('clients.candidates.edit', compact('user'));
     }
 
     public function putEditInfoCandidate(UpdateCandidateRequest $request, int $id)
