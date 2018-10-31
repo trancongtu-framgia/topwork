@@ -74,3 +74,4 @@ mix.copyDirectory('resources/assets/plugins/ckfinder', 'public/plugins/ckfinder'
 mix.copyDirectory('resources/assets/admin/fonts', 'public/assets/admin/fonts');
 mix.copyDirectory('node_modules/select2', 'public/plugins/select2');
 mix.copyDirectory('node_modules/ckeditor', 'public/plugins/ckeditor');
+mix.copyDirectory('resources/assets/client/js/job.js', 'public/js/job.js');

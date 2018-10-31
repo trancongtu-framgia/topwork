@@ -20,6 +20,10 @@
                                 <i class="fa fa-map-marker"></i>&nbsp;
                                 {{ $job['job']->locationJobs->name }}
                             </li>
+                            <li>
+                                <i class="fa fa-calendar"></i>&nbsp;
+                                {{ date('d - m - Y', strtotime($job['job']->out_date)) }}
+                            </li>
                         </ul>
                     </div>
                 </div>
