@@ -35,30 +35,8 @@
                     </div>
                 </div>
                 <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
-                    <div class="row" id="conten-job">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            @include('clients.layouts.listWrapper')
-                        </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <div class="tab-content">
-                                <div id="grid" class="tab-pane fade in active">
-                                    <div class="row">
-                                        @foreach($jobs as $job)
-                                            @include('clients.home.partials.job_element_square')
-                                        @endforeach
-                                        @include('clients.home.partials.pagination')
-                                    </div>
-                                </div>
-                                <div id="list" class="tab-pane fade">
-                                    <div class="row">
-                                        @foreach($jobs as $job)
-                                            @include('clients.home.partials.job_element_retangle')
-                                        @endforeach
-                                        @include('clients.home.partials.pagination')
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div id="conten-job">
+                        @include('clients.home.partials.contentShowJobs')
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 visible-sm visible-xs">

@@ -23,8 +23,20 @@
                             <h5>{{ $jobDetail['company_name'] }}</h5>
                             </p>
                             <ul>
-                                <li><i class="fa fa-usd"></i>&nbsp; {{ number_format($jobDetail['job']->salary_min) . ' - ' . number_format($jobDetail['job']->salary_max) }}</li>
-                                <li><i class="fa fa-map-marker"></i>&nbsp; {{ $jobDetail['job']->locationJobs->name }}</li>
+                                <li>
+                                    <i class="fa fa-usd"></i>&nbsp; {{ number_format($jobDetail['job']->salary_min) . ' - ' . number_format($jobDetail['job']->salary_max) }}
+                                </li>
+                                <li>
+                                    <i class="fa fa-map-marker"></i>&nbsp; {{ $jobDetail['job']->locationJobs->name }}
+                                </li>
+                                <li>
+                                    <i class="fa fa-hashtag"></i>&nbsp;
+                                    {{ $jobDetail['job']->experience }}
+                                </li>
+                                <li>
+                                    <i class="fa fa-calendar"></i>&nbsp;
+                                    {{ date('d - m - Y', strtotime($jobDetail['job']->out_date)) }}
+                                </li>
                                 <li>
                                     @foreach($jobDetail['skills'] as $skill)
                                         <span class="label label-info">{{ $skill }}</span>
@@ -55,7 +67,7 @@
                                 @elseif ($jobDetail['role_name'] == config('app.company_role'))
                                     <li></li>
                                     <li>
-                                        <a href="#">
+                                        <a href="{{ route('jobs.edit', ['id' => $jobDetail['job']->id]) }}">
                                             {{ __('Edit') }}
                                         </a>
                                     </li>
@@ -111,7 +123,7 @@
                         </ul>
                     </div>
                     <div class="jp_listing_list_icon">
-                        <i class="fa fa-info-circle"></i>
+                        <i class="fa fa-users"></i>
                     </div>
                     <div class="jp_listing_list_icon_cont_wrapper">
                         <ul>
@@ -120,7 +132,7 @@
                         </ul>
                     </div>
                     <div class="jp_listing_list_icon">
-                        <i class="fa fa-info-circle"></i>
+                        <i class="fa fa-calendar"></i>
                     </div>
                     <div class="jp_listing_list_icon_cont_wrapper">
                         <ul>

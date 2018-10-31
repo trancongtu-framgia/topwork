@@ -16,7 +16,13 @@
                                 <i class="fa fa-usd"></i>&nbsp;
                                 {{ number_format($job['job']->salary_min) . ' - ' . number_format($job['job']->salary_max) }}
                             </li>
-                            <li><i class="fa fa-map-marker"></i>&nbsp; {{ $job['job']->locationJobs->name }}</li>
+                            <li>
+                                <i class="fa fa-map-marker"></i>&nbsp; {{ $job['job']->locationJobs->name }}
+                            </li>
+                            <li>
+                                <i class="fa fa-hashtag"></i>&nbsp;
+                                {{ $job['job']->experience }}
+                            </li>
                         </ul>
                     </div>
                 </div>

@@ -30,6 +30,7 @@ class JobController extends Controller
     private $userRepository;
     private $companyRepository;
     private $applicationRepository;
+    private $jobCategory;
     /**
      * Display a listing of the resource.
      *
@@ -45,7 +46,8 @@ class JobController extends Controller
         LocationRepository $locationRepository,
         UserRepository $userRepository,
         CompanyRepository $companyRepository,
-        ApplicationRepository $applicationRepository
+        ApplicationRepository $applicationRepository,
+        JobCategoryRepository $JobCategoryRepository
     ) {
         $this->jobRepository = $jobRepository;
         $this->categoryRepository = $categoryRepository;
@@ -57,6 +59,7 @@ class JobController extends Controller
         $this->userRepository = $userRepository;
         $this->companyRepository = $companyRepository;
         $this->applicationRepository = $applicationRepository;
+        $this->jobCategory = $JobCategoryRepository;
     }
 
     public function index()
@@ -78,9 +81,12 @@ class JobController extends Controller
         $categories = $this->categoryRepository->getAllWithOutPaginate()->toArray();
         $jobTypes = $this->jobTypeRepository->getAllWithOutPaginate()->toArray();
         $locations = $this->locationRepository->getAllWithOutPaginate()->toArray();
-        $skills = $this->skillRepository->getAllWithOutPaginate()->toArray();
+        $skills = [];
+        $jobSkills = [];
+        $jobCategory = [];
 
-        return view('clients.jobs.create', compact('categories', 'jobTypes', 'locations', 'skills'));
+        return view('clients.jobs.create',
+            compact('categories', 'jobTypes', 'locations', 'skills', 'jobCategory', 'jobSkills'));
     }
 
     /**
@@ -147,9 +153,22 @@ class JobController extends Controller
      * @param  \App\Models\Job  $job
      * @return \Illuminate\Http\Response
      */
-    public function edit(Job $job)
+    public function edit($id)
     {
-        //
+        $categories = $this->categoryRepository->getAllWithOutPaginate()->toArray();
+        $jobTypes = $this->jobTypeRepository->getAllWithOutPaginate()->toArray();
+        $locations = $this->locationRepository->getAllWithOutPaginate()->toArray();
+        $job = $this->jobRepository->get('id', $id);
+        $jobCategory = [];
+        $listJobCategory = $this->jobCategory->getCategoryByJobId($id);
+        if ($listJobCategory) {
+            $jobCategory = $listJobCategory;
+        }
+        $skills = $this->skillRepository->getSkillByCategory($listJobCategory);
+        $skillJobs = $this->jobSkillRepository->getSkillByJobId($id);
+
+        return view('clients.jobs.update',
+            compact('categories', 'jobTypes', 'locations', 'skills', 'job', 'jobCategory', 'skillJobs'));
     }
 
     /**
@@ -159,9 +178,25 @@ class JobController extends Controller
      * @param  \App\Models\Job  $job
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Job $job)
+    public function update(JobRequest $request, $id)
     {
-        //
+        $jobs = $this->jobRepository->update($request->validated(), 'id', $id);
+        $this->jobCategory->delete('job_id', $id);
+        $this->jobSkillRepository->delete('job_id', $id);
+
+        $skillArray = $request->validated()['job_skill_ids'];
+        $categoryArray = $request->validated()['category_ids'];
+
+        $this->jobCategoryRepository->createByJobId($id, $categoryArray);
+        $this->jobSkillRepository->createByJobId($id, $skillArray);
+
+        if ($jobs) {
+            flash(__('Update role success'))->success();
+        } else {
+            flash(__('Update role failed, Please try again'))->error();
+        }
+
+        return redirect()->route('jobs.index');
     }
 
     /**
@@ -190,6 +225,6 @@ class JobController extends Controller
     {
         $jobs = $this->jobRepository->getJobByCategory($request->categoryId, self::RECORD_PER_PAGE, $request->fullUrl());
 
-        return view('clients.home.jobContentSearchByCategory', compact('jobs'));
+        return view('clients.home.partials.contentShowJobs', compact('jobs'));
     }
 }

@@ -10,4 +10,6 @@ interface JobSkillRepository extends BaseRepository
 
     public function findAllJobBySkill($skills);
 
+    public function getSkillByJobId($jobId);
+
 }
