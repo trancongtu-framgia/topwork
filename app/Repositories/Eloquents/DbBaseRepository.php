@@ -46,6 +46,6 @@ class DbBaseRepository
 
     public function baseFindAllBy($key, $value)
     {
-        return $this->model->where($key, $value)->get();
+        return $this->model->where($key, $value)->orderBy('id', 'desc')->get();
     }
 }
