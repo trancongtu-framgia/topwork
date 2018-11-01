@@ -41,19 +41,16 @@
             {!! $errors->first('salary_max', '<span class="red">:message</span>') !!}
         </div>
     </div>
-    <div class="row">
-        <div class="input-group jp_adp_form_wrapper">
-            <span class="input-group-addon"> {{ __('Experience') }} </span>
-            {{ Form::text('experience', null, ['maxlength' => 100, 'class' => 'form-control']) }}
-        </div>
-        {!! $errors->first('experience', '<span class="red">:message</span>') !!}
-
-        <div class="input-group jp_adp_form_wrapper">
-            <span class="input-group-addon"> {{ __('Out Date') }} </span>
-            {{ Form::date('out_date', null, ['class' => 'form-control']) }}
-        </div>
-        {!! $errors->first('out_date', '<span class="red">:message</span>') !!}
+    <div class="input-group jp_adp_form_wrapper">
+        <span class="input-group-addon"> {{ __('Experience') }} </span>
+        {{ Form::text('experience', null, ['maxlength' => 100, 'class' => 'form-control']) }}
     </div>
+    {!! $errors->first('experience', '<span class="red">:message</span>') !!}
+    <div class="input-group jp_adp_form_wrapper">
+        <span class="input-group-addon"> {{ __('Out Date') }} </span>
+        {{ Form::date('out_date', null, ['class' => 'form-control']) }}
+    </div>
+    {!! $errors->first('out_date', '<span class="red">:message</span>') !!}
     <div class="jp_adp_form_wrapper">
     </div>
 </div>
