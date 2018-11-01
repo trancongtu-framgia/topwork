@@ -103,7 +103,7 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
 
     public function getAllJobByCompany(int $companyId, int $per)
     {
-        $jobs = $this->model::where('user_id', $companyId)->paginate($per);
+        $jobs = $this->model::where('user_id', $companyId)->get();
 
         return $this->getJobWithSkillName($jobs);
     }
@@ -130,7 +130,7 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
             ];
         }
 
-        return $jobsWithSkill;
+        return array_reverse($jobsWithSkill);
     }
 
     public function getAllJob($key, $value, $per)

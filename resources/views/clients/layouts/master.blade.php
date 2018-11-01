@@ -20,6 +20,11 @@
     <div id="status"><img src="{{ asset(config('app.client_media_url') . 'loadinganimation.gif') }}" id="preloader_image" alt="loader">
     </div>
 </div>
+@if (Route::currentRouteName() != 'home.index')
+<a href="javascript:void(0)" class="btn-back" onclick="goBack()">
+    <i class="fa fa-chevron-left my-float"></i>
+</a>
+@endif
 @include('clients.layouts.top_header')
 <div class="jp_top_header_img_wrapper">
     @includeWhen(Auth::check(), 'clients.layouts.nav')
