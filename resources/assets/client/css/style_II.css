@@ -7918,8 +7918,9 @@ input[type="checkbox"]:checked + label:after {
 }
 .style_img {
     border-radius:10%;
-    margin-left: 123px;
+    margin-left: 178px;
     margin-top: 80px;
+    width: 253px;
 }
 .candidate_checked {
     background-color: #f7f7f7;
@@ -7931,6 +7932,7 @@ input[type="checkbox"]:checked + label:after {
 .set_padding {
     padding-left: 10px;
     padding-right: 10px;
+    padding-bottom: 10px;
 }
 .send_mail_body {
     text-align: center;
@@ -7938,4 +7940,7 @@ input[type="checkbox"]:checked + label:after {
 .send_mail_content {
     color: red;
     font-weight: bold;
+}
+.image_candidate {
+    border: #00c5dc 3px solid
 }

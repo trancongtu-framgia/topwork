@@ -55,5 +55,28 @@
     "SHOW MORE": "SHOW MORE",
     "View Profile": "View Profile",
     "Edit": "Edit",
-    "Delete": "Delete"
+    "Delete": "Delete",
+    "Candidate Profile": "Candidate Profile",
+    "BACK": "BACK",
+    "Save": "Save",
+    "Back": "Back",
+    "Full name": "Full name",
+    "Edit Candidate Profile": "Edit Candidate Profile",
+    "Candidate By Job": "Candidate By Job",
+    "Job Name:": "Job Name:",
+    "CANDIDATE DETAIL": "CANDIDATE DETAIL",
+    "JOB DETAIL": "JOB DETAIL",
+    "Out date": "Out date",
+    "Range of Salary": "Range of Salary",
+    "Experience Requirement": "Experience Requirement",
+    "ADD NOTE": "ADD NODE",
+    "Download": "Download",
+    "Type Job :": "Type Job :",
+    "All Applied Candidate": "All Applied Candidate",
+    "Cadidate applied infomation": "Cadidate applied infomation",
+    "Apply Date:": "Apply Date :",
+    "Location:": "Location :",
+    "Note:": "Note :"
+
+
 }
