@@ -30,9 +30,10 @@ class DbCandidateRepository extends DbBaseRepository implements CandidateReposit
 
     public function updateInfoCandidate($data, $key, $value)
     {
-        $update = DB::transaction(function () use ($data, $value) {
+        $update = DB::transaction(function () use ($data, $value, $key) {
             try {
-                $candidate = $this->model->find($value);
+                $user = $this->userModel->where($key, $value)->first();
+                $candidate = $user->candidate;
                 if ($data->hasFile('avatar')) {
                     $file = $data->file('avatar');
                     $name = $file->getClientOriginalName();
@@ -46,12 +47,7 @@ class DbCandidateRepository extends DbBaseRepository implements CandidateReposit
                 }
                 $saveCandidate = $candidate->update($data->toArray());
 
-                if (!empty($candidate->user_id)) {
-                    $user = $this->userModel->find($candidate->user_id);
-                    $saveUser = $user->update($data->toArray());
-                } else {
-                    return false;
-                }
+                $saveUser = $user->update($data->toArray());
                 DB::commit();
 
                 return true;

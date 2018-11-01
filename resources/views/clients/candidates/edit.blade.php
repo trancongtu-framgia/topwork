@@ -23,7 +23,7 @@
     </ul>
 @endsection
 @include('clients.layouts.breadcrumb')
-    {{ Form::model($user->candidate, ['url' => route('candidate.putEditInfo', $user->id), 'enctype' => 'multipart/form-data', 'method' => 'PUT', 'class' => 'form-horizontal form-label-left']) }}
+    {{ Form::model($user->candidate, ['url' => route('candidate.putEditInfo', $user->token), 'enctype' => 'multipart/form-data', 'method' => 'PUT', 'class' => 'form-horizontal form-label-left']) }}
     <div class="jp_cp_profile_main_wrapper">
         <div class="container">
             <div class="row">
@@ -49,8 +49,7 @@
                             </ul>
                         </div>
                         <div style="text-align: center">
-                            {{ Form::button(__('Save'), ['type' => 'submit', 'name' => 'submit_save', 'class' => 'btn btn-primary allbutton'] ) }}
-                            <a class="btn btn-danger" href="{{ route('candidate.getInfo', $user->token) }}">{{ __('Back') }}</a>
+                            {{ Form::button(__('Save'), ['type' => 'submit', 'name' => 'submit_save', 'class' => 'btn btn-danger btn-lg'] ) }}
                         </div>
                     </div>
                 </div>

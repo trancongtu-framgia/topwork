@@ -164,6 +164,7 @@ class ApplicationController extends Controller
         foreach ($jobs as $key => $job) {
             $jobArr[] = $job;
         }
+        $jobArr = array_reverse($jobArr);
 
         return view('clients.applications.ajax', compact('jobArr'));
     }

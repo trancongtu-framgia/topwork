@@ -36,14 +36,11 @@
                         </div>
                     </div>
                     <div class="jp_add_resume_cont jp_add_resume_wrapper">
-                        @if (Auth::check() && Auth::user()->token == $user->token)
+                        @if (Auth::check() && Auth::user()->token == $user->token && strtolower(Auth::user()->userRole->name) == config('app.candidate_role'))
                         <ul>
                             <li><a href="{{ route('candidate.getEditInfo', $user->token) }}"><i class="fa fa-pencil-square-o set_padding" aria-hidden="true"></i>{{ __('EDIT PROFILE') }}</a></li>
                         </ul>
                         @endif
-                        <ul>
-                            <li><a href="{{ route('home.index') }}"><i class="fa fa-backward set_padding" aria-hidden="true"></i>{{ __('BACK') }}</a></li>
-                        </ul>
                     </div>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
