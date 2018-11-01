@@ -18,7 +18,7 @@ class CheckCompanyMiddleware
     {
         if (Auth::check()) {
             $authenticatedUser = Auth::user();
-            if ($authenticatedUser->userRole->name != config('app.company_role')) {
+            if (strtolower($authenticatedUser->userRole->name) != config('app.company_role')) {
                 try {
                     return redirect()->back();
                 }

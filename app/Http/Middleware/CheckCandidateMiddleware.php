@@ -18,7 +18,7 @@ class CheckCandidateMiddleware
     {
         if (Auth::check()) {
             $authenticatedUser = Auth::user();
-            if ($authenticatedUser->userRole->name != config('app.candidate_role')) {
+            if (strtolower($authenticatedUser->userRole->name) != config('app.candidate_role')) {
                 try {
                     return redirect()->back();
                 }

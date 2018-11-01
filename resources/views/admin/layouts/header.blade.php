@@ -30,9 +30,8 @@
                                             <i class="flaticon-user-ok"></i>
                                         </span>
                                     </span>
-                                    <span class="m-topbar__username m--hide">Nick</span>
                                     <span class="m-topbar__username username-padding">
-                                        Mark Andre &nbsp;&nbsp;<i class="la la-angle-down"></i>
+                                        {{ Auth::user()->name }} &nbsp;&nbsp;<i class="la la-angle-down"></i>
                                     </span>
                                 </a>
                                 <div class="m-dropdown__wrapper">
@@ -47,10 +46,10 @@
                                                 </div>
                                                 <div class="m-card-user__details">
                                                     <span class="m-card-user__name m--font-weight-500">
-                                                            Mark Andre
+                                                    {{ Auth::user()->name }}
                                                     </span>
                                                     <a href="" class="m-card-user__email
-                                                        m--font-weight-300 m-link">mark.andre@gmail.com
+                                                        m--font-weight-300 m-link">{{ Auth::user()->email }}
                                                     </a>
                                                 </div>
                                             </div>

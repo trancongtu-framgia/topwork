@@ -142,20 +142,25 @@ class JobController extends Controller
      */
     public function edit($id)
     {
-        $categories = $this->categoryRepository->getAllWithOutPaginate()->toArray();
-        $jobTypes = $this->jobTypeRepository->getAllWithOutPaginate()->toArray();
-        $locations = $this->locationRepository->getAllWithOutPaginate()->toArray();
         $job = $this->jobRepository->get('id', $id);
-        $jobCategory = [];
-        $listJobCategory = $this->jobCategory->getCategoryByJobId($id);
-        if ($listJobCategory) {
-            $jobCategory = $listJobCategory;
-        }
-        $skills = $this->skillRepository->getSkillByCategory($listJobCategory);
-        $skillJobs = $this->jobSkillRepository->getSkillByJobId($id);
+        $authenticatedCompanyUser = Auth::user();
+        if ($authenticatedCompanyUser->can('edit', $job)) {
+            $categories = $this->categoryRepository->getAllWithOutPaginate()->toArray();
+            $jobTypes = $this->jobTypeRepository->getAllWithOutPaginate()->toArray();
+            $locations = $this->locationRepository->getAllWithOutPaginate()->toArray();
+            $jobCategory = [];
+            $listJobCategory = $this->jobCategory->getCategoryByJobId($id);
+            if ($listJobCategory) {
+                $jobCategory = $listJobCategory;
+            }
+            $skills = $this->skillRepository->getSkillByCategory($listJobCategory);
+            $skillJobs = $this->jobSkillRepository->getSkillByJobId($id);
 
-        return view('clients.jobs.update',
-            compact('categories', 'jobTypes', 'locations', 'skills', 'job', 'jobCategory', 'skillJobs'));
+            return view('clients.jobs.update',
+                compact('categories', 'jobTypes', 'locations', 'skills', 'job', 'jobCategory', 'skillJobs'));
+        }
+
+        abort(403, __('Unauthorized action'));
     }
 
     /**
@@ -167,23 +172,29 @@ class JobController extends Controller
      */
     public function update(JobRequest $request, $id)
     {
-        $jobs = $this->jobRepository->update($request->validated(), 'id', $id);
-        $this->jobCategory->delete('job_id', $id);
-        $this->jobSkillRepository->delete('job_id', $id);
+        $authenticatedCompanyUser = Auth::user();
+        $job = $this->jobRepository->get('id', $id);
+        if ($authenticatedCompanyUser->can('edit', $job)) {
+            $jobs = $this->jobRepository->update($request->validated(), 'id', $id);
+            $this->jobCategory->delete('job_id', $id);
+            $this->jobSkillRepository->delete('job_id', $id);
 
-        $skillArray = $request->validated()['job_skill_ids'];
-        $categoryArray = $request->validated()['category_ids'];
+            $skillArray = $request->validated()['job_skill_ids'];
+            $categoryArray = $request->validated()['category_ids'];
 
-        $this->jobCategoryRepository->createByJobId($id, $categoryArray);
-        $this->jobSkillRepository->createByJobId($id, $skillArray);
+            $this->jobCategoryRepository->createByJobId($id, $categoryArray);
+            $this->jobSkillRepository->createByJobId($id, $skillArray);
 
-        if ($jobs) {
-            flash(__('Update role success'))->success();
-        } else {
-            flash(__('Update role failed, Please try again'))->error();
+            if ($jobs) {
+                flash(__('Update role success'))->success();
+            } else {
+                flash(__('Update role failed, Please try again'))->error();
+            }
+
+            return redirect()->route('jobs.index');
         }
 
-        return redirect()->route('jobs.index');
+        abort(403, __('Unauthorized action'));
     }
 
     /**
@@ -194,18 +205,24 @@ class JobController extends Controller
      */
     public function destroy(int $jobId)
     {
-        $recentlyDeletedJob = $this->jobRepository->delete('id', $jobId);
-        if ($recentlyDeletedJob) {
-            flash(__('Delete successfully'))->success();
-            $this->jobSkillRepository->delete('job_id', $jobId);
-            $this->jobCategoryRepository->delete('job_id', $jobId);
+        $authenticatedCompanyUser = Auth::user();
+        $job = $this->jobRepository->get('id', $jobId);
+        if ($authenticatedCompanyUser->can('delete', $job)) {
+            $recentlyDeletedJob = $this->jobRepository->delete('id', $jobId);
+            if ($recentlyDeletedJob) {
+                flash(__('Delete successfully'))->success();
+                $this->jobSkillRepository->delete('job_id', $jobId);
+                $this->jobCategoryRepository->delete('job_id', $jobId);
 
-            return redirect()->route('jobs.index');
-        } else {
-            flash(__('Delete fail'))->error();
+                return redirect()->route('jobs.index');
+            } else {
+                flash(__('Delete fail'))->error();
 
-            return redirect()->route('jobs.index');
+                return redirect()->route('jobs.index');
+            }
         }
+
+        abort(403);
     }
 
     public function getJobByCategory(Request $request)

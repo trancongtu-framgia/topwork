@@ -96,7 +96,7 @@ class ApplyJobController extends Controller
                     dispatch((new SendEmailToCandidate($candidate, $company)));
                     dispatch((new SendEmailToCompany($company, $candidate)));
                 } catch (\Exception $e) {
-                    return redirect()->back();
+                    //return redirect()->back();
                 }
                 return redirect()->route('jobs.detail', ['id' => $jobId])
                     ->with('status', __('Job applied'));

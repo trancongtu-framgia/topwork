@@ -60,7 +60,7 @@ class LoginController extends Controller
             'password' => $request->password,
             'status' => self::USER_STATUS,
         ], $request->remember)) {
-            $role = Auth::user()->userRole->name;
+            $role = strtolower(Auth::user()->userRole->name);
             if ($role == config('app.admin_role')) {
                 return redirect()->route('admin.index');
             } elseif ($role == config('app.company_role')) {
@@ -68,6 +68,9 @@ class LoginController extends Controller
             } elseif ($role == config('app.candidate_role')) {
                 return redirect()->route('home.index');
             }
+            Auth::logout();
+
+            return redirect()->route('login');
         }
 
         return $this->sendFailedLoginResponse($request);

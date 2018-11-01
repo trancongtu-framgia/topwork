@@ -59,7 +59,7 @@
                     </ul>
                 </div>
                 <div class="jp_listing_list_icon">
-                    <i class="fa fa-info-circle"></i>
+                    <i class="fa fa-users"></i>
                 </div>
                 <div class="jp_listing_list_icon_cont_wrapper">
                     <ul>
@@ -68,7 +68,7 @@
                     </ul>
                 </div>
                 <div class="jp_listing_list_icon">
-                    <i class="fa fa-info-circle"></i>
+                    <i class="fa fa-calendar"></i>
                 </div>
                 <div class="jp_listing_list_icon_cont_wrapper">
                     <ul>

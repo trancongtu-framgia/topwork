@@ -20,16 +20,6 @@
                                 </a>
                                 <!-- mega menu start -->
                             </li>
-                            <li class="has-mega gc_main_navigation">
-                                <a href="{{ route('home.index') }}" class="gc_main_navigation"> {{ __('Jobs') }}&nbsp;
-                                </a>
-                                <!-- mega menu start -->
-                            </li>
-                            <li class="has-mega gc_main_navigation">
-                                <a href="{{ route('companies.index') }}" class="gc_main_navigation"> {{ __('Companies') }}&nbsp;
-                                </a>
-                                <!-- mega menu start -->
-                            </li>
                         </ul>
                     </div>
                     <!-- mainmenu end -->

@@ -108,17 +108,20 @@ class CandidateController extends Controller
 
     public function getEditInfoCandidate(string $id)
     {
-        try {
-            $user = $this->candidateRepository->showInfoCandidate($id);
-            if (!empty($user)) {
-                return view('clients.candidates.edit', compact('user'));
-            } else {
-                throw new Exception(__('Cannot find!'));
+        if (Auth::user()->token == $id) {
+            try {
+                $user = $this->candidateRepository->showInfoCandidate($id);
+                if (!empty($user)) {
+                    return view('clients.candidates.edit', compact('user'));
+                } else {
+                    throw new Exception(__('Cannot find!'));
+                }
+            } catch (\Exception $e) {
+                return redirect()->back();
             }
-        } catch (\Exception $e) {
-            return redirect()->back();
         }
 
+        abort(403);
     }
 
     public function putEditInfoCandidate(UpdateCandidateRequest $request, int $id)
