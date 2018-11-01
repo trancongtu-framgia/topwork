@@ -18,7 +18,7 @@ class CheckAdminMiddleware
     {
         if (Auth::check()) {
             $authenticatedUser = Auth::user();
-            if ($authenticatedUser->userRole->name != config('app.admin_role')) {
+            if (strtolower($authenticatedUser->userRole->name) != config('app.admin_role')) {
                 try {
                     return redirect()->back();
                 }

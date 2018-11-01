@@ -23,7 +23,7 @@
     </ul>
 @endsection
 @include('clients.layouts.breadcrumb')
-    {{ Form::model($user->candidate, ['url' => route('candidate.putEditInfo', $user->candidate->id), 'enctype' => 'multipart/form-data', 'method' => 'PUT', 'class' => 'form-horizontal form-label-left']) }}
+    {{ Form::model($user->candidate, ['url' => route('candidate.putEditInfo', $user->id), 'enctype' => 'multipart/form-data', 'method' => 'PUT', 'class' => 'form-horizontal form-label-left']) }}
     <div class="jp_cp_profile_main_wrapper">
         <div class="container">
             <div class="row">

@@ -27,8 +27,12 @@
                             </li>
                             @auth
                                 <li><a href="#" class="white_important">
-                                        <i class="fa fa-user" aria-hidden="true"></i>
-                                        {{ Auth::user()->name }}
+                                        <i class="fa fa-user" aria-hidden="true"></i>&nbsp;
+                                        @if (strtolower(Auth::user()->userRole->name) == config('app.candidate_role'))
+                                            <a href="{{ route('candidate.getInfo', Auth::user()->token) }}">{{ Auth::user()->name }}</a>
+                                        @elseif (strtolower(Auth::user()->userRole->name) == config('app.company_role'))
+                                            <a href="{{ route('companies.index') }}">{{ Auth::user()->name }}</a>
+                                        @endif
                                     </a>
                                 </li>
                                 <li>

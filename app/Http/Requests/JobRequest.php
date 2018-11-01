@@ -37,13 +37,13 @@ class JobRequest extends FormRequest
             'title' => 'required|min:4|max:100',
             'salary_min' => 'required|numeric',
             'salary_max' => 'required|numeric',
-            'description' => 'required|min:8|max:1000',
+            'description' => 'required',
             'location_id' => 'required|numeric',
             'job_type_id' => 'required|numeric',
             'out_date' => 'required|date',
             'experience' => 'required|min:3|max:100',
             'category_ids' => 'required|array',
-            'job_skill_ids' => 'required|array',
+            'job_skill_ids' => 'required',
         ];
     }
 }

@@ -64,7 +64,7 @@
                                             </a>
                                         </li>
                                     @endif
-                                @elseif ($jobDetail['role_name'] == config('app.company_role'))
+                                @elseif ($jobDetail['role_name'] == config('app.company_role') && Auth::user()->can('update', $jobDetail['job']))
                                     <li></li>
                                     <li>
                                         <a href="{{ route('jobs.edit', ['id' => $jobDetail['job']->id]) }}">
@@ -72,9 +72,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#">
-                                            {{ __('Delete') }}
-                                        </a>
+                                        @include('elements.button_model', ['nameRoute' => 'jobs.destroy', 'data' => $jobDetail['job']])
                                     </li>
                                 @elseif ($jobDetail['role_name'] == config('app.guest_role'))
                                     <li></li>
@@ -98,7 +96,7 @@
                 <hr>
                 <div class="mt-5 jp_job_des">
                     <h2>{{ __('Job Description') }}</h2>
-                    <p>{!! $jobDetail['job']->description !!}</p>
+                    {!! $jobDetail['job']->description !!}
                 </div>
             </div>
             <div class="jp_job_post_keyword_wrapper">
