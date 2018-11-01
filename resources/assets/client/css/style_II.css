@@ -7944,3 +7944,7 @@ input[type="checkbox"]:checked + label:after {
 .image_candidate {
     border: #00c5dc 3px solid
 }
+.red {
+    color: red;
+    border-color: red;
+}

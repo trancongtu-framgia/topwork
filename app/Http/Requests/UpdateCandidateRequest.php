@@ -27,10 +27,7 @@ class UpdateCandidateRequest extends FormRequest
             'name' => 'required|string|max:250|min:3',
             'dob' => 'required|date',
             'address' => 'required|string|max:250|min:3',
-            'phone' => 'required|numeric',
-            'facebook' => 'string|max:250|min:3',
-            'youtube' => 'string|max:250|min:3',
-            'twitter' => 'string|max:250|min:3',
+            'phone' => 'required|numeric|regex:/(0)[0-9]{9}/',
         ];
     }
 }

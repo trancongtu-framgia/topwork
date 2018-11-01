@@ -127,11 +127,15 @@ class JobController extends Controller
      */
     public function show(int $jobId)
     {
-        $job = $this->jobRepository->get('id', $jobId);
-        $company = $this->companyRepository->get('user_id', $job->user_id);
-        $jobDetail = $this->jobRepository->getJobWithSkillName(new Collection([$job]))[0];
+        try {
+            $job = $this->jobRepository->get('id', $jobId);
+            $company = $this->companyRepository->get('user_id', $job->user_id);
+            $jobDetail = $this->jobRepository->getJobWithSkillName(new Collection([$job]))[0];
 
-        return view('clients.jobs.detail', compact('jobDetail', 'company'));
+            return view('clients.jobs.detail', compact('jobDetail', 'company'));
+        } catch (\Exception $e) {
+            return redirect()->back();
+        }
     }
 
     /**

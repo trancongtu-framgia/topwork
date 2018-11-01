@@ -1,4 +1,4 @@
-@extends('admin.layouts.base');
+@extends('admin.layouts.base')
 @section('base.title')
     {{ __('Category List') }}
 @endsection

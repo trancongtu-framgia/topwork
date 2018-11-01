@@ -155,7 +155,6 @@
                                         <div class="jp_listing_right_bar_btn">
                                             <ul>
                                                 <li><a href="{{ route('jobs.detail', $jobs->id) }}"><i class="fa fa-plus-circle set_padding"></i>{{ __('JOB DETAIL') }}</a></li>
-                                                <li><a href="{{ route('application.getList', Auth::User()->token) }}"><i class="fa fa-backward set_padding" aria-hidden="true"></i>{{ __('BACK') }}</a></li>
                                             </ul>
                                         </div>
                                     </div>

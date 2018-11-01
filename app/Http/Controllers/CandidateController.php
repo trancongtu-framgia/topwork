@@ -5,15 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Candidate;
 use Illuminate\Http\Request;
 use App\Repositories\Interfaces\CandidateRepository;
+use App\Repositories\Interfaces\UserRepository;
 use App\Http\Requests\UpdateCandidateRequest;
 use Illuminate\Support\Facades\Auth;
 use Exception;
 
 class CandidateController extends Controller
 {
-    public function __construct(CandidateRepository $candidateRepository)
+    protected  $candidateRepository;
+    protected  $userRepository;
+    public function __construct(CandidateRepository $candidateRepository, UserRepository $userRepository)
     {
         $this->candidateRepository = $candidateRepository;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -96,7 +100,7 @@ class CandidateController extends Controller
     {
         try {
             $user = $this->candidateRepository->showInfoCandidate($id);
-            if (!empty($user)) {
+            if (!empty($user) && $user->candidate) {
                 return view('clients.candidates.index', compact('user'));
             } else {
                 throw new Exception(__('Cannot find!'));
@@ -124,9 +128,9 @@ class CandidateController extends Controller
         abort(403);
     }
 
-    public function putEditInfoCandidate(UpdateCandidateRequest $request, int $id)
+    public function putEditInfoCandidate(UpdateCandidateRequest $request, string $token)
     {
-        $candidate = $this->candidateRepository->updateInfoCandidate($request, 'id', $id);
+        $candidate = $this->candidateRepository->updateInfoCandidate($request, 'token', $token);
 
         if ($candidate) {
             flash(__('Edit Profile Success'))->success();

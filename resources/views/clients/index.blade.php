@@ -23,7 +23,7 @@
                                                             'onClick' => 'getJobByCategory(this)',
                                                         ]);
                                                     !!}
-                                                    <label for="category{{ $key }}">{{ $value }}<span>(214)</span></label>
+                                                    <label for="category{{ $key }}">{{ $value }}</label>
                                                 </p>
                                                 @endforeach
                                             </div>
