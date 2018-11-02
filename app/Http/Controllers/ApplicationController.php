@@ -209,7 +209,7 @@ class ApplicationController extends Controller
 
     private function getJobByTokenUser($token)
     {
-        $user = $this->userRepository->get('token', $token);
+        $user = $this->userRepository->getSpecifiedColumn('token', $token, ['id']);
         $jobs = $this->jobRepository->getAllJob('user_id', $user->id, self::PER_PAGE);
 
         return $jobs;

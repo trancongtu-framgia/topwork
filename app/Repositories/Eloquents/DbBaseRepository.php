@@ -48,4 +48,9 @@ class DbBaseRepository
     {
         return $this->model->where($key, $value)->orderBy('id', 'desc')->get();
     }
+
+    public function getSpecifiedColumn($key, $value, $array)
+    {
+        return $this->model::where($key, $value)->first($array);
+    }
 }

@@ -53,14 +53,14 @@ class DbJobSkillRepository extends DbBaseRepository implements JobSkillRepositor
 
     public function findAllByJobId(int $jobId)
     {
-        return $this->baseFindAllBy('job_id', $jobId);
+        return $this->model::with('skillJobs')->where('job_id', $jobId)->get();
     }
 
     public function findAllJobBySkill($skills)
     {
         $listIdJob = [];
         foreach ($skills as $skill) {
-            foreach ($this->model->where('skill_id', $skill->id)->get() as $job) {
+            foreach ($this->model->where('skill_id', $skill->id)->get('id') as $job) {
                 if (!in_array($job->job_id, $listIdJob)) {
                     $listIdJob[] = $job->job_id;
                 }
@@ -73,7 +73,7 @@ class DbJobSkillRepository extends DbBaseRepository implements JobSkillRepositor
     public function getSkillByJobId($jobId)
     {
         $listSkill = [];
-        $skills = $this->model->where('job_id', $jobId)->get();
+        $skills = $this->model->where('job_id', $jobId)->get(['skill_id']);
         if ($skills) {
             foreach ($skills as $skill) {
                 $listSkill[] = $skill->skill_id;

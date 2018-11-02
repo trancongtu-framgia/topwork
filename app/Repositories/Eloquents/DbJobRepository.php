@@ -55,7 +55,7 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
     public function getAll($per)
     {
         $listJob = [];
-        $jobs = $this->model->all();
+        $jobs = $this->model::with('locationJobs', 'jobTypeJobs')->get();
         if ($jobs) {
             foreach ($jobs as $job) {
                 if ($this->compareDateJob($job->out_date)) {
@@ -88,7 +88,8 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
 
     public function get($key, $value)
     {
-        return $this->baseFindBy($key, $value);
+        return $this->model::with('locationJobs', 'jobTypeJobs', 'applications', 'userJob')
+            ->where($key, $value)->first();
     }
 
     public function update($data, $key, $value)
@@ -103,13 +104,16 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
 
     public function getAllJobByCompany(int $companyId, int $per)
     {
-        $jobs = $this->model::where('user_id', $companyId)->get();
+        $jobs = $this->model::where('user_id', $companyId)->with('locationJobs', 'jobTypeJobs')->get();
 
         return $this->getJobWithSkillName($jobs);
     }
 
     public function getJobWithSkillName($jobs)
     {
+        $authenticatedUser = Auth::user();
+        $isUserAuthenticated = Auth::check();
+        $roleName = $isUserAuthenticated ? $authenticatedUser->userRole->name : config('app.guest_role');
         $jobsWithSkill = [];
         foreach ($jobs as $job) {
             $skillName = [];
@@ -119,14 +123,15 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
                     $skillName[] = $skill->skillJobs->name;
                 }
             }
+            $companyUserInfo = $this->user->getSpecifiedColumn('id', $job->user_id, ['name', 'token']);
             $jobsWithSkill[] = [
                 'job' => $job,
                 'skills' => $skillName,
-                'company_name' => $this->companyRepository->getCompanyName($job->user_id),
-                'company_logo' => $this->companyRepository->get('user_id', $job->user_id)->logo_url,
-                'token' => $this->companyRepository->get('user_id', $job->user_id)->companyUser->token,
-                'role_name' => Auth::check() ? Auth::user()->userRole->name : config('app.guest_role'),
-                'can_apply' => Auth::check() ? $this->applicationRepository->checkDuplicate(Auth::id(), $job->id) : true,
+                'company_name' => $companyUserInfo->name,
+                'company_logo' => $this->companyRepository->getSpecifiedColumn('id', $job->user_id, ['logo_url']),
+                'token' => $companyUserInfo->token,
+                'role_name' => $roleName,
+                'can_apply' => $isUserAuthenticated ? $this->applicationRepository->checkDuplicate($authenticatedUser->id, $job->id) : true,
             ];
         }
 
@@ -135,7 +140,7 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
 
     public function getAllJob($key, $value, $per)
     {
-        return $this->model->where($key, $value)->orderBy('id', 'desc')->paginate($per);
+        return $this->model::with('locationJobs', 'applications', 'userJob')->where($key, $value)->orderBy('id', 'desc')->paginate($per);
     }
 
     public function getJobByUser($key, $value)
