@@ -29,7 +29,7 @@ class CompanyController extends Controller
 
     public function index()
     {
-        $userId = $this->userRepository->get('token', Auth::user()->token)->id;
+        $userId = $this->userRepository->getSpecifiedColumn('token', Auth::user()->token, ['id'])->id;
         $company = $this->company->getProfile($userId);
 
         return view('clients.companies.index', compact('company'));

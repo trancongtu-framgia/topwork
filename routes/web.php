@@ -5,7 +5,10 @@ Auth::routes();
 
 Route::group([
     'prefix' => 'admin',
-    'middleware' => 'auth',
+    'middleware' => [
+        'auth',
+        'check.admin',
+    ]
 ], function () {
     Route::get('/', 'AdminController@index')->name('admin.index');
     Route::resource('roles', 'RoleController');
