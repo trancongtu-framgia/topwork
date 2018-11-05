@@ -98,8 +98,12 @@ class JobController extends Controller
      */
     public function store(JobRequest $request)
     {
-        $validatedJobData = $request->except(['category_id', 'job_skill_ids']);
+        $validatedJobData = $request->except([
+            'category_id',
+            'job_skill_ids',
+        ]);
         $validatedJobData['user_id'] = Auth::id();
+        $validatedJobData['is_available'] = $validatedJobData['is_available'] == null ? false : true;
         $recentlyAddedJob = $this->jobRepository->create($validatedJobData)->id;
 
         $skillArray = $request->validated()['job_skill_ids'];
@@ -179,7 +183,10 @@ class JobController extends Controller
         $authenticatedCompanyUser = Auth::user();
         $job = $this->jobRepository->get('id', $id);
         if ($authenticatedCompanyUser->can('edit', $job)) {
-            $jobs = $this->jobRepository->update($request->validated(), 'id', $id);
+            $validatedJobData = $request->validated();
+            $validatedJobData['is_available'] = $validatedJobData['is_available'] == null ? false : true;
+
+            $jobs = $this->jobRepository->update($validatedJobData, 'id', $id);
             $this->jobCategory->delete('job_id', $id);
             $this->jobSkillRepository->delete('job_id', $id);
 
@@ -227,6 +234,13 @@ class JobController extends Controller
         }
 
         abort(403);
+    }
+
+    public function changeJobStatus(Request $request)
+    {
+        $updatedJob = $this->jobRepository->updateJobStatus($request->id);
+
+        return response()->json('ok');
     }
 
     public function getJobByCategory(Request $request)

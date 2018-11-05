@@ -10,6 +10,7 @@ Route::group([
         'check.admin',
     ]
 ], function () {
+    Route::delete('jobs/destroy/{id}', 'JobController@destroy')->name('jobs.destroy');
     Route::get('/', 'AdminController@index')->name('admin.index');
     Route::resource('roles', 'RoleController');
     Route::resource('job-types', 'JobTypeController');
@@ -34,7 +35,6 @@ Route::group([
         Route::get('edit/{id}', 'SkillController@edit')->name('skills.edit');
         Route::put('update/{id}', 'SkillController@update')->name('skills.update');
         Route::delete('destroy/{id}', 'SkillController@destroy')->name('skills.destroy');
-        Route::get('/get-skill-by-category', 'SkillController@getSkillByCategory')->name('skills.getSkillByCategory');
     });
 }
 );
@@ -97,7 +97,8 @@ Route::group([
         Route::post('/', 'JobController@store')->name('jobs.store');
         Route::get('edit/{id}', 'JobController@edit')->name('jobs.edit');
         Route::put('update/{id}', 'JobController@update')->name('jobs.update');
-        Route::delete('destroy/{id}', 'JobController@destroy')->name('jobs.destroy');
+        Route::get('/get-skill-by-category', 'SkillController@getSkillByCategory')->name('skills.getSkillByCategory');
+        Route::post('/update-status', 'JobController@changeJobStatus')->name('jobs.change_status');
     });
     Route::get('/detail/{id}', 'JobController@show')->name('jobs.detail');
     Route::get('/apply/{id}', 'ApplicationController@create')->name('applications.create');

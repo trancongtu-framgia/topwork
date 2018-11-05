@@ -18,24 +18,29 @@
                             <img class="img-responsive" src="{{ asset(config('app.client_media_url') . $jobDetail['company_logo']) }}" alt="post_img">
                         </div>
                         <div class="jp_job_post_right_cont">
-                            <h4>{{ $jobDetail['job']->title }}</h4>
+                            {{ Form::hidden('job_id', $jobDetail['job']->id, ['id' => 'hidden_job_id']) }}                            <h3>{{ $jobDetail['job']->title }}</h3>
                             <p>
                             <h5><a href="{{ route('companies.show', $jobDetail['token']) }}">{{ $jobDetail['company_name'] }}</a></h5>
                             </p>
                             <ul>
+                                <li></li>
                                 <li>
-                                    <i class="fa fa-usd"></i>&nbsp; {{ number_format($jobDetail['job']->salary_min) . ' - ' . number_format($jobDetail['job']->salary_max) }}
+                                    {{ __('Salary:') }}&nbsp; {{ '$ ' . number_format($jobDetail['job']->salary_min) . ' - $ ' . number_format($jobDetail['job']->salary_max) }}
                                 </li>
                                 <li>
-                                    <i class="fa fa-map-marker"></i>&nbsp; {{ $jobDetail['job']->locationJobs->name }}
+                                    {{ __('Location:') }}&nbsp; {{ $jobDetail['job']->locationJobs->name }}
                                 </li>
                                 <li>
-                                    <i class="fa fa-hashtag"></i>&nbsp;
+                                    {{ __('Experience:') }}&nbsp;
                                     {{ $jobDetail['job']->experience }}
                                 </li>
                                 <li>
-                                    <i class="fa fa-calendar"></i>&nbsp;
+                                    {{ __('Job closing on:') }}&nbsp;
                                     {{ date('d - m - Y', strtotime($jobDetail['job']->out_date)) }}
+                                </li>
+                                <li>
+                                    {{ __('Job Type:') }}&nbsp;
+                                    {{ $jobDetail['job']->jobTypeJobs->name }}
                                 </li>
                                 <li>
                                     @foreach($jobDetail['skills'] as $skill)
@@ -50,33 +55,43 @@
                             <ul>
                                 @if ($jobDetail['role_name'] == config('app.candidate_role'))
                                     <li></li>
-                                    <li><a href="#">{{ $jobDetail['job']->jobTypeJobs->name }}</a></li>
-                                    @if ($jobDetail['can_apply'])
+                                    @if ($jobDetail['can_apply'] && $jobDetail['job']->is_available == true)
                                         <li>
                                             <a href="{{ route('applications.create', ['id' => $jobDetail['job']->id]) }}">
                                                 {{ __('Apply') }}
                                             </a>
                                         </li>
-                                    @else
+                                    @elseif (!$jobDetail['can_apply'])
                                         <li>
                                             <a href="#" class="disabled_button" onclick="return false">
                                                 {{ __('Applied') }}
                                             </a>
                                         </li>
+                                    @elseif (!$jobDetail['job']->is_available)
+                                        <li>
+                                            <a href="#" class="disabled_button" onclick="return false">
+                                                {{ __('Job closed') }}
+                                            </a>
+                                        </li>
                                     @endif
+                                    <li></li>
                                 @elseif ($jobDetail['role_name'] == config('app.company_role') && Auth::user()->can('update', $jobDetail['job']))
                                     <li></li>
                                     <li>
-                                        <a href="{{ route('jobs.edit', ['id' => $jobDetail['job']->id]) }}">
+                                        <a class="with-60" href="{{ route('jobs.edit', ['id' => $jobDetail['job']->id]) }}">
                                             {{ __('Edit') }}
                                         </a>
                                     </li>
                                     <li>
-                                        @include('elements.button_model', ['nameRoute' => 'jobs.destroy', 'data' => $jobDetail['job']])
+                                        <label id="open_job">{{ $jobDetail['job']->is_available == 0 ? __('Open Job') : __('Close Job') }}</label><br>
+                                        <label class="switch">
+                                            {{ Form::hidden('is_available', false) }}
+                                            {{ Form::checkbox('is_available', true, $jobDetail['job']->is_available == 0 ? false : true, ['id' => 'change_job_status']) }}
+                                            <span class="slider round"></span>
+                                        </label>
                                     </li>
                                 @elseif ($jobDetail['role_name'] == config('app.guest_role'))
                                     <li></li>
-                                    <li><a href="#">{{ $jobDetail['job']->jobTypeJobs->name }}</a></li>
                                     @if ($jobDetail['can_apply'])
                                         <li>
                                             <a href="{{ route('applications.create', ['id' => $jobDetail['job']->id]) }}">
@@ -84,10 +99,13 @@
                                             </a>
                                         </li>
                                     @endif
-                                @else
                                     <li></li>
-                                    <li><a href="#">{{ $jobDetail['job']->jobTypeJobs->name }}</a></li>
+                                @elseif ($jobDetail['role_name'] == config('app.admin_role'))
                                     <li></li>
+                                    <li></li>
+                                    <li>
+                                        @include('elements.button_model', ['nameRoute' => 'jobs.destroy', 'data' => $jobDetail['job']])
+                                    </li>
                                 @endif
                             </ul>
                         </div>

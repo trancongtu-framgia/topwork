@@ -44,6 +44,7 @@ class JobRequest extends FormRequest
             'experience' => 'required|min:3|max:100',
             'category_ids' => 'required|array',
             'job_skill_ids' => 'required',
+            'is_available' => 'nullable'
         ];
     }
 }
