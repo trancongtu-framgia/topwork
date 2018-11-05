@@ -114,6 +114,7 @@ class RegisterController extends Controller
                 if ($candidate || $company) {
                     flash(__('Register succes. Please check email and confirm account!'))->success();
 
+                    
                     return redirect()->route('login');
                 } else {
                     flash(__('Register failed. Please try again!'));
@@ -123,7 +124,7 @@ class RegisterController extends Controller
             } catch (\Exception $e) {
                 DB::rollback();
 
-                return ['errorMessage' => $e->getMessage()];
+                return $e;
             }
         });
 

@@ -31,8 +31,6 @@ class CreateAccountRequest extends FormRequest
             'password_confirm' => 'required_with:password|same:password',
             'phone' => 'required|string',
             'address' => 'required|string',
-            'description' => 'required|string',
-            'dob' => 'required',
         ];
     }
 }
