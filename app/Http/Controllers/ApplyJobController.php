@@ -93,10 +93,10 @@ class ApplyJobController extends Controller
                 try {
                     $candidate = $this->getInfoCandidate($candidateId);
                     $company = $this->getInfoCompany($jobId);
-                    dispatch((new SendEmailToCandidate($candidate, $company)));
-                    dispatch((new SendEmailToCompany($company, $candidate)));
+                    dispatch(new SendEmailToCandidate($candidate, $company));
+                    dispatch(new SendEmailToCompany($company, $candidate));
                 } catch (\Exception $e) {
-                    //return redirect()->back();
+                    return $e;
                 }
                 return redirect()->route('jobs.detail', ['id' => $jobId])
                     ->with('status', __('Job applied'));

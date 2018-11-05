@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Interfaces;
 
-interface CandidateRepository
+interface CandidateRepository extends BaseRepository
 {
 	public function showInfoCandidate($key);
 
