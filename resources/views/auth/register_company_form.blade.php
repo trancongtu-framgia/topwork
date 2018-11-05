@@ -4,7 +4,7 @@
 <div class="row">
     <!--Form Group-->
     <div class="form-group col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('name', null,['placeholder' => __('Full name*')]) !!}
+        {!! Form::text('name', null, ['placeholder' => __('Full name*')]) !!}
         {!! $errors->first('name', '<span class="red">:message</span>') !!}
     </div>
 
@@ -26,8 +26,8 @@
     </div>
     <!--Form Group-->
     <div class="form-group col-md-6 col-sm-6 col-xs-12">
-        {!! Form::password('password', ['placeholder' => __('Re-enter password*')]) !!}
-        {!! $errors->first('password_confirmed', '<span class="red">:message</span>') !!}
+        {!! Form::password('password_confirm', ['placeholder' => __('Re-enter password*')]) !!}
+        {!! $errors->first('password_confirm', '<span class="red">:message</span>') !!}
     </div>
     <!--Form Group-->
     <div class="form-group col-md-6 col-sm-6 col-xs-12">
@@ -40,20 +40,16 @@
         {!! $errors->first('phone', '<span class="red">:message</span>') !!}
     </div>
     <!--Form Group-->
-    <div class="form-group col-md-6 col-sm-6 col-xs-12 custom_input">
-        {{ Form::file('avatar_url', ['required' => 'true']) }}
-        {!! $errors->first('avatar_url', '<span class="red">:message</span>') !!}
-    </div>
-    <!--Form Group-->
     <div class="form-group col-md-6 col-sm-6 col-xs-12">
-        {!! Form::label(__('Date of birth')) !!}<br>
-        {!! Form::date('dob', null,['placeholder' => __('Date of birth*'), 'class' => 'date_register']) !!}
-        {!! $errors->first('dob', '<span class="red">:message</span>') !!}
+        {!! Form::text('description', null, ['placeholder' => __('Description*')]) !!}
+        {!! $errors->first('phone', '<span class="red">:message</span>') !!}
+    </div>
+    <div class="form-group col-md-6 col-sm-6 col-xs-12">
+        {!! Form::hidden('role_name', config('app.company_role')) !!}
     </div>
 </div>
-
 <div class="login_btn_wrapper register_btn_wrapper login_wrapper ">
-    <a href="#" class="btn btn-primary login_btn"> {{ __('register') }} </a>
+    <a href="#" id="submitCompany" class="btn btn-primary login_btn"> {{ __('register') }} </a>
 </div>
 <div class="login_message">
     <p>{{ __('Already a member?') }} <a href="#"> {{ __('Login Here') }} </a></p>

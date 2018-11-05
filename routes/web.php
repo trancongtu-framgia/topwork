@@ -138,3 +138,7 @@ Route::group([
     Route::put('applications/update/{id}', 'ApplicationController@update')->name('application.update');
 });
 
+Route::group(['prefix' => 'register'], function () {
+    Route::get('confirm-user/{idUser}', 'Auth\RegisterController@confirmAccount')->name('user.confirmAccount');
+});
+
