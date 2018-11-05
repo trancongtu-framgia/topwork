@@ -7,6 +7,13 @@
                         <img class="img-responsive" src="{{ asset(config('app.client_media_url') . $job['company_logo']) }}" alt="post_img">
                     </div>
                     <div class="jp_job_post_right_cont jp_job_post_grid_right_cont">
+                        <div class="pull-right" style="">
+                            @if ($job['job']->is_available)
+                                <label class="job-label label label-success">{{ __('Opening') }}</label>
+                            @else
+                                <label class="job-label label label-danger">{{ __('Closed') }}</label>
+                            @endif
+                        </div>
                         <h4 class="text-dark"><a href="{{ route('jobs.detail', ['id' => $job['job']->id]) }}">{{ $job['job']->title }}</a></h4>
                         <p>
                         <h4><a href="{{ route('companies.show',  $job['token']) }}">{{ $job['company_name'] }}</a></h4>
@@ -23,6 +30,10 @@
                                 <i class="fa fa-hashtag"></i>&nbsp;
                                 {{ $job['job']->experience }}
                             </li>
+                            <li>
+                                <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                <a href="#">{{ $job['job']->jobTypeJobs->name }}</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -30,10 +41,10 @@
                     <div class="jp_job_post_right_btn_wrapper jp_job_post_grid_right_btn_wrapper">
                         <ul class="pull-right">
                             <li></li>
-                            <li><a href="#">{{ $job['job']->jobTypeJobs->name }}</a></li>
                             <li>
                                 <a href="{{ route('jobs.detail', ['id' => $job['job']->id]) }}"> {{ __('Detail') }}</a>
                             </li>
+                            <li></li>
                         </ul>
                     </div>
                 </div>

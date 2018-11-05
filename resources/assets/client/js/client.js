@@ -35,6 +35,37 @@ function getJobByCategory(category) {
 
 }
 
+function showNotification(content, type) {
+    notif({
+        msg: "<b>" + content + "</b>",
+        type: type
+    });
+}
+
+$('#change_job_status').change(function() {
+    var toggle = $('#change_job_status').val();
+    var jobId = $('#hidden_job_id').val();
+    var orginalLabel = $('#open_job').text();
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: route('jobs.change_status'),
+        type: 'POST',
+        data: {id:jobId},
+        success: function (data) {
+            console.log(data);
+            var content = $('#open_job').text();
+            content = content == 'Open Job' ? 'Close Job' : 'Open Job';
+            $('#open_job').text(content);
+            showNotification(orginalLabel + ' Successfully', 'success');
+        }
+    })
+});
+
+
 function getJob(categoryId) {
     $.ajax({
         url: route('job.getJobByCategory'),

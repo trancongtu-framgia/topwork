@@ -28,6 +28,7 @@ mix.scripts(
         'resources/assets/client/js/jquery.magnific-popup.js',
         'resources/assets/client/js/custom_II.js',
         'resources/assets/client/js/client.js',
+        'resources/assets/client/js/notifIt.js',
         'node_modules/typeahead.js/dist/typeahead.bundle.js',
     ], 'public/js/app_client.js');
 
@@ -47,6 +48,7 @@ mix.styles(
         'resources/assets/client/css/nav_client.css',
         'resources/assets/client/css/login.css',
         'resources/assets/client/css/client.css',
+        'resources/assets/client/css/notifIt.css',
     ], 'public/css/app_client.css');
 
 mix.copyDirectory('resources/assets/client/images', 'public/assets/clients/images');

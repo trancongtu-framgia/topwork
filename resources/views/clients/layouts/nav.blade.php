@@ -76,7 +76,25 @@
                         </ul>
                     </div>
                 </div>
-        @endif
+                @else
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 center_responsive">
+                    <div class="header-area hidden-menu-bar stick" id="sticker">
+                        <!-- mainmenu start -->
+                        <div class="mainmenu">
+                            <ul class="float_left">
+                                <li class="has-mega gc_main_navigation">
+                                    <a href="{{ route('home.index') }}" class="gc_main_navigation"> {{ __('Home') }}&nbsp;
+                                    </a>
+                                    <!-- mega menu start -->
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- mainmenu end -->
+                    </div>
+                    <div class="jp_navi_right_btn_wrapper">
+                    </div>
+                </div>
+                @endif
         <!-- mobile menu area end -->
         </div>
     </div>

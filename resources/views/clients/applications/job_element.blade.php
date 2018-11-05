@@ -4,19 +4,33 @@
             <div class="row">
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                     <div class="jp_job_post_side_img">
-                        <img class="img-responsive"
-                             src="{{ asset(config('app.client_media_url') . $job['company_logo']) }}" alt="post_img">
+                        <img class="img-responsive" src="{{ asset(config('app.client_media_url') . $job['company_logo']) }}" alt="post_img">
                     </div>
                     <div class="jp_job_post_right_cont">
-                        <h4>{{ $job['job']->title }}</h4>
+                        <h4 class="text-dark"><a href="{{ route('jobs.detail', ['id' => $job['job']->id]) }}">{{ $job['job']->title }}</a></h4>
                         <p>
-                            <h5>{{ $job['company_name'] }}</h5>
+                        <h4><a href="{{ route('companies.show',  $job['token']) }}">{{ $job['company_name'] }}</a></h4>
                         </p>
                         <ul>
-                            <li><i class="fa fa-usd"></i>&nbsp;
-                                {{ number_format($job['job']->salary_min) . ' - ' . number_format($job['job']->salary_max) }}
+                            <li></li>
+                            <li>
+                                {{ __('Salary:') }}&nbsp; {{ '$ ' . number_format($job['job']->salary_min) . ' - $ ' . number_format($job['job']->salary_max) }}
                             </li>
-                            <li><i class="fa fa-map-marker"></i>&nbsp; {{ $job['job']->locationJobs->name }}</li>
+                            <li>
+                                {{ __('Location:') }}&nbsp; {{ $job['job']->locationJobs->name }}
+                            </li>
+                            <li>
+                                {{ __('Experience:') }}&nbsp;
+                                {{ $job['job']->experience }}
+                            </li>
+                            <li>
+                                {{ __('Job closing on:') }}&nbsp;
+                                {{ date('d - m - Y', strtotime($job['job']->out_date)) }}
+                            </li>
+                            <li>
+                                {{ __('Job Type:') }}&nbsp;
+                                {{ $job['job']->jobTypeJobs->name }}
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -24,8 +38,10 @@
                     <div class="jp_job_post_right_btn_wrapper">
                         <ul>
                             <li></li>
-                            <li><a href="#">{{ $job['job']->jobTypeJobs->name }}</a></li>
-                            <li><a href="{{ route('jobs.detail', ['id' => $job['job']->id]) }}">{{ __('Detail') }}</a></li>
+                            <li>
+                                <a href="{{ route('jobs.detail', ['id' => $job['job']->id]) }}"> {{ __('Detail') }}</a>
+                            </li>
+                            <li></li>
                         </ul>
                     </div>
                 </div>

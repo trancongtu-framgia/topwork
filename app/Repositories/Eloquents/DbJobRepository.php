@@ -54,17 +54,9 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
 
     public function getAll($per)
     {
-        $listJob = [];
         $jobs = $this->model::with('locationJobs', 'jobTypeJobs')->get();
-        if ($jobs) {
-            foreach ($jobs as $job) {
-                if ($this->compareDateJob($job->out_date)) {
-                    $listJob[] = $job;
-                }
-            }
-        }
 
-        return $this->paginatorJob($this->getJobWithSkillName($listJob), $per);
+        return $this->paginatorJob($this->getJobWithSkillName($jobs), $per);
     }
 
     public function paginatorJob($listJob, $per, $url = null)
@@ -95,6 +87,13 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
     public function update($data, $key, $value)
     {
         return $this->baseUpdate($data, $key, $value);
+    }
+
+    public function updateJobStatus(int $jobId)
+    {
+        $job = $this->model::findOrFail($jobId);
+        $job->is_available = $job->is_available == true ? false : true;
+        $job->save();
     }
 
     public function delete($key, $value)
@@ -128,7 +127,7 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
                 'job' => $job,
                 'skills' => $skillName,
                 'company_name' => $companyUserInfo->name,
-                'company_logo' => $this->companyRepository->getSpecifiedColumn('id', $job->user_id, ['logo_url']),
+                'company_logo' => $this->companyRepository->getSpecifiedColumn('user_id', $job->user_id, ['logo_url'])->logo_url,
                 'token' => $companyUserInfo->token,
                 'role_name' => $roleName,
                 'can_apply' => $isUserAuthenticated ? $this->applicationRepository->checkDuplicate($authenticatedUser->id, $job->id) : true,

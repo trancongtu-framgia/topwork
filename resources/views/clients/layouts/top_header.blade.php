@@ -32,6 +32,8 @@
                                             <a href="{{ route('candidate.getInfo', Auth::user()->token) }}">{{ Auth::user()->name }}</a>
                                         @elseif (strtolower(Auth::user()->userRole->name) == config('app.company_role'))
                                             <a href="{{ route('companies.index') }}">{{ Auth::user()->name }}</a>
+                                        @elseif (strtolower(Auth::user()->userRole->name) == config('app.admin_role'))
+                                            <a href="{{ route('admin.index') }}">{{ __('Admin CP') }}</a>
                                         @endif
                                     </a>
                                 </li>
