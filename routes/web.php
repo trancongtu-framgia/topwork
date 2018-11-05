@@ -5,7 +5,10 @@ Auth::routes();
 
 Route::group([
     'prefix' => 'admin',
-    'middleware' => 'auth',
+    'middleware' => [
+        'auth',
+        'check.admin',
+    ]
 ], function () {
     Route::get('/', 'AdminController@index')->name('admin.index');
     Route::resource('roles', 'RoleController');
@@ -133,5 +136,9 @@ Route::group([
     Route::get('applications/get-detail-candidate-apply/{id}', 'ApplicationController@getDetailCandidateApply')->name('application.getDetailCandidate');
     Route::get('applications/download-cv/{name}', 'ApplicationController@downloadCv')->name('application.download');
     Route::put('applications/update/{id}', 'ApplicationController@update')->name('application.update');
+});
+
+Route::group(['prefix' => 'register'], function () {
+    Route::get('confirm-user/{idUser}', 'Auth\RegisterController@confirmAccount')->name('user.confirmAccount');
 });
 

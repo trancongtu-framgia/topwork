@@ -13,6 +13,8 @@ return [
     'candidate_apply_check' => 0,
     'candidate_apply_checked' => 1,
     'record_number' => 3,
+    'status_account_deactivate' => 0,
+    'status_account_activate' => 1,
     /*
     |--------------------------------------------------------------------------
     | Application Name
