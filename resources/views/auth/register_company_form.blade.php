@@ -36,7 +36,7 @@
     </div>
     <!--Form Group-->
     <div class="form-group col-md-6 col-sm-6 col-xs-12">
-        {!! Form::number('phone', null, ['placeholder' => __('Phone*')]) !!}
+        {!! Form::text('phone', null, ['placeholder' => __('Phone*')]) !!}
         {!! $errors->first('phone', '<span class="red">:message</span>') !!}
     </div>
     <!--Form Group-->
