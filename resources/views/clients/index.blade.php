@@ -20,11 +20,40 @@
                                                     {!! Form::checkbox('category', $key, null,
                                                         [
                                                             'id' => 'category' . $key,
-                                                            'onClick' => 'getJobByCategory(this)',
+                                                            'class' => 'categoryCheckbox',
                                                         ]);
                                                     !!}
                                                     <label for="category{{ $key }}">{{ $value }}</label>
                                                 </p>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="jp_rightside_job_categories_wrapper">
+                                <div class="jp_rightside_job_categories_heading">
+                                    <h4>{{__('Jobs by Salary')}}</h4>
+                                </div>
+                                <div class="jp_rightside_job_categories_content">
+                                    <div class="handyman_sec1_wrapper">
+                                        <div class="content">
+                                            <div class="box">
+                                                @foreach (config('app.ListSalary') as $key => $value)
+                                                    <p>
+                                                        {!! Form::checkbox('salary', $key, null,
+															[
+																'id' => 'salary' . $key,
+																'class' => 'salaryCheckbox',
+																'onChange' => 'getJobBySalary(this)'
+															]);
+														!!}
+                                                        <label for="salary{{ $key }}">{{ $value }}</label>
+                                                    </p>
                                                 @endforeach
                                             </div>
                                         </div>
