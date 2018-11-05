@@ -40,8 +40,7 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
         UserRepository $userRepository,
         JobCategoryRepository $jobCategoryRepository,
         ApplicationRepository $applicationRepository
-    )
-    {
+    ) {
         $this->model = $model;
         $this->jobSkillRepository = $jobSkillRepository;
         $this->companyRepository = $companyRepository;
@@ -127,10 +126,12 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
                 'job' => $job,
                 'skills' => $skillName,
                 'company_name' => $companyUserInfo->name,
-                'company_logo' => $this->companyRepository->getSpecifiedColumn('user_id', $job->user_id, ['logo_url'])->logo_url,
+                'company_logo' => $this->companyRepository->getSpecifiedColumn('user_id', $job->user_id,
+                    ['logo_url'])->logo_url,
                 'token' => $companyUserInfo->token,
                 'role_name' => $roleName,
-                'can_apply' => $isUserAuthenticated ? $this->applicationRepository->checkDuplicate($authenticatedUser->id, $job->id) : true,
+                'can_apply' => $isUserAuthenticated ? $this->applicationRepository->checkDuplicate($authenticatedUser->id,
+                    $job->id) : true,
             ];
         }
 
@@ -139,7 +140,8 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
 
     public function getAllJob($key, $value, $per)
     {
-        return $this->model::with('locationJobs', 'applications', 'userJob')->where($key, $value)->orderBy('id', 'desc')->paginate($per);
+        return $this->model::with('locationJobs', 'applications', 'userJob')->where($key, $value)->orderBy('id',
+            'desc')->paginate($per);
     }
 
     public function getJobByUser($key, $value)
@@ -225,11 +227,13 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
     private function getJobByDate($jobs, $per, $url)
     {
         $listJobs = [];
-        foreach ($jobs as $job) {
-            $job = $this->get('id', $job);
-            if ($job) {
-                if ($this->compareDateJob($job->out_date)) {
-                    $listJobs[] = $job;
+        if ($jobs) {
+            foreach ($jobs as $job) {
+                $job = $this->get('id', $job);
+                if ($job) {
+                    if ($this->compareDateJob($job->out_date)) {
+                        $listJobs[] = $job;
+                    }
                 }
             }
         }
@@ -248,11 +252,81 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
         return false;
     }
 
-    public function getJobByCategory($categoryId, $per, $url)
+    public function getJobByCategory($categoryIds)
     {
-        $listJobs = $this->jobCategory->getJobIdByCategory($categoryId);
+        $listJobs = [];
+        if ($categoryIds) {
+            $i = 0;
+            foreach ($categoryIds as $categoryId) {
+                $i++;
+                $jobIds = $this->jobCategory->getJobIdByCategory($categoryId);
+                if ($i == 1) {
+                    foreach ($jobIds as $jobId) {
+                        $listJobs[] = $jobId;
+                    }
+                } else {
+                    $listJobs = $this->getJobByArray($listJobs, $jobIds);
+                    foreach ($listJobs as $listJob) {
+                        if (!in_array($listJob, $listJobs)) {
+                            $listJobs[] = $listJob;
+                        }
+                    }
+                }
+            }
+        } else {
+            return null;
+        }
 
-        return $this->getJobByDate($listJobs, $per, $url);
+        return $listJobs;
+    }
+
+    public function getJobBySalary($salary)
+    {
+        if ($salary) {
+            if (array_key_exists($salary[0], config('app.ListSalary'))) {
+                $listArray = [];
+                $salaryConvert = explode('.', $salary[0]);
+                if ($salaryConvert[0] === 'F') {
+                    $jobsForSalaries = $this->model->where('salary_min', '>=', (int)$salaryConvert[1])->get(['id']);
+
+                } else {
+                    $jobsForSalaries = $this->model->whereBetween('salary_min',
+                        [(int)$salaryConvert[0], (int)$salaryConvert[1]])->get(['id']);
+                }
+                foreach ($jobsForSalaries as $jobsForSalary) {
+                    $listArray[] = $jobsForSalary->id;
+                }
+
+                return $listArray;
+            }
+        }
+
+        return null;
+    }
+
+    public function getJobBySalaryCategory($salary, $categoryId, $per, $url)
+    {
+        $jobs = null;
+        if ($salary && $categoryId) {
+            $jobs = $this->getJobByArray($this->getJobBySalary($salary), $this->getJobByCategory($categoryId));
+        } elseif ($salary) {
+            $jobs = $this->getJobBySalary($salary);
+        } elseif ($categoryId) {
+            $jobs = $this->getJobByCategory($categoryId);
+        } else {
+            $jobs = $this->model->get(['id'])->toArray();
+        }
+
+        return $this->getJobByDate($jobs, $per, $url);
+    }
+
+    public function getJobByArray($arrayJobBefore, $arrayJobAfter)
+    {
+        if (!empty($arrayJobBefore) && !empty($arrayJobAfter)) {
+            return array_intersect($arrayJobBefore, $arrayJobAfter);
+        }
+
+        return null;
     }
 
     public function getAllApplication(int $userId)

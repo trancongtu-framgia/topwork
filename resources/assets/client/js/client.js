@@ -22,22 +22,47 @@ function logout(content, cancel, ok) {
         }
     });
 }
-function getJobByCategory(category) {
-    var box = $(category);
+
+function getJobBySalary(salary) {
+    var box = $(salary);
     if (box.is(':checked')) {
         var group = 'input:checkbox[name=\'' + box.attr('name') + '\']';
         $(group).prop('checked', false);
         box.prop('checked', true);
-        getJob(box.val());
     } else {
         box.prop('checked', false);
     }
+}
 
+$('.salaryCheckbox').change(function () {
+    getJob(getJobBySalaryValue(), getJobByCategory());
+});
+
+function getJobBySalaryValue(){
+    var salaryCheck = [];
+    $('.salaryCheckbox:checked').each(function(i){
+        salaryCheck[i] = $(this).val();
+    });
+
+    return salaryCheck;
+}
+
+$('.categoryCheckbox').change(function () {
+    getJob(getJobBySalaryValue(), getJobByCategory());
+});
+
+function getJobByCategory() {
+    var categoryCheck = [];
+    $('.categoryCheckbox:checked').each(function(i){
+        categoryCheck[i] = $(this).val();
+    });
+
+    return categoryCheck;
 }
 
 function showNotification(content, type) {
     notif({
-        msg: "<b>" + content + "</b>",
+        msg: '<b>' + content + '</b>',
         type: type
     });
 }
@@ -65,12 +90,11 @@ $('#change_job_status').change(function() {
     })
 });
 
-
-function getJob(categoryId) {
+function getJob(salary, categoryId) {
     $.ajax({
-        url: route('job.getJobByCategory'),
+        url: route('job.getJobBySalaryCategory'),
         type: 'GET',
-        data: {categoryId: categoryId},
+        data: {categoryId: categoryId, salary: salary},
         success: function (data) {
             $('#conten-job').html(data);
         }

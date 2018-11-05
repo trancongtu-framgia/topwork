@@ -12,5 +12,5 @@ interface JobRepository extends BaseRepository
 
     public function searchJob($keyword, $location, $per, $url);
 
-    public function getJobByCategory($categoryId, $per, $url);
+    public function getJobBySalaryCategory($salary, $categoryId, $per, $url);
 }

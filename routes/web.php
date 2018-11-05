@@ -102,7 +102,7 @@ Route::group([
     });
     Route::get('/detail/{id}', 'JobController@show')->name('jobs.detail');
     Route::get('/apply/{id}', 'ApplicationController@create')->name('applications.create');
-    Route::get('/get-jobs-by-category', 'JobController@getJobByCategory')->name('job.getJobByCategory');
+    Route::get('/get-jobs-by-salary-category', 'JobController@getJobBySalaryCategory')->name('job.getJobBySalaryCategory');
 });
 
 Route::group([

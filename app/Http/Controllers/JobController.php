@@ -32,6 +32,7 @@ class JobController extends Controller
     private $companyRepository;
     private $applicationRepository;
     private $jobCategory;
+
     /**
      * Display a listing of the resource.
      *
@@ -93,7 +94,7 @@ class JobController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(JobRequest $request)
@@ -126,7 +127,7 @@ class JobController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Job  $job
+     * @param  \App\Models\Job $job
      * @return \Illuminate\Http\Response
      */
     public function show(int $jobId)
@@ -145,7 +146,7 @@ class JobController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Job  $job
+     * @param  \App\Models\Job $job
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -174,8 +175,8 @@ class JobController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Job  $job
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Models\Job $job
      * @return \Illuminate\Http\Response
      */
     public function update(JobRequest $request, $id)
@@ -211,7 +212,7 @@ class JobController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Job  $job
+     * @param  \App\Models\Job $job
      * @return \Illuminate\Http\Response
      */
     public function destroy(int $jobId)
@@ -236,6 +237,7 @@ class JobController extends Controller
         abort(403);
     }
 
+
     public function changeJobStatus(Request $request)
     {
         $updatedJob = $this->jobRepository->updateJobStatus($request->id);
@@ -243,10 +245,15 @@ class JobController extends Controller
         return response()->json('ok');
     }
 
-    public function getJobByCategory(Request $request)
-    {
-        $jobs = $this->jobRepository->getJobByCategory($request->categoryId, self::RECORD_PER_PAGE, $request->fullUrl());
 
-        return view('clients.home.partials.contentShowJobs', compact('jobs'));
+    public function getJobBySalaryCategory(Request $request)
+    {
+        $jobs = $this->jobRepository->getJobBySalaryCategory($request->salary, $request->categoryId,
+            self::RECORD_PER_PAGE, $request->fullUrl());
+        if ($jobs) {
+            return view('clients.home.partials.contentShowJobs', compact('jobs'));
+        }
+
+        return __('No results were found');
     }
 }
