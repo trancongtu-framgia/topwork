@@ -25,7 +25,7 @@ class DbUserRepository extends DbBaseRepository implements UserRepository
 
     public function create($param)
     {
-        // TODO: Implement create() method.
+        return $this->baseCreate($param);
     }
 
     public function get($key, $value)

@@ -23,6 +23,31 @@ class DbCandidateRepository extends DbBaseRepository implements CandidateReposit
         $this->userModel = $userModel;
     }
 
+    public function get($key, $value)
+    {
+        return $this->baseFindBy($key, $value);
+    }
+
+    public function create($param)
+    {
+        return $this->baseCreate($param);
+    }
+
+    public function getAll($per)
+    {
+        // TODO: Implement getAll() method.
+    }
+
+    public function update($data, $key, $value)
+    {
+        // TODO: Implement update() method.
+    }
+
+    public function delete($key, $value)
+    {
+        // TODO: Implement delete() method.
+    }
+
     public function showInfoCandidate($key)
     {
         return $this->userModel->where('token', $key)->first();

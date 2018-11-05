@@ -28,21 +28,21 @@ class DbCompanyRepository extends DbBaseRepository implements CompanyRepository
 
     public function getAll($per)
     {
-        // TODO: Implement getAll() method.
+        return $this->basePaginateList($per);
     }
 
     public function update($data, $key, $value)
     {
-        // TODO: Implement update() method.
+        return $this->baseUpdate($data, $key, $value);
     }
 
     public function delete($key, $value)
     {
-        // TODO: Implement delete() method.
+        return $this->baseDestroy($key, $value);
     }
     public function create($param)
     {
-        // TODO: Implement create() method.
+        return $this->baseCreate($param);
     }
     public function getProfile($id)
     {
