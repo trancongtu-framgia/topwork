@@ -37,6 +37,14 @@
                                 <i class="fa fa-clock-o" aria-hidden="true"></i>
                                 <a href="#">{{ $job['job']->jobTypeJobs->name }}</a>
                             </li>
+                            <li>
+                                @if ($job['job']->candidate_number != null)
+                                    <i class="fa fa-users" aria-hidden="true"></i>
+                                    {{ $job['job']->candidate_number }}
+                                @else
+                                    <span>&nbsp;</span>
+                                @endif
+                            </li>
                         </ul>
                     </div>
                 </div>

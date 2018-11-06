@@ -92,7 +92,7 @@ class AdminController extends Controller
     public function changeCompanyStatus(int $companyId)
     {
         $currentStatus = $this->userRepository->getSpecifiedColumn('id', $companyId, ['status'])->status;
-        $inversionStatus = $currentStatus == config('app.status_account_activate') ? config('app.status_account_deactivate') : config('app.status_account_activate');
+        $inversionStatus = $currentStatus == config('app.status_account_activate') ? config('app.status_account_pending') : config('app.status_account_activate');
 
         $update = $this->userRepository->update(['status' => $inversionStatus], 'id', $companyId);
 

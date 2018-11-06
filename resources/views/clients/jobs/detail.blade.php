@@ -43,6 +43,13 @@
                                     {{ $jobDetail['job']->jobTypeJobs->name }}
                                 </li>
                                 <li>
+                                    @if ($jobDetail['job']->candidate_number != null)
+                                        {{ __('Candidate Number:') }}&nbsp;
+                                        {{ $jobDetail['job']->candidate_number }}
+                                    @endif
+                                </li>
+
+                                <li>
                                     @foreach($jobDetail['skills'] as $skill)
                                         <span class="label label-info">{{ $skill }}</span>
                                     @endforeach

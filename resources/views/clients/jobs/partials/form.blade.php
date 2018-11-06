@@ -85,6 +85,13 @@
         </select>
     </div>
     {!! $errors->first('job_skill_ids', '<span class="red">:message</span>') !!}
+
+    <div class="input-group jp_adp_form_wrapper">
+        <span class="input-group-addon">{{ __('Candidate Number') }}</span>
+        {!! Form::number('candidate_number', null, ['placeholder' => __('Candidate Number'), 'class' => 'form-control']) !!}
+    </div>
+    {!! $errors->first('candidate_number', '<span class="red">:message</span>') !!}
+
     <div class="input-group jp_adp_form_wrapper">
         <label>{{ __('Open Job') }}</label><br>
         <label class="switch">
@@ -93,7 +100,7 @@
             <span class="slider round"></span>
         </label>
     </div>
-    {!! $errors->first('category_ids', '<span class="red">:message</span>') !!}
+    {!! $errors->first('is_available', '<span class="red">:message</span>') !!}
     <div class="jp_adp_form_wrapper">
     </div>
 </div>

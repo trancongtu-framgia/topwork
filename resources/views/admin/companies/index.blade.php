@@ -20,10 +20,12 @@
                 <td>{{ $company->id }}</td>
                 <td><a href="{{ route('admin.companies.detail', $company->id) }}">{{ $company->name }}</a></td>
                 <td>{{ $company->email }}</td>
-                @if ($company->status == config('app.job_close_status'))
-                    <td><label class="badge badge-danger">{{ __('In Active') }}</td></label>
-                @elseif ($company->status == config('app.job_open_status'))
-                    <td><label class="badge badge-success">{{ __('Active') }}</td></label>
+                @if ($company->status == config('app.status_account_deactivate'))
+                    <td><label class="badge badge-danger">{{ __('In Active') }}</label></td>
+                @elseif ($company->status == config('app.status_account_pending'))
+                    <td><label class="badge badge-warning">{{ __('Verified | Pending') }}</label></td>
+                @elseif ($company->status == config('app.status_account_activate'))
+                    <td><label class="badge badge-success">{{ __('Activated') }}</label></td>
                 @endif
             </tr>
         @endforeach

@@ -23,6 +23,7 @@ class Job extends Model
         'experience',
         'out_date',
         'is_available',
+        'candidate_number',
     ];
 
     public function user()

@@ -22,10 +22,12 @@
         </div>
     </div>
     <p>
-        @if ($company['active'] == config('app.status_account_deactivate'))
+        @if ($company['active'] == config('app.status_account_pending'))
             <a class="btn btn-primary" href="{{ route('admin.companies.change', $company['user_id']) }}" role="button">{{ __('Activate') }}</a>
         @elseif ($company['active'] == config('app.status_account_activate'))
             <a class="btn btn-danger" href="{{ route('admin.companies.change', $company['user_id']) }}" role="button">{{ __('Deactivate') }}</a>
+        @elseif ($company['active'] == config('app.status_account_deactivate'))
+            <a class="btn btn-primary disabled" onclick="return false;" href="" role="button">{{ __('Activate') }}</a>
         @endif
     </p>
 @stop
