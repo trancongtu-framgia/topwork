@@ -33,3 +33,14 @@
 .my-float {
     margin-top:22px;
 }
+
+.jp_add_resume_cont ul{
+    margin-top: 0px;
+}
+
+.jp_cp_accor_heading_wrapper p{
+    padding-bottom: 0px;
+}
+.content-cadidate-description{
+    overflow: auto;
+}

@@ -24,6 +24,8 @@ return [
     ],
     'job_open_status' => 1,
     'job_close_status' => 0,
+    'isPublicCandidate' => 1,
+    'isNotPublicCandidate' => 0,
     /*
     |--------------------------------------------------------------------------
     | Application Name

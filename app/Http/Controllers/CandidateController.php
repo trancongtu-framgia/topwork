@@ -101,7 +101,10 @@ class CandidateController extends Controller
         try {
             $user = $this->candidateRepository->showInfoCandidate($id);
             if (!empty($user) && $user->candidate) {
-                return view('clients.candidates.index', compact('user'));
+                $checkAuth = Auth::check() && Auth::user()->token == $user->token;
+                $isPublicCandidate = $user->candidate->is_public == config('app.isPublicCandidate');
+
+                return view('clients.candidates.index', compact('user', 'isPublicCandidate', 'checkAuth'));
             } else {
                 throw new Exception(__('Cannot find!'));
             }
@@ -141,5 +144,12 @@ class CandidateController extends Controller
 
             return redirect()->back();
         }
+    }
+
+    public function changeStatus(Request $request)
+    {
+        $updateStatus = $this->candidateRepository->updateStatus($request->token);
+
+        return $updateStatus;
     }
 }

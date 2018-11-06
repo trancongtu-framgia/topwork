@@ -9,9 +9,9 @@
     </ul>
 @endsection
 @include('clients.layouts.breadcrumb')
-    @include('flash::message')
     <div class="jp_cp_profile_main_wrapper">
         <div class="container">
+            @include('flash::message')
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <div class="jp_cp_left_side_wrapper">
@@ -36,9 +36,13 @@
                         </div>
                     </div>
                     <div class="jp_add_resume_cont jp_add_resume_wrapper">
-                        @if (Auth::check() && Auth::user()->token == $user->token && strtolower(Auth::user()->userRole->name) == config('app.candidate_role'))
+                        @if ($checkAuth)
                         <ul>
-                            <li><a href="{{ route('candidate.getEditInfo', $user->token) }}"><i class="fa fa-pencil-square-o set_padding" aria-hidden="true"></i>{{ __('EDIT PROFILE') }}</a></li>
+                            <li>
+                                <a href="{{ route('candidate.getEditInfo', $user->token) }}">
+                                    <i class="fa fa-pencil-square-o set_padding" aria-hidden="true"></i>{{ __('EDIT PROFILE') }}
+                                </a>
+                            </li>
                         </ul>
                         @endif
                     </div>
@@ -46,6 +50,7 @@
                 <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                     <div class="jp_cp_right_side_wrapper">
                         <div class="jp_cp_right_side_inner_wrapper">
+                            {{ Form::hidden('candidate_token', $user->token, ['id' => 'candidate_token']) }}
                             <h2>{{ __('PERSONAL DETAILS') }}</h2>
                             <table>
                                 <tbody>
@@ -59,6 +64,7 @@
                                     <td class="td-w10">:</td>
                                     <td class="td-w65">{{ $user->candidate->dob }}</td>
                                 </tr>
+                                @if ($checkAuth || $isPublicCandidate)
                                 <tr>
                                     <td class="td-w25">{{ __('Address') }}</td>
                                     <td class="td-w10">:</td>
@@ -74,36 +80,40 @@
                                     <td class="td-w10">:</td>
                                     <td class="td-w65">{{ $user->email }}</td>
                                 </tr>
+                                <tr>
+                                    <td class="td-w25">{{ __('Experience') }}</td>
+                                    <td class="td-w10">:</td>
+                                    <td class="td-w65">{{ $user->candidate->experience }}</td>
+                                </tr>
+                                @endif
                                 </tbody>
                             </table>
+                            @if ($checkAuth)
+                            <label>{{ __('Public') }}</label><br>
+                            <label class="switch">
+                                {{ Form::checkbox('is_public', true,
+                                    $user->candidate->is_public == 0 ? false : true,
+                                    ['onChange' => 'is_public_candidate(\'' . config('app.locale') . '\', \''.__('Update'). '\')'])
+                                }}
+                                <span class="slider round"></span>
+                            </label>
+                            @endif
                         </div>
                     </div>
+                    @if ($checkAuth || $isPublicCandidate)
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-                            <div class="jp_cp_accor_heading_wrapper">
-                                <h2>{{ __('Experience') }}</h2>
-                                <p>{{ $user->candidate->experience }}</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-                            <div class="accordion_wrapper abt_page_2_wrapper">
-                                <div class="panel-group" id="accordion_threeLeft">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading bell">
-                                            <h4 class="panel-title">
-                                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion_threeLeft" href="#collapseTwentyLeftThree" aria-expanded="false">{{ __('Profile Detail') }}</a>
-                                            </h4>
-                                        </div>
-                                        <div id="collapseTwentyLeftThree" class="panel-collapse collapse" aria-expanded="false" role="tablist" style="height: 0px;">
-                                            <div class="panel-body">
-                                                {!! $user->candidate->description !!}
-                                            </div>
-                                        </div>
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                <div class="jp_cp_accor_heading_wrapper">
+                                    <h2>{{ __('Profile Detail') }}</h2>
+                                    <div class="content-cadidate-description">
+                                        {!! $user->candidate->description !!}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>

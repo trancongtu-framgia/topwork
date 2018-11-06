@@ -74,6 +74,7 @@ Route::group([
         function () {
             Route::get('candidates/edit-profile/{id}', 'CandidateController@getEditInfoCandidate')->name('candidate.getEditInfo');
             Route::put('candidates/{id}', 'CandidateController@putEditInfoCandidate')->name('candidate.putEditInfo');
+            Route::post('candidate-change-status', 'CandidateController@changeStatus')->name('cadidate.changeStatus');
         }
     );
 });

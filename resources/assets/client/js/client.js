@@ -67,28 +67,52 @@ function showNotification(content, type) {
     });
 }
 
-$('#change_job_status').change(function() {
-    var toggle = $('#change_job_status').val();
-    var jobId = $('#hidden_job_id').val();
-    var orginalLabel = $('#open_job').text();
+function getNotification(lang, content, type) {
+    if (lang == 'vi') {
+        __message = ' thành công !';
+    } else {
+        __message = ' successfully !';
+    }
+    showNotification(content + __message, type);
+}
+
+function is_public_candidate(lang, content) {
+    setupAjax();
+    var token = $('#candidate_token').val();
+    $.ajax({
+        url: route('cadidate.changeStatus'),
+        type: 'POST',
+        data: {token:token},
+        success: function (data) {
+            if (data == 'true') {
+                getNotification(lang, content, 'success');
+            }
+        }
+    });
+}
+
+function setupAjax() {
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+}
+
+function changeJobStatus(lang, content) {
+    var toggle = $('#change_job_status').val();
+    var jobId = $('#hidden_job_id').val();
+    var orginalLabel = $('#open_job').text();
+    setupAjax();
     $.ajax({
         url: route('jobs.change_status'),
         type: 'POST',
         data: {id:jobId},
         success: function (data) {
-            console.log(data);
-            var content = $('#open_job').text();
-            content = content == 'Open Job' ? 'Close Job' : 'Open Job';
-            $('#open_job').text(content);
-            showNotification(orginalLabel + ' Successfully', 'success');
+            getNotification(lang, content, 'success');
         }
     })
-});
+}
 
 function getJob(salary, categoryId) {
     $.ajax({
