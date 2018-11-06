@@ -104,7 +104,7 @@ class JobController extends Controller
             'job_skill_ids',
         ]);
         $validatedJobData['user_id'] = Auth::id();
-        $validatedJobData['is_available'] = $validatedJobData['is_available'] == null ? false : true;
+        $validatedJobData['is_available'] = $validatedJobData['is_available'] == null ? config('app.job_close_status') : config('app.job_open_status');
         $recentlyAddedJob = $this->jobRepository->create($validatedJobData)->id;
 
         $skillArray = $request->validated()['job_skill_ids'];
@@ -185,7 +185,7 @@ class JobController extends Controller
         $job = $this->jobRepository->get('id', $id);
         if ($authenticatedCompanyUser->can('edit', $job)) {
             $validatedJobData = $request->validated();
-            $validatedJobData['is_available'] = $validatedJobData['is_available'] == null ? false : true;
+            $validatedJobData['is_available'] = $validatedJobData['is_available'] == null ? config('app.job_close_status') : config('app.job_open_status');
 
             $jobs = $this->jobRepository->update($validatedJobData, 'id', $id);
             $this->jobCategory->delete('job_id', $id);

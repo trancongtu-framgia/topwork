@@ -47,4 +47,9 @@ class DbUserRepository extends DbBaseRepository implements UserRepository
     {
         return $this->model->where('name', 'like', '%' . $keyword . '%' )->get();
     }
+
+    public function getCompanyByStatus(int $statusCode, int $roleId, $columns)
+    {
+        return $this->model::where('status', $statusCode)->where('role_id', $roleId)->get($columns);
+    }
 }

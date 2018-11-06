@@ -8,10 +8,12 @@
                     </div>
                     <div class="jp_job_post_right_cont">
                         <div class="pull-right" style="">
-                            @if ($job['job']->is_available)
-                                <label class="job-label label label-success">{{ __('Opening') }}</label>
-                            @else
-                                <label class="job-label label label-danger">{{ __('Closed') }}</label>
+                            @if (Route::currentRouteName() != 'home.index')
+                                @if ($job['job']->is_available)
+                                    <label class="job-label label label-success">{{ __('Opening') }}</label>
+                                @else
+                                    <label class="job-label label label-danger">{{ __('Closed') }}</label>
+                                @endif
                             @endif
                         </div>
                         <h4 class="text-dark"><a href="{{ route('jobs.detail', ['id' => $job['job']->id]) }}">{{ $job['job']->title }}</a></h4>

@@ -44,11 +44,18 @@ class DbCompanyRepository extends DbBaseRepository implements CompanyRepository
     {
         return $this->baseCreate($param);
     }
+
     public function getProfile($id)
     {
         $company = $this->get('user_id', $id);
-        $companyUserInfo = $this->userRepository->getSpecifiedColumn('id', $id, ['name', 'token']);
+        $companyUserInfo = $this->userRepository->getSpecifiedColumn('id', $id, [
+            'id',
+            'name',
+            'status',
+            'token',
+        ]);
         $data = [
+            'user_id' => $companyUserInfo->id,
             'name' => $companyUserInfo->name,
             'range' => $company->range,
             'working_day' => $company->working_day,
@@ -56,6 +63,7 @@ class DbCompanyRepository extends DbBaseRepository implements CompanyRepository
             'address' => $company->address,
             'logo' => $company->logo_url,
             'description' => $company->description,
+            'active' => $companyUserInfo->status,
             'token' => $companyUserInfo->token,
         ];
 
