@@ -9,3 +9,6 @@
 .red {
     color: red;
 }
+.center-text {
+    text-align: center !important;
+}

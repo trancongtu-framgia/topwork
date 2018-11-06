@@ -36,6 +36,13 @@ Route::group([
         Route::put('update/{id}', 'SkillController@update')->name('skills.update');
         Route::delete('destroy/{id}', 'SkillController@destroy')->name('skills.destroy');
     });
+    Route::group([
+        'prefix' => 'companies',
+    ], function (){
+        Route::get('/all', 'AdminController@getAllCompany')->name('admin.companies.index');
+        Route::get('/detail/{id}', 'AdminController@show')->name('admin.companies.detail');
+        Route::get('/change/{id}', 'AdminController@changeCompanyStatus')->name('admin.companies.change');
+    });
 }
 );
 

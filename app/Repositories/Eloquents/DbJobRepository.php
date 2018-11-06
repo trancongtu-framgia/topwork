@@ -342,4 +342,11 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
             ->orderBy('created_at', 'desc')
             ->take(config('app.record_number'))->get();
     }
+
+    public function getAllAvailableJob(int $recordPerPage, $userIds)
+    {
+        $jobs = $this->getJobWithSkillName($this->model::where('is_available', config('app.job_open_status'))->whereIn('user_id', $userIds)->get());
+
+        return $this->paginatorJob($jobs, $recordPerPage);
+    }
 }

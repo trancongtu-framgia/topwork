@@ -60,7 +60,7 @@ class DbJobSkillRepository extends DbBaseRepository implements JobSkillRepositor
     {
         $listIdJob = [];
         foreach ($skills as $skill) {
-            foreach ($this->model->where('skill_id', $skill->id)->get('id') as $job) {
+            foreach ($this->model->where('skill_id', $skill->id)->get(['id']) as $job) {
                 if (!in_array($job->job_id, $listIdJob)) {
                     $listIdJob[] = $job->job_id;
                 }
