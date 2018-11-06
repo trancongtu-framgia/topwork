@@ -29,6 +29,7 @@ class UserSeeder extends Seeder
             $user->save();
 
             $company = new \App\Models\Company();
+            $company ->phone = '0369 199 605';
             $company->user_id = $user->id;
             $company->address = '13F Keangnam Landmark 72 Tower, Plot E6, Pham Hung Road, Nam Tu Liem District., Ha Noi';
             $company->country = 'Japan';
@@ -65,6 +66,7 @@ class UserSeeder extends Seeder
             $company->address = 'Hung Yen';
             $company->country = 'Viet Nam';
             $company->working_day = 'Thu 2 - Thu 6';
+            $company ->phone = '0369 199 605';
             $company->description = '<h3>LG Electronics is made up of five forward-looking business units</h3>
                                     <p>Home Entertainment, Mobile Communications, Home Appliance, Air Conditioning, Energy Solution &amp; Vehicle Components<br />
                                     With the advent of the Smart Car era, LG hopes to become an innovative partner in vehicle electrification through development of advanced technology components. Vehicle Component Company (VC) is developing a wide variety of highly competitive products. Our products include In Vehicle Infotainment system such as Telematics, AV Navigation, Display Audio, Integrated Display System &amp; Advanced Driver Assistant System (ADAS) called &lsquo;intelligent safe&rsquo;, &amp; other convenient devices. Our company is also focusing on vehicle engineering, to include Powertrain, electronic vehicle Battery Packs, etc &amp; is providing them to major customers in the world-wide vehicle industry<br />
@@ -94,6 +96,7 @@ class UserSeeder extends Seeder
             $candidate ->description = '<p>Hòa đồng, thân thiện, dễ hòa nhập </p> <p> Chăm chỉ học hỏi</p>';
             $candidate ->user_id = $user->id;
             $candidate ->experience = '1 years';
+            $candidate ->is_public = 1;
             $candidate->save();
 
             DB::commit();

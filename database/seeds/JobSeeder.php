@@ -71,6 +71,7 @@ class JobSeeder extends Seeder
                 'location_id' => 1,
                 'is_available' => 1,
                 'experience' => 'Không cần kinh nghiệm',
+                'is_available' => 1,
                 'out_date' => '2018-12-05',
             ],
             [
@@ -111,6 +112,7 @@ class JobSeeder extends Seeder
                 'location_id' => 3,
                 'is_available' => 1,
                 'experience' => '2 Years',
+                'is_available' => 1,
                 'out_date' => '2018-11-05',
             ],
             [
@@ -118,6 +120,7 @@ class JobSeeder extends Seeder
                 'title' => 'Lập trình .NET',
                 'salary_min' => 350,
                 'salary_max' => 750,
+                'is_available' => 1,
                 'description' => '<p>LG Electronics Vehicle Component Company focuses on eco-friendly automotive components. The VC Company produces high-quality in-car infotainment systems that deliver both information and entertainment on-the-go for many of the world&lsquo;s biggest automobile brands.<br />
                                     <br />
                                     We, LG Electronics Development Center Vietnam (VC DCV), conduct core R&amp;D activities, and various product reliability tests in support of our vehicle component business.<br />
@@ -138,6 +141,7 @@ class JobSeeder extends Seeder
                 'title' => 'Tuyển nhân viên kỹ thuật',
                 'salary_min' => 150,
                 'salary_max' => 1000,
+                'is_available' => 1,
                 'description' => '<p>LG Electronics Vehicle Component Company focuses on eco-friendly automotive components. The VC Company produces high-quality in-car infotainment systems that deliver both information and entertainment on-the-go for many of the world&lsquo;s biggest automobile brands.<br />
                                     <br />
                                     We, LG Electronics Development Center Vietnam (VC DCV), conduct core R&amp;D activities, and various product reliability tests in support of our vehicle component business.<br />
@@ -158,6 +162,7 @@ class JobSeeder extends Seeder
                 'title' => 'Tuyển nhân viên lập trình',
                 'salary_min' => 350,
                 'salary_max' => 750,
+                'is_available' => 1,
                 'description' => '<p>LG Electronics Vehicle Component Company focuses on eco-friendly automotive components. The VC Company produces high-quality in-car infotainment systems that deliver both information and entertainment on-the-go for many of the world&lsquo;s biggest automobile brands.<br />
                                     <br />
                                     We, LG Electronics Development Center Vietnam (VC DCV), conduct core R&amp;D activities, and various product reliability tests in support of our vehicle component business.<br />
@@ -178,6 +183,7 @@ class JobSeeder extends Seeder
                 'title' => 'Nhân sự phòng kỹ thuật',
                 'salary_min' => 350,
                 'salary_max' => 750,
+                'is_available' => 1,
                 'description' => '<p>LG Electronics Vehicle Component Company focuses on eco-friendly automotive components. The VC Company produces high-quality in-car infotainment systems that deliver both information and entertainment on-the-go for many of the world&lsquo;s biggest automobile brands.<br />
                                     <br />
                                     We, LG Electronics Development Center Vietnam (VC DCV), conduct core R&amp;D activities, and various product reliability tests in support of our vehicle component business.<br />
@@ -198,6 +204,7 @@ class JobSeeder extends Seeder
                 'title' => 'PHP,asp.net',
                 'salary_min' => 350,
                 'salary_max' => 750,
+                'is_available' => 1,
                 'description' => '<p>LG Electronics Vehicle Component Company focuses on eco-friendly automotive components. The VC Company produces high-quality in-car infotainment systems that deliver both information and entertainment on-the-go for many of the world&lsquo;s biggest automobile brands.<br />
                                     <br />
                                     We, LG Electronics Development Center Vietnam (VC DCV), conduct core R&amp;D activities, and various product reliability tests in support of our vehicle component business.<br />

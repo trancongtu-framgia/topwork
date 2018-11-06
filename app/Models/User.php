@@ -23,7 +23,7 @@ class User extends Model
 
     public function candidate()
     {
-        return $this->hasOne('App\Models\Candidate');
+        return $this->hasOne('App\Models\Candidate', 'user_id', 'id');
     }
 
     public function cvs()

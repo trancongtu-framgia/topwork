@@ -85,4 +85,15 @@ class DbCandidateRepository extends DbBaseRepository implements CandidateReposit
 
         return $update;
     }
+
+    public function updateStatus($token)
+    {
+        $candidate = $this->userModel->where('token', $token)->first()->candidate;
+        $candidate->is_public = (int)$candidate->is_public == config('app.isPublicCandidate') ? config('app.isNotPublicCandidate') : config('app.isPublicCandidate');
+        if ($candidate->save()) {
+            return 'true';
+        }
+
+        return 'false';
+    }
 }

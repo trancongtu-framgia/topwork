@@ -24,6 +24,7 @@ class Candidate extends Model
         'youtube',
         'twitter',
         'experience',
+        'is_public',
     ];
 
     public function user()

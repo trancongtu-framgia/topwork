@@ -83,10 +83,12 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <label id="open_job">{{ $jobDetail['job']->is_available == 0 ? __('Open Job') : __('Close Job') }}</label><br>
+                                        <label id="open_job">{{ __('Public') }}</label><br>
                                         <label class="switch">
-                                            {{ Form::hidden('is_available', false) }}
-                                            {{ Form::checkbox('is_available', true, $jobDetail['job']->is_available == 0 ? false : true, ['id' => 'change_job_status']) }}
+                                            {{ Form::checkbox('is_available', true,
+                                                $jobDetail['job']->is_available == 0 ? false : true,
+                                                ['onchange' => 'changeJobStatus(\'' . config('app.locale') . '\', \''.__('Update'). '\')'])
+                                            }}
                                             <span class="slider round"></span>
                                         </label>
                                     </li>
