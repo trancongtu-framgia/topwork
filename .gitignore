@@ -17,3 +17,4 @@ yarn.lock
 /storage/debugbar/
 composer.json
 composer.lock
+_ide_helper.php

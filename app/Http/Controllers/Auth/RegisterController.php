@@ -134,10 +134,19 @@ class RegisterController extends Controller
     public function confirmAccount($idUser)
     {
         $user = $this->userRepository->get('id', $idUser);
-        $user->status = config('app.status_account_activate');
+        $message ='';
+
+        if ($user->userRole->name == config('app.company_role')) {
+            $user->status = config('app.status_account_waiting_approve');
+            $message = __('Confirm account success! Please contact admin to activate your account');
+        } elseif ($user->userRole->name == config('app.candidate_role')) {
+            $user->status = config('app.status_account_activate');
+            $message = __('Confirm account success! You can sign in now.');
+        }
+
         $updateUser = $this->userRepository->update($user->toArray(), 'id', $idUser);
         if ($updateUser) {
-            return redirect()->route('login')->with('msg', __('Confirm account success! You can sign in now.'));
+            return redirect()->route('login')->with('msg', $message);
         } else {
             return redirect()->back()->with('msg', __('Confirm account failed. Please try again!'));
         }

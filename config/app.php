@@ -15,6 +15,7 @@ return [
     'record_number' => 3,
     'status_account_deactivate' => 0,
     'status_account_activate' => 1,
+    'status_account_pending' => 2,
     'ListSalary' => [
         '100.300' => '$100 - $300',
         '300.600' => '$300 - $600',

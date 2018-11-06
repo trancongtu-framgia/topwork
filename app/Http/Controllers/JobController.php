@@ -105,6 +105,7 @@ class JobController extends Controller
         ]);
         $validatedJobData['user_id'] = Auth::id();
         $validatedJobData['is_available'] = $validatedJobData['is_available'] == null ? config('app.job_close_status') : config('app.job_open_status');
+        $validatedJobData['candidate_number'] = intval($validatedJobData['candidate_number']);
         $recentlyAddedJob = $this->jobRepository->create($validatedJobData)->id;
 
         $skillArray = $request->validated()['job_skill_ids'];
