@@ -4,9 +4,29 @@ namespace App\Http\Controllers;
 
 use App\Models\BookMark;
 use Illuminate\Http\Request;
+use App\Repositories\Interfaces\CategoryRepository;
+use App\Repositories\Interfaces\BookMarkRepository;
+use App\Repositories\Interfaces\UserRepository;
+use Illuminate\Support\Facades\Auth;
+use Mockery\Exception;
+use DB;
 
 class BookMarkController extends Controller
 {
+    protected $categoryRepository;
+    protected $bookMarkRepository;
+    protected $userRepository;
+
+    public function __construct(
+        CategoryRepository $categoryRepository,
+        BookMarkRepository $bookMarkRepository,
+        UserRepository $userRepository
+    ) {
+        $this->categoryRepository = $categoryRepository;
+        $this->bookMarkRepository = $bookMarkRepository;
+        $this->userRepository = $userRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -35,18 +55,31 @@ class BookMarkController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $results = DB::transaction(function () use ($request) {
+            try {
+                $bookMarks = [];
+                foreach ($request->cb as $key => $categoryId) {
+                    $dataBookMark['category_id'] = $categoryId;
+                    $dataBookMark['user_id'] = Auth::User()->id;
+                    $bookMarks[] = $this->bookMarkRepository->create($dataBookMark);
+                }
+                $dataUser['is_first_login'] = config('app.is_first_logged');
+                $user = $this->userRepository->update($dataUser, 'id', Auth::User()->id);
+                DB::commit();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\BookMark  $bookMark
-     * @return \Illuminate\Http\Response
-     */
-    public function show(BookMark $bookMark)
-    {
-        //
+                return true;
+            } catch (\Exception $e) {
+                DB::rollBack();
+
+                return $e;
+            }
+        });
+
+        if ($results) {
+            return redirect()->route('home.index');
+        } else {
+            return redirect()->back();
+        }
     }
 
     /**
@@ -81,5 +114,12 @@ class BookMarkController extends Controller
     public function destroy(BookMark $bookMark)
     {
         //
+    }
+
+    public function getView()
+    {
+        $categories = $this->categoryRepository->getAllWithOutPaginate();
+
+        return view('clients.bookmarks.index', compact('categories'));
     }
 }

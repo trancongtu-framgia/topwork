@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Interfaces;
 
-interface BookMarkRepository
+interface BookMarkRepository extends BaseRepository
 {
 	// 
 }
