@@ -34,12 +34,12 @@
     </div>
     <div class="row">
         <div class="form-group col-md-6 col-sm-6 col-xs-12">
-            {!! Form::number('phone', null, ['placeholder' => __('Phone*')]) !!}
+            {!! Form::text('phone', null, ['placeholder' => __('Phone*')]) !!}
             {!! $errors->first('phone', '<span class="red">:message</span>') !!}
         </div>
         <div class="form-group col-md-6 col-sm-6 col-xs-12">
             {!! Form::label(__('Date of birth* :')) !!}
-            {!! Form::date('dob', null, ['placeholder' => __('Date of birth*'), 'class' => 'date_register']) !!}
+            {!! Form::date('dob', null, ['placeholder' => __('Date of birth*'), 'class' => 'input_date']) !!}
             {!! $errors->first('dob', '<span class="red">:message</span>') !!}
         </div>
     </div>

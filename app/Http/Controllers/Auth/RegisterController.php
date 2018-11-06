@@ -108,22 +108,23 @@ class RegisterController extends Controller
                     $company = $this->companyRepository->create($data);
                 }
 
-                dispatch(new SendEmailConfirmAccounts($data));
+                $sendmail = dispatch(new SendEmailConfirmAccounts($data));
+
                 DB::commit();
 
-                if ($candidate || $company) {
-                    flash(__('Register succes. Please check email and confirm account!'))->success();
+                if ($sendmail) {
+                    $message = __('Register success! Please check your email and confirm account!');
 
-                    return redirect()->route('login');
+                    return redirect()->route('login')->with('msg', $message);
                 } else {
-                    flash(__('Register failed. Please try again!'));
+                    $message = __('Register failed. Please try again!');
 
-                    return redirect()->back();
+                    return redirect()->back()->with('msg', $message);
                 }
             } catch (\Exception $e) {
                 DB::rollback();
 
-                return ['errorMessage' => $e->getMessage()];
+                return $e;
             }
         });
 
@@ -136,13 +137,9 @@ class RegisterController extends Controller
         $user->status = config('app.status_account_activate');
         $updateUser = $this->userRepository->update($user->toArray(), 'id', $idUser);
         if ($updateUser) {
-            flash('Confirm account success!')->success();
-
-            return redirect()->route('login');
+            return redirect()->route('login')->with('msg', __('Confirm account success! You can sign in now.'));
         } else {
-            flash('Confirm account failed! please try again!')->error();
-
-            return redirect()->back();
+            return redirect()->back()->with('msg', __('Confirm account failed. Please try again!'));
         }
     }
 }

@@ -1,11 +1,15 @@
 @extends('clients.layouts.master')
 @section('content')
 @section('breadcrumb_title')
-    {{ __('login') }}
+    @if(Session::has('msg'))
+        <span class="red">{{ Session::get('msg') }}</span>
+    @else
+        {{ __('login') }}
+    @endif
 @endsection
 @section('breadcrumb_step')
     <ul>
-        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ __('login') }}</li>
+        <li class="set_padding">{{ __('login') }}</li>
     </ul>
 @endsection
 @include('clients.layouts.breadcrumb')
@@ -32,12 +36,12 @@
                             {!! Form::open(['route' => 'login']) !!}
                             <div class="formsix-pos">
                                 <div class="form-group i-email">
-                                    {!! Form::text('email',null,
-										  [
+                                    {!! Form::text('email', null,
+							                [
 											  'class' => 'form-control',
 											  'placeholder' => 'Email',
 										  ]
-									)
+                                    )
 									!!}
                                 </div>
                             </div>
