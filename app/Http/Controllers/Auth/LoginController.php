@@ -65,8 +65,10 @@ class LoginController extends Controller
                 return redirect()->route('admin.index');
             } elseif ($role == config('app.company_role')) {
                 return redirect()->route('companies.index');
-            } elseif ($role == config('app.candidate_role')) {
+            } elseif ($role == config('app.candidate_role') && Auth::user()->is_first_login == config('app.is_first_logged')) {
                 return redirect()->route('home.index');
+            } elseif ($role == config('app.candidate_role') && Auth::user()->is_first_login == config('app.is_first_login')) {
+                return redirect()->route('get.bookMark');
             }
             Auth::logout();
 

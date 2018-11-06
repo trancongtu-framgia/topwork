@@ -151,3 +151,8 @@ Route::group(['prefix' => 'register'], function () {
     Route::get('confirm-user/{idUser}', 'Auth\RegisterController@confirmAccount')->name('user.confirmAccount');
 });
 
+Route::group(['prefix' => 'bookmark'], function() {
+    Route::get('add-book-mark', 'BookMarkController@getView')->name('get.bookMark');
+    Route::post('/', 'BookMarkController@store')->name('bookmarks.store');
+});
+
