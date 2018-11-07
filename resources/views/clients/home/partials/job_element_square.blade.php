@@ -4,7 +4,9 @@
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="jp_job_post_side_img">
-                        <img class="img-responsive" src="{{ asset(config('app.client_media_url') . $job['company_logo']) }}" alt="post_img">
+                        <a href="{{ route('jobs.detail', ['id' => $job['job']->id]) }}">
+                            <img class="img-responsive" src="{{ asset(config('app.client_media_url') . $job['company_logo']) }}" alt="post_img">
+                        </a>
                     </div>
                     <div class="jp_job_post_right_cont jp_job_post_grid_right_cont">
                         <div class="pull-right" style="">

@@ -19,6 +19,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2">
+                        @include('flash::message')
                         <!-- login_wrapper -->
                         <h1>{{ __('LOGIN TO YOUR ACCOUNT') }}</h1>
                         <div class="login_wrapper">

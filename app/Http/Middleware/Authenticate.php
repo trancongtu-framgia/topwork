@@ -14,6 +14,8 @@ class Authenticate extends Middleware
      */
     protected function redirectTo($request)
     {
+        flash(__('You have to login to do this action'))->info();
+
         return route('login');
     }
 }
