@@ -67,11 +67,6 @@ class HomeController extends Controller
         $skills = $this->skill->searchSkill($request->value);
         if ($skills) {
             $data = $skills;
-        } else {
-            $categories = $this->category->searchCategory($request->value);
-            if ($categories) {
-                $data = $categories;
-            }
         }
 
         return response()->json($data);

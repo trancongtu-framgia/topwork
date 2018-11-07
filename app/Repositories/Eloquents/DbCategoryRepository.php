@@ -49,8 +49,4 @@ class DbCategoryRepository extends DbBaseRepository implements CategoryRepositor
         return $this->baseUpdate($data, $key, $value);
     }
 
-    public function searchCategory($keyword)
-    {
-        return $this->model->search($keyword)->get();
-    }
 }
