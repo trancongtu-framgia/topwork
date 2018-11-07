@@ -6,7 +6,7 @@ interface JobRepository extends BaseRepository
 {
     public function getAllJobByCompany(int $companyId, int $per);
 
-    public function getAllJob($key, $value, $per);
+    public function getAllJob($key, $value);
 
     public function getJobByUser($key, $value);
 

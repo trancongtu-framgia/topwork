@@ -138,10 +138,10 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
         return array_reverse($jobsWithSkill);
     }
 
-    public function getAllJob($key, $value, $per)
+    public function getAllJob($key, $value)
     {
         return $this->model::with('locationJobs', 'applications', 'userJob')->where($key, $value)->orderBy('id',
-            'desc')->paginate($per);
+            'desc')->get();
     }
 
     public function getJobByUser($key, $value)

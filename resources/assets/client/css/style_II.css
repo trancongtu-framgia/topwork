@@ -8039,3 +8039,9 @@ input:checked + .slider:before {
     font-weight: bold !important;
     color: black;
 }
+.candidate_application {
+    font-weight: bold;
+}
+.jp_recent_resume_cont_wrapper p {
+    color: #4c4c4c;
+}

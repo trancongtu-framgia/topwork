@@ -11,6 +11,13 @@
             filebrowserFlashUploadUrl: '{{ asset('plugins/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash') }}'
         });
     </script>
+    <script>
+        $(document).ready(function () {
+            $('#submitForm').click(function () {
+                $('#editCandidate').submit();
+            });
+        })
+    </script>
 @endsection
 @section('content')
 @section('breadcrumb_title')
@@ -23,13 +30,13 @@
     </ul>
 @endsection
 @include('clients.layouts.breadcrumb')
-    {{ Form::model($user->candidate, ['url' => route('candidate.putEditInfo', $user->token), 'enctype' => 'multipart/form-data', 'method' => 'PUT', 'class' => 'form-horizontal form-label-left']) }}
+    {{ Form::model($user->candidate, ['url' => route('candidate.putEditInfo', $user->token), 'enctype' => 'multipart/form-data', 'method' => 'PUT', 'class' => 'form-horizontal form-label-left', 'id' => 'editCandidate']) }}
     <div class="jp_cp_profile_main_wrapper">
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <div class="jp_cp_left_side_wrapper">
-                        <div class="jp_cp_left_pro_wallpaper set_padding">
+                        <div class="jp_cp_left_pro_wallpaper">
                             @if (file_exists(config('app.candidate_media_url') . $user->candidate->avatar_url))
                                 <img class="image_candidate" src="{{ asset(config('app.candidate_media_url') . $user->candidate->avatar_url) }}" alt="profile_img">
                             @else
@@ -48,8 +55,10 @@
                                 @endif
                             </ul>
                         </div>
-                        <div style="text-align: center">
-                            {{ Form::button(__('Save'), ['type' => 'submit', 'name' => 'submit_save', 'class' => 'btn btn-danger btn-lg'] ) }}
+                        <div class="jp_add_resume_cont jp_add_resume_wrapper">
+                            <ul>
+                                <li><a id="submitForm"><i class="fa fa-pencil-square-o set_padding"></i>{{ __('Save') }}</a></li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -144,12 +153,12 @@
                                     <div class="panel panel-default">
                                         <div class="panel-heading bell">
                                             <h4 class="panel-title">
-                                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion_threeLeft" href="#collapseTwentyLeftThree" aria-expanded="false">
+                                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion_threeLeft" href="#collapseTwentyLeftThree" aria-expanded="true">
                                                     {{ __('Profile Detail') }}
                                                 </a>
                                             </h4>
                                         </div>
-                                        <div id="collapseTwentyLeftThree" class="panel-collapse collapse" aria-expanded="false" role="tablist">
+                                        <div id="collapseTwentyLeftThree" class="panel-collapse collapse show" aria-expanded="false" role="tablist">
                                             <div class="panel-body">
                                                 {{ Form::textarea('description', null, ['id' => 'description'], ['class' => 'form-control ckeditor', 'maxlength' => 100]) }}
                                             </div>

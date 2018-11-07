@@ -26,7 +26,7 @@
                         <div class="pricing_btn_wrapper">
                             <div class="pricing_btn2">
                                 <ul>
-                                    <li><a id="postBookMark" href="#"><i class=" btn-primary login_btn"></i>{{ __('Save') }}</a></li>
+                                    <li><a id="postBookMark"><i class=" btn-primary login_btn"></i>{{ __('Save') }}</a></li>
                                 </ul>
                             </div>
                         </div>

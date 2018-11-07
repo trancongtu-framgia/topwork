@@ -77,7 +77,7 @@
                                         <div class="panel panel-default">
                                             <div class="panel-heading bell">
                                                 <h4 class="panel-title">
-                                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion_threeLeft" href="#collapseTwentyLeftThree" aria-expanded="false">{{ __('Profile Detail') }}</a>
+                                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion_threeLeft" href="#collapseTwentyLeftThree" aria-expanded="true">{{ __('Profile Detail') }}</a>
                                                 </h4>
                                             </div>
                                             <div id="collapseTwentyLeftThree" class="panel-collapse collapse" aria-expanded="false" role="tablist" style="height: 0px;">
@@ -101,7 +101,7 @@
                                 </div>
                                 <div class="jp_job_listing_single_post_right_cont">
                                     <div class="jp_job_listing_single_post_right_cont_wrapper">
-                                        <h2>{{ $jobs->title }}</h2>
+                                        <h2><a href="{{ route('jobs.detail', $jobs->id) }}">{{ $jobs->title }}</a></h2>
                                         <p>{{ __('Type Job :') . $jobs->jobTypeJobs->name }}</p>
                                     </div>
                                 </div>
@@ -147,15 +147,6 @@
                                             <ul>
                                                 <li>{{ __('Experience Requirement') }}:</li>
                                                 <li>{{ $jobs->experience }}</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="jp_listing_right_bar_btn_wrapper">
-                                        <div class="jp_add_resume_cont jp_add_resume_wrapper">
-                                            <ul>
-                                                <li>
-                                                    <a href="{{ route('jobs.detail', $jobs->id) }}"><i class="fa fa-hand-o-right"></i> {{ __('JOB DETAIL') }}</a>
-                                                </li>
                                             </ul>
                                         </div>
                                     </div>

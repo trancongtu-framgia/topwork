@@ -18,18 +18,18 @@
             {!! $errors->first('email', '<span class="red">:message</span>') !!}
         </div>
         <div class="form-group col-md-6 col-sm-6 col-xs-12">
-            {!! Form::password('password', ['placeholder' => __('Password*')]) !!}
-            {!! $errors->first('password', '<span class="red">:message</span>') !!}
+            {!! Form::text('address', null, ['placeholder' => __('Address*')]) !!}
+            {!! $errors->first('address', '<span class="red">:message</span>') !!}
         </div>
     </div>
     <div class="row">
         <div class="form-group col-md-6 col-sm-6 col-xs-12">
-            {!! Form::password('password_confirm', ['placeholder' => __('Re-enter password*')]) !!}
-            {!! $errors->first('password_confirm', '<span class="red">:message</span>') !!}
+            {!! Form::password('password', ['placeholder' => __('Password*')]) !!}
+            {!! $errors->first('password', '<span class="red">:message</span>') !!}
         </div>
         <div class="form-group col-md-6 col-sm-6 col-xs-12">
-            {!! Form::text('address', null, ['placeholder' => __('Address*')]) !!}
-            {!! $errors->first('address', '<span class="red">:message</span>') !!}
+            {!! Form::password('password_confirm', ['placeholder' => __('Re-enter password*')]) !!}
+            {!! $errors->first('password_confirm', '<span class="red">:message</span>') !!}
         </div>
     </div>
     <div class="row">
