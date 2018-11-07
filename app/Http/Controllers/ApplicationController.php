@@ -147,9 +147,9 @@ class ApplicationController extends Controller
         return view('clients.applications.ajax', compact('applications'));
     }
 
-    public function getDetailCandidateApply(Request $request, $token, $jobId)
+    public function getDetailCandidateApply($token, $jobId)
     {
-        $getDetail = DB::transaction( function () use ($request, $token, $jobId){
+        $getDetail = DB::transaction( function () use ($token, $jobId){
             try {
                 $user = $this->candidateRepository->showInfoCandidate($token);
                 $jobs = $this->jobRepository->get('id', $jobId);
