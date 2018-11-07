@@ -8051,8 +8051,4 @@ input:checked + .slider:before {
 .name_job {
     font-weight: bold;
     padding-top: 30px;
-    border-bottom: solid 2px royalblue;
-}
-.name_job a:hover {
-    color: red;
 }

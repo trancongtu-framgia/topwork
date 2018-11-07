@@ -114,13 +114,11 @@ class RegisterController extends Controller
 
                 if ($sendmail) {
                     $message = __('Register success! Please check your email and confirm account!');
-
-                    return redirect()->route('login')->with('msg', $message);
                 } else {
                     $message = __('Register failed. Please try again!');
-
-                    return redirect()->back()->with('msg', $message);
                 }
+
+                return view('auth.notifications')->with('msg', $message);
             } catch (\Exception $e) {
                 DB::rollback();
 
@@ -146,9 +144,9 @@ class RegisterController extends Controller
 
         $updateUser = $this->userRepository->update($user->toArray(), 'id', $idUser);
         if ($updateUser) {
-            return redirect()->route('login')->with('msg', $message);
+            return view('auth.notifications')->with('msg', $message);
         } else {
-            return redirect()->back()->with('msg', __('Confirm account failed. Please try again!'));
+            return view('auth.notifications')->with('msg', $message);
         }
     }
 }
