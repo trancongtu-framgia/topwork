@@ -4,8 +4,9 @@
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="jp_job_post_side_img">
-                        <img class="img-responsive" src="{{ asset(config('app.client_media_url') . $job['company_logo']) }}" alt="post_img">
-                    </div>
+                        <a href="{{ route('jobs.detail', ['id' => $job['job']->id]) }}">
+                            <img class="img-responsive" src="{{ asset(config('app.client_media_url') . $job['company_logo']) }}" alt="post_img">
+                        </a>                    </div>
                     <div class="jp_job_post_right_cont jp_job_post_grid_right_cont">
                         <h3 class="text-dark"><a href="{{ route('jobs.detail', ['id' => $job['job']->id]) }}">{{ $job['job']->title }}</a></h3>
                         <p>
@@ -17,7 +18,7 @@
                                 {{ number_format($job['job']->salary_min) . ' - ' . number_format($job['job']->salary_max) }}
                             </li>
                             <li><i class="fa fa-map-marker"></i>&nbsp; {{ $job['job']->locationJobs->name }}</li>
-                            <li>{{ __('Applied on: ') . $job['applied_date'] }}</li>
+                            <li><i class="fa fa-share-square"></i>&nbsp;{{ $job['applied_date'] }}</li>
                         </ul>
                     </div>
                 </div>

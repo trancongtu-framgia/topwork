@@ -4,7 +4,9 @@
             <div class="row">
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                     <div class="jp_job_post_side_img">
-                        <img class="img-responsive" src="{{ asset(config('app.client_media_url') . $job['company_logo']) }}" alt="post_img">
+                        <a href="{{ route('jobs.detail', ['id' => $job['job']->id]) }}">
+                            <img class="img-responsive" src="{{ asset(config('app.client_media_url') . $job['company_logo']) }}" alt="post_img">
+                        </a>
                     </div>
                     <div class="jp_job_post_right_cont">
                         <div class="pull-right" style="">
@@ -28,10 +30,6 @@
                             <li>
                                 <i class="fa fa-map-marker"></i>&nbsp;
                                 {{ $job['job']->locationJobs->name }}
-                            </li>
-                            <li>
-                                <i class="fa fa-calendar"></i>&nbsp;
-                                {{ date('d - m - Y', strtotime($job['job']->out_date)) }}
                             </li>
                             <li>
                                 <i class="fa fa-clock-o" aria-hidden="true"></i>

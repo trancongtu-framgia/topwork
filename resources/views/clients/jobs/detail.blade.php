@@ -15,36 +15,40 @@
                 <div class="row">
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                         <div class="jp_job_post_side_img">
-                            <img class="img-responsive" src="{{ asset(config('app.client_media_url') . $jobDetail['company_logo']) }}" alt="post_img">
+                            <a href="{{ route('companies.show', $jobDetail['token']) }}">
+                                <img class="img-responsive" src="{{ asset(config('app.client_media_url') . $jobDetail['company_logo']) }}" alt="post_img">
+                            </a>
                         </div>
                         <div class="jp_job_post_right_cont">
                             {{ Form::hidden('job_id', $jobDetail['job']->id, ['id' => 'hidden_job_id']) }}                            <h3>{{ $jobDetail['job']->title }}</h3>
                             <p>
-                            <h5><a href="{{ route('companies.show', $jobDetail['token']) }}">{{ $jobDetail['company_name'] }}</a></h5>
+                            <h4><a href="{{ route('companies.show', $jobDetail['token']) }}">{{ $jobDetail['company_name'] }}</a></h4>
                             </p>
                             <ul>
                                 <li></li>
                                 <li>
-                                    {{ __('Salary:') }}&nbsp; {{ '$ ' . number_format($jobDetail['job']->salary_min) . ' - $ ' . number_format($jobDetail['job']->salary_max) }}
+                                    <span class="job_detail_text">{{ __('Salary:') }}&nbsp; </span>
+                                    {{ '$ ' . number_format($jobDetail['job']->salary_min) . ' - $ ' . number_format($jobDetail['job']->salary_max) }}
                                 </li>
                                 <li>
-                                    {{ __('Location:') }}&nbsp; {{ $jobDetail['job']->locationJobs->name }}
+                                    <span class="job_detail_text">{{ __('Location:') }}&nbsp;</span>
+                                    {{ $jobDetail['job']->locationJobs->name }}
                                 </li>
                                 <li>
-                                    {{ __('Experience:') }}&nbsp;
+                                    <span class="job_detail_text">{{ __('Experience:') }}&nbsp;</span>
                                     {{ $jobDetail['job']->experience }}
                                 </li>
                                 <li>
-                                    {{ __('Job closing on:') }}&nbsp;
+                                    <span class="job_detail_text">{{ __('Job closing on:') }}&nbsp;</span>
                                     {{ date('d - m - Y', strtotime($jobDetail['job']->out_date)) }}
                                 </li>
                                 <li>
-                                    {{ __('Job Type:') }}&nbsp;
+                                    <span class="job_detail_text">{{ __('Job Type:') }}&nbsp;</span>
                                     {{ $jobDetail['job']->jobTypeJobs->name }}
                                 </li>
                                 <li>
                                     @if ($jobDetail['job']->candidate_number != null)
-                                        {{ __('Candidate Number:') }}&nbsp;
+                                        <span class="job_detail_text">{{ __('Candidate Number:') }}&nbsp;</span>
                                         {{ $jobDetail['job']->candidate_number }}
                                     @endif
                                 </li>

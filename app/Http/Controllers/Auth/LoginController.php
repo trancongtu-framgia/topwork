@@ -40,6 +40,13 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
+    public function showLoginForm()
+    {
+        session(['previousUrl' => url()->previous()]);
+
+        return view('auth.login');
+    }
+
     public function validate(Request $request, array $rules, array $messages = [], array $customAttributes = [])
     {
         $messages = [
@@ -63,16 +70,11 @@ class LoginController extends Controller
             $role = strtolower(Auth::user()->userRole->name);
             if ($role == config('app.admin_role')) {
                 return redirect()->route('admin.index');
-            } elseif ($role == config('app.company_role')) {
-                return redirect()->route('companies.index');
-            } elseif ($role == config('app.candidate_role') && Auth::user()->is_first_login == config('app.is_first_logged')) {
-                return redirect()->route('home.index');
             } elseif ($role == config('app.candidate_role') && Auth::user()->is_first_login == config('app.is_first_login')) {
                 return redirect()->route('get.bookMark');
             }
-            Auth::logout();
 
-            return redirect()->route('login');
+            return redirect(session()->pull('previousUrl'));
         }
 
         return $this->sendFailedLoginResponse($request);
