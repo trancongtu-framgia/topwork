@@ -8,6 +8,7 @@ use App\Repositories\Interfaces\CompanyRepository;
 use App\Repositories\Interfaces\JobRepository;
 use App\Repositories\Interfaces\JobSkillRepository;
 use App\Repositories\Interfaces\JobTypeRepository;
+use App\Repositories\Interfaces\RoleRepository;
 use App\Repositories\Interfaces\SkillRepository;
 use App\Repositories\Interfaces\UserRepository;
 use App\Repositories\Interfaces\JobCategoryRepository;
@@ -25,6 +26,7 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
     protected $user;
     protected $jobCategory;
     protected $applicationRepository;
+    protected $role;
     private const FORMAT_DATE = 'Y-m-d';
 
     /**
@@ -39,7 +41,8 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
         JobTypeRepository $jobTypeRepository,
         UserRepository $userRepository,
         JobCategoryRepository $jobCategoryRepository,
-        ApplicationRepository $applicationRepository
+        ApplicationRepository $applicationRepository,
+        RoleRepository $roleRepository
     ) {
         $this->model = $model;
         $this->jobSkillRepository = $jobSkillRepository;
@@ -49,6 +52,7 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
         $this->user = $userRepository;
         $this->jobCategory = $jobCategoryRepository;
         $this->applicationRepository = $applicationRepository;
+        $this->role = $roleRepository;
     }
 
     public function getAll($per)
@@ -151,74 +155,77 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
 
     public function searchJob($keyword, $location, $per, $url)
     {
-        //tim kiem theo skill
-        $skillSearch = $this->skill->searchSkillByName($keyword);
         $listJobId = [];
         $listJob = [];
-        if ($skillSearch) {
-            $jobSkills = $this->jobSkillRepository->findAllJobBySkill($skillSearch);
-            foreach ($jobSkills as $jobSkill) {
-                if (!in_array($jobSkill, $listJobId)) {
-                    $listJobId[] = $jobSkill;
+        if ($keyword) {
+            //tim kiem theo skill
+            $skillSearch = $this->skill->searchSkillByName($keyword);
+            if ($skillSearch) {
+                $jobSkills = $this->jobSkillRepository->findAllJobBySkill($skillSearch);
+                foreach ($jobSkills as $jobSkill) {
+                    if (!in_array($jobSkill, $listJobId)) {
+                        $listJobId[] = $jobSkill;
+                    }
                 }
-            }
 
-        }
-        //tim kiem theo job_type
-        $jobTypeSearch = $this->jobType->searchJobTypeByName($keyword);
-        if ($jobTypeSearch) {
-            foreach ($jobTypeSearch as $jt) {
-                $jobs = $this->model->where('job_type_id', $jt->id)->get();
+            }
+            //tim kiem theo job_type
+            $jobTypeSearch = $this->jobType->searchJobTypeByName($keyword);
+            if ($jobTypeSearch) {
+                $jobs = $this->model->whereIn('job_type_id', $jobTypeSearch)->get(['id']);
                 foreach ($jobs as $job) {
                     if (!in_array($job->id, $listJobId)) {
                         $listJobId[] = $job->id;
                     }
                 }
-
             }
-        }
-        //tim kiem theo company
-        $companies = $this->user->searchCompanyByName($keyword);
-        if ($companies) {
-            foreach ($companies as $company) {
-                $jobCompanies = $this->model->where('user_id', $company->id)->get();
+            //tim kiem theo company
+            $companies = $this->user->searchCompanyByName($keyword);
+            if ($companies) {
+                $jobCompanies = $this->model->whereIn('user_id', $companies)->get(['id']);
                 foreach ($jobCompanies as $jobCompany) {
                     if (!in_array($jobCompany->id, $listJobId)) {
                         $listJobId[] = $jobCompany->id;
                     }
                 }
             }
-        }
-        //tim kiem theo tite job
-        $jobTitles = $this->model->where('title', 'like', '%' . $keyword . '%')->get();
-        if ($jobTitles) {
-            foreach ($jobTitles as $jobTitle) {
-                if (!in_array($jobTitle->id, $listJobId)) {
-                    $listJobId[] = $jobTitle->id;
+
+            //tim kiem theo tite job
+            $jobTitles = $this->model->where('title', 'like', '%' . $keyword . '%')->get(['id']);
+            if ($jobTitles) {
+                foreach ($jobTitles as $jobTitle) {
+                    if (!in_array($jobTitle->id, $listJobId)) {
+                        $listJobId[] = $jobTitle->id;
+                    }
                 }
             }
         }
         //tim kiem theo location
-        if (isset($location) && !empty($listJobId)) {
-            foreach ($listJobId as $ljd) {
-                $activeJobs = $this->model->where(['id' => $ljd, 'location_id' => $location])->first();
-                if ($activeJobs) {
-                    if (!in_array($activeJobs->id, $listJob)) {
-                        $listJob[] = $activeJobs->id;
+        if ($location && $keyword) {
+            $jobs = $this->model->whereIn('id', $listJobId)->where('location_id', $location)->get(['id']);
+            if ($jobs) {
+                foreach ($jobs as $job) {
+                    if (!in_array($job->id, $listJob)) {
+                        $listJob[] = $job->id;
                     }
                 }
             }
-        } elseif ($location) {
-            $activeJobs = $this->model->where('location_id', $location)->get();
+        } elseif ($location && !$keyword) {
+            $activeJobs = $this->model->where('location_id', $location)->get(['id']);
             if ($activeJobs) {
                 foreach ($activeJobs as $activeJob) {
-                    if (!in_array($activeJob->id, $listJob)) {
-                        $listJob[] = $activeJob->id;
-                    }
+                    $listJob[] = $activeJob->id;
                 }
             }
-        } elseif (!empty($listJobId)) {
+        } elseif(!$location && $keyword) {
             $listJob = $listJobId;
+        } else {
+            $jobs = $this->model->all(['id']);
+            if ($jobs) {
+                foreach ($jobs as $job) {
+                    $listJob[] = $job->id;
+                }
+            }
         }
 
         return $this->getJobByDate($listJob, $per, $url);
@@ -227,15 +234,11 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
     private function getJobByDate($jobs, $per, $url)
     {
         $listJobs = [];
+        $company_available = $this->getAllActiveCompany();
         if ($jobs) {
-            foreach ($jobs as $job) {
-                $job = $this->get('id', $job);
-                if ($job) {
-                    if ($this->compareDateJob($job->out_date)) {
-                        $listJobs[] = $job;
-                    }
-                }
-            }
+            $listJobs = $this->model->where('out_date', '>=', date(self::FORMAT_DATE))
+                ->whereIn('user_id', $company_available)
+                ->whereIn('id', $jobs)->get();
         }
 
         return $this->paginatorJob($this->getJobWithSkillName($listJobs), $per, $url);
@@ -314,7 +317,11 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
         } elseif ($categoryId) {
             $jobs = $this->getJobByCategory($categoryId);
         } else {
-            $jobs = $this->model->get(['id'])->toArray();
+            $jobs = [];
+            $allJobs = $this->model->get(['id']);
+            foreach ($allJobs as $allJob) {
+                $jobs[] = $allJob->id;
+            }
         }
 
         return $this->getJobByDate($jobs, $per, $url);
@@ -345,8 +352,23 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
 
     public function getAllAvailableJob(int $recordPerPage, $userIds)
     {
-        $jobs = $this->getJobWithSkillName($this->model::where('is_available', config('app.job_open_status'))->whereIn('user_id', $userIds)->get());
+        $jobs = $this->getJobWithSkillName($this->model::where('is_available', config('app.job_open_status'))
+            ->where('out_date', '>=', date(self::FORMAT_DATE))
+            ->whereIn('user_id', $userIds)
+            ->get());
 
         return $this->paginatorJob($jobs, $recordPerPage);
+    }
+
+    public function getAllActiveCompany()
+    {
+        $roleId = $this->role->getSpecifiedColumn('name', config('app.company_role'), ['id'])->id;
+        $companies = $this->user->getCompanyByStatus(config('app.status_account_activate'), $roleId, ['id']);
+        $companyIds = [];
+        foreach ($companies as $company) {
+            $companyIds[] = $company->id;
+        }
+
+        return $companyIds;
     }
 }
