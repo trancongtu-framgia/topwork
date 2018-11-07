@@ -100,9 +100,8 @@
                                     <h4>{{ __('JOB DETAIL') }}</h4>
                                 </div>
                                 <div class="jp_job_listing_single_post_right_cont">
-                                    <div class="jp_job_listing_single_post_right_cont_wrapper">
+                                    <div class="jp_job_listing_single_post_right_cont_wrapper name_job">
                                         <h2><a href="{{ route('jobs.detail', $jobs->id) }}">{{ $jobs->title }}</a></h2>
-                                        <p>{{ __('Type Job :') . $jobs->jobTypeJobs->name }}</p>
                                     </div>
                                 </div>
                                 <div class="jp_listing_overview_list_outside_main_wrapper">
@@ -150,12 +149,32 @@
                                             </ul>
                                         </div>
                                     </div>
+                                    <div class="jp_listing_overview_list_main_wrapper jp_listing_overview_list_main_wrapper2">
+                                        <div class="jp_listing_list_icon">
+                                            <i class="fa fa-shopping-bag"></i>
+                                        </div>
+                                        <div class="jp_listing_list_icon_cont_wrapper">
+                                            <ul>
+                                                <li>{{ __('Type Job') }}:</li>
+                                                <li>{{ $jobs->jobTypeJobs->name }}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="jp_listing_right_bar_btn_wrapper">
+                                        <div class="jp_add_resume_cont jp_add_resume_wrapper">
+                                            <ul>
+                                                <li>
+                                                    <a href="{{ route('jobs.detail', $jobs->id) }}"><i class="fa fa-hand-o-right"></i> {{ __('JOB DETAIL') }}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 candidate_application_detail_margin_note">
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <div class="jp_rightside_job_categories_wrapper jp_rightside_listing_single_wrapper">

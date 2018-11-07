@@ -20,7 +20,7 @@
             <div class="jp_recent_resume_btn_wrapper">
                 <ul>
                     <li>
-                        <a href="{{ route('application.getDetailCandidate', $application->user->token) . '?job=' . $application->job->id }}">{{ __('View Profile') }}</a>
+                        <a href="{{ route('application.getDetailCandidate', ['token' => $application->user->token, 'jobId' => $application->job->id]) }}">{{ __('View Profile') }}</a>
                     </li>
                 </ul>
             </div>

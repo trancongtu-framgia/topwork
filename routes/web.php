@@ -144,7 +144,7 @@ Route::group([
     Route::get('applications/get-list/{token}', 'ApplicationController@getListCandidateApplication')->name('application.getList');
     Route::get('applications/get-candidate-by-job/{id}', 'ApplicationController@getCandidateByJob')->name('ajax.getCandidateByJob');
     Route::get('applications/get-all-candidate-by-user/{token}', 'ApplicationController@getCandidateByUser')->name('ajax.getAllCandidateByUser');
-    Route::get('applications/get-detail-candidate-apply/{id}', 'ApplicationController@getDetailCandidateApply')->name('application.getDetailCandidate');
+    Route::get('applications/get-detail-candidate-apply/{token}/{jobId}', 'ApplicationController@getDetailCandidateApply')->name('application.getDetailCandidate');
     Route::get('applications/download-cv/{name}', 'ApplicationController@downloadCv')->name('application.download');
     Route::put('applications/update/{id}', 'ApplicationController@update')->name('application.update');
 });
