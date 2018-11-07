@@ -79,28 +79,6 @@ class ApplicationController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Application $application
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Application $application)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Application $application
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Application $application)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
@@ -130,25 +108,19 @@ class ApplicationController extends Controller
         return 'false';
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Application $application
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Application $application)
-    {
-        //
-    }
-
-    public function getListCandidateApplication(string $id)
+    public function getListCandidateApplication(string $token)
     {
         try {
-            $jobs = $this->getJobByTokenUser($id);
+            $jobs = $this->getJobByTokenUser($token);
+            $jobIds = [];
+            foreach ($jobs as $key => $job) {
+                $jobIds[] = $job->id;
+            }
+            $applications = $this->getApplicationByJob($jobIds);
 
-            return view('clients.applications.index', compact('jobs'));
+            return view('clients.applications.index', compact('jobs', 'applications'));
         } catch (\Exception $e) {
-            return redirect()->back();
+            return $e;
         }
 
     }
@@ -156,27 +128,23 @@ class ApplicationController extends Controller
     public function getCandidateByJob($value)
     {
         if (!empty($value)) {
-            $jobArr = [];
             $jobIds = explode(',', $value);
-            foreach ($jobIds as $jobId) {
-                $job = $this->jobRepository->get('id', $jobId);
-                $jobArr[] = $job;
-            }
-
-            return view('clients.applications.ajax', compact('jobArr'));
         }
+        $applications = $this->getApplicationByJob($jobIds);
+
+        return view('clients.applications.ajax', compact('applications'));
     }
 
-    public function getCandidateByUser($id)
+    public function getCandidateByUser($token)
     {
-        $jobs = $this->jobRepository->getJobByUser('user_id', $id);
-        $jobArr = [];
+        $jobs = $this->getJobByTokenUser($token);
+        $jobIds = [];
         foreach ($jobs as $key => $job) {
-            $jobArr[] = $job;
+            $jobIds[] = $job->id;
         }
-        $jobArr = array_reverse($jobArr);
+        $applications = $this->getApplicationByJob($jobIds);
 
-        return view('clients.applications.ajax', compact('jobArr'));
+        return view('clients.applications.ajax', compact('applications'));
     }
 
     public function getDetailCandidateApply(Request $request, $token, $jobId)
@@ -219,9 +187,16 @@ class ApplicationController extends Controller
     private function getJobByTokenUser($token)
     {
         $user = $this->userRepository->getSpecifiedColumn('token', $token, ['id']);
-        $jobs = $this->jobRepository->getAllJob('user_id', $user->id, self::PER_PAGE);
+        $jobs = $this->jobRepository->getAllJob('user_id', $user->id);
 
         return $jobs;
+    }
+
+    private function getApplicationByJob($jobIds)
+    {
+        $applications = $this->applicationRepository->getAllApplicationByJob('job_id', $jobIds, self::PER_PAGE);
+
+        return $applications;
     }
 
     private function addChecked($application)

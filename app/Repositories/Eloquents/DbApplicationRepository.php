@@ -60,4 +60,9 @@ class DbApplicationRepository extends DbBaseRepository implements ApplicationRep
     {
         return $this->model::with('user', 'job')->where('job_id', $jobId)->where('user_id', $userId)->first();
     }
+
+    public function getAllApplicationByJob($key, $value, $per)
+    {
+        return $this->model::with('user')->whereIn($key, $value)->orderBy('id', 'desc')->paginate($per);
+    }
 }
