@@ -51,6 +51,11 @@
                                     <td class="td-w10">:</td>
                                     <td class="td-w65">{{ $user->email }}</td>
                                 </tr>
+                                <tr>
+                                    <td class="td-w25">{{ __('Experience') }}</td>
+                                    <td class="td-w10">:</td>
+                                    <td class="td-w65">{{ $user->candidate->experience }}</td>
+                                </tr>
                                 @if($application)
                                 <tr>
                                     <td class="td-w25">{{ __('CV') }}</td>
@@ -66,12 +71,6 @@
                             </table>
                         </div>
                         <div class="row">
-                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-                                <div class="jp_cp_accor_heading_wrapper">
-                                    <h2>{{ __('Experience') }}:</h2>
-                                    <p>{{ $user->candidate->experience }}</p>
-                                </div>
-                            </div>
                             <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
                                 <div class="accordion_wrapper abt_page_2_wrapper">
                                     <div class="panel-group" id="accordion_threeLeft">
@@ -152,9 +151,11 @@
                                         </div>
                                     </div>
                                     <div class="jp_listing_right_bar_btn_wrapper">
-                                        <div class="jp_listing_right_bar_btn">
+                                        <div class="jp_add_resume_cont jp_add_resume_wrapper">
                                             <ul>
-                                                <li><a href="{{ route('jobs.detail', $jobs->id) }}"><i class="fa fa-plus-circle set_padding"></i>{{ __('JOB DETAIL') }}</a></li>
+                                                <li>
+                                                    <a href="{{ route('jobs.detail', $jobs->id) }}"><i class="fa fa-hand-o-right"></i> {{ __('JOB DETAIL') }}</a>
+                                                </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -167,29 +168,30 @@
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <div class="jp_rightside_job_categories_wrapper jp_rightside_listing_single_wrapper">
-                                {{ Form::model($application, ['url' => route('application.update', $application->id), 'method' => 'PUT', 'class' => 'form-horizontal form-label-left']) }}
                                 <div class="jp_rightside_job_categories_heading">
-                                    <a href="">
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                <h4><i class="fa fa-plus-circle set_padding"></i>
-                                                    {{ __('ADD NOTE') }}
-                                                </h4>
-                                            </div>
-                                            <div class="col-md-2">
-                                                {{ Form::button(__('Save'), ['type' => 'submit', 'name' => 'submit_save', 'class' => 'btn btn-default allbutton'] ) }}
-                                            </div>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <h4 style="padding-top: 5px;">
+                                                <i class="fa fa-sticky-note-o set_padding"></i>
+                                                {{ __('Note') }}
+                                            </h4>
                                         </div>
-                                    </a>
+                                        <div class="col-md-4">
+                                            <button class="btn btn-info" onclick="noteApplication('{{ config('app.locale') }}', '{{ __('Update') }}')">
+                                                <i class="fa fa-floppy-o"></i> {{ __('Save') }}
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="jp_job_listing_single_post_right_cont">
                                     <div class="jp_job_listing_single_post_right_cont_wrapper">
-                                        {{ Form::textarea('note', null, ['class' => 'form-control']) }}
-                                        {{ Form::hidden('job', $jobs->id) }}
-                                        {{ Form::hidden('token', $user->token ) }}
+                                        {{ Form::textarea('note', $application->note,
+                                            ['class' => 'form-control',
+                                            'id' => 'noteApplicationValue'])
+                                        }}
+                                        {{ Form::hidden('application', $application->id, ['id' => 'application']) }}
                                     </div>
                                 </div>
-                                {{ Form::close() }}
                             </div>
                         </div>
                     </div>

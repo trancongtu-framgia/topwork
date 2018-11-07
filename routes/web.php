@@ -88,6 +88,8 @@ Route::group([
         Route::get('/search/job', 'HomeController@searchJob')->name('home.searchJob');
         Route::get('/', 'HomeController@index')->name('home.index');
         Route::get('/companies/detail/{token}', 'CompanyController@show')->name('companies.show');
+        Route::post('applications/add-note', 'ApplicationController@addNote')->name('application.addNote');
+
     }
 );
 
@@ -142,7 +144,7 @@ Route::group([
     Route::get('applications/get-list/{id}', 'ApplicationController@getListCandidateApplication')->name('application.getList');
     Route::get('applications/get-candidate-by-job/{id}', 'ApplicationController@getCandidateByJob')->name('ajax.getCandidateByJob');
     Route::get('applications/get-all-candidate-by-user/{id}', 'ApplicationController@getCandidateByUser')->name('ajax.getAllCandidateByUser');
-    Route::get('applications/get-detail-candidate-apply/{id}', 'ApplicationController@getDetailCandidateApply')->name('application.getDetailCandidate');
+    Route::get('applications/get-detail-candidate-apply/{token}/{jobId}', 'ApplicationController@getDetailCandidateApply')->name('application.getDetailCandidate');
     Route::get('applications/download-cv/{name}', 'ApplicationController@downloadCv')->name('application.download');
     Route::put('applications/update/{id}', 'ApplicationController@update')->name('application.update');
 });

@@ -117,7 +117,17 @@ class ApplicationController extends Controller
             flash(__('Update application failed, Please try again'))->error();
         }
 
-        return redirect()->route('application.getDetailCandidate', $request->token . '?job=' . $request->job);
+        return redirect()->route('application.getDetailCandidate', ['token' => $request->token, 'jobId' => $request->job]);
+    }
+
+    public function addNote(Request $request)
+    {
+        $applicationNote = $this->applicationRepository->update(['note' => $request->note], 'id', $request->applicationId);
+        if ($applicationNote) {
+            return 'true';
+        }
+
+        return 'false';
     }
 
     /**
@@ -169,11 +179,10 @@ class ApplicationController extends Controller
         return view('clients.applications.ajax', compact('jobArr'));
     }
 
-    public function getDetailCandidateApply(Request $request, $token)
+    public function getDetailCandidateApply(Request $request, $token, $jobId)
     {
-        $getDetail = DB::transaction( function () use ($request, $token){
+        $getDetail = DB::transaction( function () use ($request, $token, $jobId){
             try {
-                $jobId = $request->job;
                 $user = $this->candidateRepository->showInfoCandidate($token);
                 $jobs = $this->jobRepository->get('id', $jobId);
                 $application = $this->applicationRepository->getApplicationByUserAndJob($jobId, $user->id);

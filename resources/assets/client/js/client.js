@@ -159,6 +159,21 @@ $( document ).ready(function() {
     ]);
 
 });
+function noteApplication(lang, content) {
+    var note = $('#noteApplicationValue').val();
+    var applicationId = $('#application').val();
+    setupAjax();
+    $.ajax({
+        url: route('application.addNote'),
+        type: 'POST',
+        data: {applicationId:applicationId, note:note},
+        success: function (data) {
+            if (data == 'true') {
+                getNotification(lang, content, 'success');
+            }
+        }
+    })
+}
 function goBack() {
     window.history.back();
 }
