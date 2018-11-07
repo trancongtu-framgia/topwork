@@ -36,7 +36,7 @@ class ApplicationRequest extends FormRequest
         return [
             'job_id' => 'required|numeric',
             'self_introduction' => 'nullable|max:300',
-            'cv_url' => 'required|file|max:1024',
+            'cv_url' => 'required|file|max:1024|mimes:pdf,csv,doc,docx,zip',
         ];
     }
 }

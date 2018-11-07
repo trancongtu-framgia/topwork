@@ -89,7 +89,7 @@ Route::group([
         Route::get('/', 'HomeController@index')->name('home.index');
         Route::get('/companies/detail/{token}', 'CompanyController@show')->name('companies.show');
         Route::post('applications/add-note', 'ApplicationController@addNote')->name('application.addNote');
-
+        Route::get('/home', 'HomeController@redirectToHome')->name('home.redirect');
     }
 );
 

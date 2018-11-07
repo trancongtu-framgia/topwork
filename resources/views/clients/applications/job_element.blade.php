@@ -12,25 +12,40 @@
                         <h4><a href="{{ route('companies.show',  $job['token']) }}">{{ $job['company_name'] }}</a></h4>
                         </p>
                         <ul>
-                            <li></li>
-                            <li>
-                                {{ __('Salary:') }}&nbsp; {{ '$ ' . number_format($job['job']->salary_min) . ' - $ ' . number_format($job['job']->salary_max) }}
-                            </li>
-                            <li>
-                                {{ __('Location:') }}&nbsp; {{ $job['job']->locationJobs->name }}
-                            </li>
-                            <li>
-                                {{ __('Experience:') }}&nbsp;
-                                {{ $job['job']->experience }}
-                            </li>
-                            <li>
-                                {{ __('Job closing on:') }}&nbsp;
-                                {{ date('d - m - Y', strtotime($job['job']->out_date)) }}
-                            </li>
-                            <li>
-                                {{ __('Job Type:') }}&nbsp;
-                                {{ $job['job']->jobTypeJobs->name }}
-                            </li>
+                            <ul>
+                                <li></li>
+                                <li>
+                                    <span class="job_detail_text">{{ __('Salary:') }}&nbsp; </span>
+                                    {{ '$ ' . number_format($job['job']->salary_min) . ' - $ ' . number_format($job['job']->salary_max) }}
+                                </li>
+                                <li>
+                                    <span class="job_detail_text">{{ __('Location:') }}&nbsp;</span>
+                                    {{ $job['job']->locationJobs->name }}
+                                </li>
+                                <li>
+                                    <span class="job_detail_text">{{ __('Experience:') }}&nbsp;</span>
+                                    {{ $job['job']->experience }}
+                                </li>
+                                <li>
+                                    <span class="job_detail_text">{{ __('Job closing on:') }}&nbsp;</span>
+                                    {{ date('d - m - Y', strtotime($job['job']->out_date)) }}
+                                </li>
+                                <li>
+                                    <span class="job_detail_text">{{ __('Job Type:') }}&nbsp;</span>
+                                    {{ $job['job']->jobTypeJobs->name }}
+                                </li>
+                                <li>
+                                    @if ($job['job']->candidate_number != null)
+                                        <span class="job_detail_text">{{ __('Candidate Number:') }}&nbsp;</span>
+                                        {{ $job['job']->candidate_number }}
+                                    @endif
+                                </li>
+                                <li>
+                                    @foreach($job['skills'] as $skill)
+                                        <span class="label label-info">{{ $skill }}</span>
+                                    @endforeach
+                                </li>
+                            </ul>
                         </ul>
                     </div>
                 </div>

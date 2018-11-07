@@ -15,12 +15,11 @@
     <div class="row">
         <div class="col-lg-6 col-md-6 col-md-6 col-xs-12">
             <div class="input-group jp_adp_form_wrapper">
-                <span class="input-group-addon">$</span>
-                {!! Form::number('salary_min', null,
-                    [
-                        'placeholder' => __('Salary Min'),
+                <span class="input-group-addon">{{ __('Salary From ($)') }}</span>
+                {!!
+                    Form::number('salary_min', null, [
+                        'placeholder' => __('From'),
                         'class' => 'form-control',
-                        'aria-label' => 'Amount (to the nearest dollar)',
                     ])
                 !!}
             </div>
@@ -29,18 +28,22 @@
         </div>
         <div class="col-lg-6 col-md-6 col-md-6 col-xs-12">
             <div class="input-group jp_adp_form_wrapper">
-                <span class="input-group-addon">$</span>
-                {!! Form::number('salary_max', null,
-                    [
-                        'placeholder' => __('Salary Max'),
+                <span class="input-group-addon">{{ __('Up To $') }}</span>
+                {!!
+                    Form::number('salary_max', null, [
+                        'placeholder' => __('Up to'),
                         'class' => 'form-control',
-                        'aria-label' => 'Amount (to the nearest dollar)',
                     ])
                 !!}
             </div>
             {!! $errors->first('salary_max', '<span class="red">:message</span>') !!}
         </div>
     </div>
+    @if (session()->has('salary'))
+        <span class="red invalid-feedback" role="alert">
+            <strong>{{ session('salary') }}</strong>
+        </span>
+    @endif
     <div class="input-group jp_adp_form_wrapper">
         <span class="input-group-addon"> {{ __('Experience') }} </span>
         {{ Form::text('experience', null, ['maxlength' => 100, 'class' => 'form-control']) }}
@@ -48,9 +51,14 @@
     {!! $errors->first('experience', '<span class="red">:message</span>') !!}
     <div class="input-group jp_adp_form_wrapper">
         <span class="input-group-addon"> {{ __('Out Date') }} </span>
-        {{ Form::date('out_date', null, ['class' => 'form-control']) }}
+        {{ Form::date('out_date', isset($job->out_date) ? $job->out_date : date('Y-m-d',strtotime(date('Y-m-d').' +30 days')), ['class' => 'form-control']) }}
     </div>
     {!! $errors->first('out_date', '<span class="red">:message</span>') !!}
+    @if (session()->has('out_date'))
+        <span class="red invalid-feedback" role="alert">
+            <strong>{{ session('out_date') }}</strong>
+        </span>
+    @endif
     <div class="jp_adp_form_wrapper">
     </div>
 </div>

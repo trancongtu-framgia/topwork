@@ -103,6 +103,13 @@ class JobController extends Controller
             'category_id',
             'job_skill_ids',
         ]);
+
+        if ($validatedJobData['salary_min'] > $validatedJobData['salary_max']) {
+            return redirect()->back()->with('salary', __('Min salary must be equal or less than max salary'));
+        } elseif (strtotime($validatedJobData['out_date']) < time()) {
+            return redirect()->back()->with('out_date', __('Expiry date must be equal or after current day'));
+        }
+
         $validatedJobData['user_id'] = Auth::id();
         $validatedJobData['is_available'] = $validatedJobData['is_available'] == null ? config('app.job_close_status') : config('app.job_open_status');
         $validatedJobData['candidate_number'] = intval($validatedJobData['candidate_number']);
