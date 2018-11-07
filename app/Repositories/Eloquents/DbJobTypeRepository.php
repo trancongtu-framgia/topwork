@@ -50,6 +50,14 @@ class DbJobTypeRepository extends DbBaseRepository implements JobTypeRepository
 
     public function searchJobTypeByName($keyword)
     {
-        return $this->model->where('name', 'like', '%' . $keyword .'%')->get();
+        $listJobType = [];
+        $jobTypes = $this->model->where('name', 'like', '%' . $keyword .'%')->get(['id']);
+        if ($jobTypes) {
+            foreach ($jobTypes as $jobType) {
+                $listJobType[] = $jobType->id;
+            }
+        }
+
+        return $listJobType;
     }
 }

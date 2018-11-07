@@ -40,7 +40,7 @@ class HomeController extends Controller
 
     public function index()
     {
-        $activeCompanies = $this->getAllActiveCompany();
+        $activeCompanies = $this->jobRepository->getAllActiveCompany();
         $categories = $this->category->getAllWithOutPaginate();
         $jobs = $this->jobRepository->getAllAvailableJob(self::RECORD_PER_PAGE, $activeCompanies);
         $location = $this->location->getAllWithOutPaginate();
@@ -51,19 +51,6 @@ class HomeController extends Controller
     public function redirectToHome()
     {
         return redirect()->route('home.index');
-    }
-
-    public function getAllActiveCompany()
-    {
-        $roleId = $this->roleRepository->getSpecifiedColumn('name', config('app.company_role'), ['id'])->id;
-        $companies = $this->userRepository->getCompanyByStatus(config('app.status_account_activate'), $roleId, ['id']);
-
-        $companyIds = [];
-        foreach ($companies as $company) {
-            $companyIds[] = $company->id;
-        }
-
-        return $companyIds;
     }
 
     public function search(Request $request)

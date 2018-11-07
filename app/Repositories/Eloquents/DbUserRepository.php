@@ -45,7 +45,15 @@ class DbUserRepository extends DbBaseRepository implements UserRepository
 
     public function searchCompanyByName($keyword)
     {
-        return $this->model->where('name', 'like', '%' . $keyword . '%' )->get();
+        $listCompany = [];
+        $companies = $this->model->where('name', 'like', '%' . $keyword . '%' )->get(['id']);
+        if ($companies) {
+            foreach ($companies as $company) {
+                $listCompany[] = $company->id;
+            }
+        }
+
+        return $listCompany;
     }
 
     public function getCompanyByStatus(int $statusCode, int $roleId, $columns)
