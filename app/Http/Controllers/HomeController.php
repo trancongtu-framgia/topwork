@@ -48,6 +48,11 @@ class HomeController extends Controller
         return view('clients.index', compact('location', 'jobs', 'categories'));
     }
 
+    public function redirectToHome()
+    {
+        return redirect()->route('home.index');
+    }
+
     public function getAllActiveCompany()
     {
         $roleId = $this->roleRepository->getSpecifiedColumn('name', config('app.company_role'), ['id'])->id;

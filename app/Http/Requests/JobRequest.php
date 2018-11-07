@@ -35,8 +35,8 @@ class JobRequest extends FormRequest
     {
         return [
             'title' => 'required|min:4|max:100',
-            'salary_min' => 'required|numeric',
-            'salary_max' => 'required|numeric',
+            'salary_min' => 'required|numeric|min:0',
+            'salary_max' => 'required|numeric|min:0',
             'description' => 'required',
             'location_id' => 'required|numeric',
             'job_type_id' => 'required|numeric',
@@ -45,7 +45,7 @@ class JobRequest extends FormRequest
             'category_ids' => 'required|array',
             'job_skill_ids' => 'required',
             'is_available' => 'nullable',
-            'candidate_number' => 'nullable|numeric',
+            'candidate_number' => 'nullable|numeric|min:0',
         ];
     }
 }
