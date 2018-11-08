@@ -173,9 +173,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 candidate_application_detail_margin_note">
-                    <div class="row">
+                    <div class="row candidate_application_detail_margin_note">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <div class="jp_rightside_job_categories_wrapper jp_rightside_listing_single_wrapper">
                                 <div class="jp_rightside_job_categories_heading">
