@@ -177,3 +177,51 @@ function noteApplication(lang, content) {
 function goBack() {
     window.history.back();
 }
+
+$(document).ready(function() {
+    if ($('#pop-up-box').length) {
+        $('#pop-up-box').fadeIn(300);
+        $('body').append('<div id="over">');
+        $('#over').fadeIn(500);
+
+        var array_name = [];
+        var i = 0;
+        $('input[name = "cb"]').change(function () {
+            var cb = $(this).val();
+            if ($(this).prop('checked') == true) {
+                array_name[i] = cb;
+                i++;
+            } else {
+                array_name.forEach(function (currentValue, index, array_name) {
+                    if (cb == currentValue) {
+                        array_name.splice(index, 1);
+                        i--;
+                    }
+                });
+            }
+        });
+
+        $('#postBookMark').click(function () {
+            $.get(window.location.origin + '/bookmark/add-book-mark/' + array_name, function (data) {
+                if (data) {
+                    var lang = data;
+                    var content = 'Add category interesting';
+                    getNotification(lang, content, 'success');
+                    $('#over, .pop-up').fadeOut(300, function () {
+                        $('#over').remove();
+                    });
+                }
+            });
+        });
+    }
+
+    $('a.exit').click( function() {
+        var exit = 'exit';
+        $.get(window.location.origin + '/bookmark/add-book-mark/' + exit, function (data) {
+            alert(data);
+        });
+        $('#over, .pop-up').fadeOut(300 , function() {
+            $('#over').remove();
+        });
+    });
+});

@@ -8052,3 +8052,88 @@ input:checked + .slider:before {
     font-weight: bold;
     padding-top: 30px;
 }
+.pricing_btn2 {
+    display: inline-block;
+    padding-bottom: 3px;
+}
+.pricing_btn2 li a {
+    width: 170px;
+    height: 50px;
+    float: left;
+    color: #ffffff;
+    background: #23c0e9;
+    text-align: center;
+    border-radius: 10px;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.5s;
+    letter-spacing: 2px;
+    border: none;
+}
+/*pop up*/
+#over {
+    display: none;
+    background: #000;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+    z-index: 9;
+}
+a, a:visited, a:active{
+    text-decoration:none;
+}
+.pop-up
+{
+    background-color:#23c0e9;
+    height:auto;
+    width:50%;
+    font-family:Verdana, Arial, Helvetica, sans-serif;
+    font-size:14px;
+    padding-bottom:5px;
+    display:none;
+    overflow:hidden;
+    position:absolute;
+    z-index:99;
+    top:13%;
+    left:25%;
+    margin:auto;
+}
+.pop-up-content
+{
+    padding-left:35px;
+    background-color:white;
+    margin-left:5px;
+    margin-right:5px;
+    margin-top:5px;
+    height:auto;
+    padding-top:15px;
+    overflow:hidden;
+}
+.book-mark-list-category{
+    overflow: auto;
+    height:300px;
+    width: 550px;
+    margin-top:15px;
+}
+.pricing_cont ul{
+    list-style: none;
+    padding: 0;
+    margin-top: -10px;
+    text-align: left;
+}
+.exit {
+    line-height:1;
+    text-decoration: underline;
+}
+.exit:hover {
+    color: #23c0e9;
+    text-decoration: underline;
+}
+.title-pop-up {
+    text-align: center;
+    font-weight: bold;
+}
