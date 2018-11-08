@@ -9,4 +9,6 @@ interface JobCategoryRepository extends BaseRepository
     public function getJobIdByCategory($categoryId);
 
     public function getCategoryByJobId($jobId);
+
+    public function getJobByCategoryId($key, $value);
 }

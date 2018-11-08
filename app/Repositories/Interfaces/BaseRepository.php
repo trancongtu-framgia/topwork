@@ -20,5 +20,4 @@ interface BaseRepository
     public function update($data, $key, $value);
 
     public function delete($key, $value);
-
 }
