@@ -20,13 +20,15 @@
                 <td>{{ $company->id }}</td>
                 <td><a href="{{ route('admin.companies.detail', $company->id) }}">{{ $company->name }}</a></td>
                 <td>{{ $company->email }}</td>
-                @if ($company->status == config('app.status_account_deactivate'))
-                    <td><label class="badge badge-danger">{{ __('In Active') }}</label></td>
-                @elseif ($company->status == config('app.status_account_pending'))
-                    <td><label class="badge badge-warning">{{ __('Verified | Pending') }}</label></td>
-                @elseif ($company->status == config('app.status_account_activate'))
-                    <td><label class="badge badge-success">{{ __('Activated') }}</label></td>
-                @endif
+                <td><a href="{{ route('admin.companies.status', $company->status) }}">
+                    @if ($company->status == config('app.status_account_deactivate'))
+                        <label class="badge badge-danger">{{ __('In Active') }}</label>
+                    @elseif ($company->status == config('app.status_account_pending'))
+                        <label class="badge badge-warning">{{ __('Verified | Pending') }}</label>
+                    @elseif ($company->status == config('app.status_account_activate'))
+                        <label class="badge badge-success">{{ __('Activated') }}</label>
+                    @endif
+                </a></td>
             </tr>
         @endforeach
         </tbody>

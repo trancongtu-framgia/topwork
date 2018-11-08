@@ -95,7 +95,7 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
     public function updateJobStatus(int $jobId)
     {
         $job = $this->model::findOrFail($jobId);
-        $job->is_available = $job->is_available == true ? false : true;
+        $job->is_available = $job->is_available == config('app.job_open_status') ? config('app.job_close_status') : config('app.job_open_status');
         $job->save();
     }
 

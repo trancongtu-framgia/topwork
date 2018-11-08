@@ -59,7 +59,7 @@ class AdminController extends Controller
     public function getAllCompanyByStatus(int $statusCode)
     {
         $roleId = $this->roleRepository->getSpecifiedColumn('name', config('app.company_role'), ['id'])->id;
-        $companies = $this->userRepository->getCompanyByStatus($statusCode, $roleId, []);
+        $companies = $this->userRepository->getCompanyByStatus($statusCode, $roleId);
 
         return view('admin.companies.index', compact('companies'));
     }

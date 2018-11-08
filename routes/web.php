@@ -40,6 +40,7 @@ Route::group([
         'prefix' => 'companies',
     ], function (){
         Route::get('/all', 'AdminController@getAllCompany')->name('admin.companies.index');
+        Route::get('/all/status/{id}', 'AdminController@getAllCompanyByStatus')->name('admin.companies.status');
         Route::get('/detail/{id}', 'AdminController@show')->name('admin.companies.detail');
         Route::get('/change/{id}', 'AdminController@changeCompanyStatus')->name('admin.companies.change');
     });
