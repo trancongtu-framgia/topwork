@@ -43,4 +43,9 @@ class DbBookMarkRepository extends DbBaseRepository implements BookMarkRepositor
     {
         // TODO: Implement delete() method.
     }
+
+    public function getBookMarkByUser($key, $value)
+    {
+        return $this->model->where($key, $value)->pluck('category_id');
+    }
 }

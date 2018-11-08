@@ -12,6 +12,7 @@ use App\Repositories\Interfaces\RoleRepository;
 use App\Repositories\Interfaces\SkillRepository;
 use App\Repositories\Interfaces\UserRepository;
 use App\Repositories\Interfaces\JobCategoryRepository;
+use App\Repositories\Interfaces\BookMarkRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,6 +28,7 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
     protected $jobCategory;
     protected $applicationRepository;
     protected $role;
+    protected $bookMarkRepository;
     private const FORMAT_DATE = 'Y-m-d';
 
     /**
@@ -42,7 +44,8 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
         UserRepository $userRepository,
         JobCategoryRepository $jobCategoryRepository,
         ApplicationRepository $applicationRepository,
-        RoleRepository $roleRepository
+        RoleRepository $roleRepository,
+        BookMarkRepository $bookMarkRepository
     ) {
         $this->model = $model;
         $this->jobSkillRepository = $jobSkillRepository;
@@ -53,6 +56,7 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
         $this->jobCategory = $jobCategoryRepository;
         $this->applicationRepository = $applicationRepository;
         $this->role = $roleRepository;
+        $this->bookMarkRepository = $bookMarkRepository;
     }
 
     public function getAll($per)
@@ -352,10 +356,23 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
 
     public function getAllAvailableJob(int $recordPerPage, $userIds)
     {
-        $jobs = $this->getJobWithSkillName($this->model::where('is_available', config('app.job_open_status'))
-            ->where('out_date', '>=', date(self::FORMAT_DATE))
-            ->whereIn('user_id', $userIds)
-            ->get());
+        if (Auth::check()) {
+            $bookMarks = $this->bookMarkRepository->getBookMarkByUser('user_id', Auth::user()->id);
+        }
+
+        if (isset($bookMarks)) {
+            $jobIds = $this->jobCategory->getJobByCategoryId('category_id', $bookMarks);
+            $listJobs = $this->model->where('is_available', config('app.job_open_status'))
+                ->where('out_date', '>=', date(self::FORMAT_DATE))
+                ->whereIn('id', $jobIds)
+                ->get();
+        } else {
+            $listJobs = $this->model->where('is_available', config('app.job_open_status'))
+                ->where('out_date', '>=', date(self::FORMAT_DATE))
+                ->whereIn('user_id', $userIds)
+                ->get();
+        }
+        $jobs = $this->getJobWithSkillName($listJobs);
 
         return $this->paginatorJob($jobs, $recordPerPage);
     }
