@@ -27,7 +27,7 @@
                                 <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
                                 <span class="m-menu__link-text">{{ __('All Companies') }}</span></a></li>
                         <li class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1">
-                            <a href="" class="m-menu__link ">
+                            <a href="{{ route('admin.companies.status', config('app.status_account_pending')) }}" class="m-menu__link ">
                                 <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i>
                                 <span class="m-menu__link-text">{{ __('Pending Companies') }}</span>
                             </a>

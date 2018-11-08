@@ -56,7 +56,7 @@ class DbUserRepository extends DbBaseRepository implements UserRepository
         return $listCompany;
     }
 
-    public function getCompanyByStatus(int $statusCode, int $roleId, $columns)
+    public function getCompanyByStatus(int $statusCode, int $roleId, $columns = null)
     {
         return $this->model::where('status', $statusCode)->where('role_id', $roleId)->get($columns);
     }
