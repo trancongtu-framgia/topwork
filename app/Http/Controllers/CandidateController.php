@@ -136,6 +136,7 @@ class CandidateController extends Controller
         $candidate = $this->candidateRepository->updateInfoCandidate($request, 'token', $token);
 
         if ($candidate) {
+            $this->removeCache('getAllCandidate');
             flash(__('Edit Profile Success'))->success();
 
             return redirect()->route('candidate.getInfo', Auth::User()->token);

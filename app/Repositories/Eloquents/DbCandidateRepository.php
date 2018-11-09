@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Repositories\Interfaces\CandidateRepository;
 use DB;
 use Mockery\Exception;
+use Cache;
 
 class DbCandidateRepository extends DbBaseRepository implements CandidateRepository
 {
@@ -84,6 +85,19 @@ class DbCandidateRepository extends DbBaseRepository implements CandidateReposit
         });
 
         return $update;
+    }
+
+    public function getAllCandidate ()
+    {
+        $listCandidate = [];
+        $candidates = Cache::rememberForever('getAllCandidate', function () {
+            return $this->model->all('user_id');
+        });
+        foreach ($candidates as $candidate) {
+            $listCandidate[] = $candidate->user_id;
+        }
+
+        return $listCandidate;
     }
 
     public function updateStatus($token)
