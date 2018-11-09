@@ -16,6 +16,7 @@ class BookMarkController extends Controller
     protected $categoryRepository;
     protected $bookMarkRepository;
     protected $userRepository;
+    const EXIT_POP_UP = 'exit';
 
     public function __construct(
         CategoryRepository $categoryRepository,
@@ -55,31 +56,7 @@ class BookMarkController extends Controller
      */
     public function store(Request $request)
     {
-        $results = DB::transaction(function () use ($request) {
-            try {
-                $bookMarks = [];
-                foreach ($request->cb as $key => $categoryId) {
-                    $dataBookMark['category_id'] = $categoryId;
-                    $dataBookMark['user_id'] = Auth::User()->id;
-                    $bookMarks[] = $this->bookMarkRepository->create($dataBookMark);
-                }
-                $dataUser['is_first_login'] = config('app.is_first_logged');
-                $user = $this->userRepository->update($dataUser, 'id', Auth::User()->id);
-                DB::commit();
-
-                return true;
-            } catch (\Exception $e) {
-                DB::rollBack();
-
-                return $e;
-            }
-        });
-
-        if ($results) {
-            return redirect()->route('home.index');
-        } else {
-            return redirect()->back();
-        }
+        //
     }
 
     /**
@@ -116,10 +93,35 @@ class BookMarkController extends Controller
         //
     }
 
-    public function getView()
+    public function addCategoryInterest($data)
     {
-        $categories = $this->categoryRepository->getAllWithOutPaginate();
+        if ($data == self::EXIT_POP_UP) {
+            $dataUser['is_first_login'] = config('app.is_first_logged');
+            $user = $this->userRepository->update($dataUser, 'id', Auth::User()->id);
 
-        return view('clients.bookmarks.index', compact('categories'));
+            return $user;
+        } else {
+            $categoryIds = explode(',', $data);
+            return DB::transaction(function () use ($categoryIds) {
+                try {
+                    $bookMarks = [];
+                    foreach ($categoryIds as $key => $categoryId) {
+                        $dataBookMark['category_id'] = $categoryId;
+                        $dataBookMark['user_id'] = Auth::User()->id;
+                        $bookMarks[] = $this->bookMarkRepository->create($dataBookMark);
+                    }
+
+                    $dataUser['is_first_login'] = config('app.is_first_logged');
+                    $user = $this->userRepository->update($dataUser, 'id', Auth::User()->id);
+                    DB::commit();
+
+                    return config('app.locale');
+                } catch (\Exception $e) {
+                    DB::rollBack();
+
+                    return $e;
+                }
+            });
+        }
     }
 }

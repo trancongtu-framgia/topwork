@@ -155,7 +155,6 @@ Route::group(['prefix' => 'register'], function () {
 });
 
 Route::group(['prefix' => 'bookmark'], function() {
-    Route::get('add-book-mark', 'BookMarkController@getView')->name('get.bookMark');
-    Route::post('/', 'BookMarkController@store')->name('bookmarks.store');
+    Route::get('add-book-mark/{id}', 'BookMarkController@addCategoryInterest')->name('get.bookMark');
 });
 

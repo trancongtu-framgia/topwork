@@ -70,8 +70,6 @@ class LoginController extends Controller
             $role = strtolower(Auth::user()->userRole->name);
             if ($role == config('app.admin_role')) {
                 return redirect()->route('admin.index');
-            } elseif ($role == config('app.candidate_role') && Auth::user()->is_first_login == config('app.is_first_login')) {
-                return redirect()->route('get.bookMark');
             }
 
             return redirect(session()->pull('previousUrl'));

@@ -33,6 +33,8 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
     protected $bookMarkRepository;
     protected $locationRepository;
     private const FORMAT_DATE = 'Y-m-d';
+    private const JOB_EXIST = 1;
+    private const JOB_DOSENT_EXIST = 0;
 
     /**
      * @param Job $model
@@ -365,18 +367,27 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
 
     public function getAllAvailableJob(int $recordPerPage, $userIds, $url = null)
     {
+        $bookMarks = null;
+        $jobIds = null;
+        $checkJob = self::JOB_DOSENT_EXIST;
+        $userId = 0;
         if (Auth::check()) {
             $userId = Auth::user()->id;
             $bookMarks = $this->bookMarkRepository->getBookMarkByUser('user_id', $userId);
+            if (!empty($bookMarks->toArray())) {
+                $jobIds = $this->jobCategory->getJobByCategoryId('category_id', $bookMarks);
+                if (!empty($jobIds->toArray())) {
+                    $checkJob = self::JOB_EXIST;
+                }
+            }
         }
 
-        if (isset($bookMarks)) {
-            $jobIds = $this->jobCategory->getJobByCategoryId('category_id', $bookMarks);
+        if ($checkJob == self::JOB_EXIST) {
             $getJobs = Cache::rememberForever('getAllAvailableJobByBookMarks' . $userId, function () use ($userIds, $jobIds) {
                 return $this->model::where('is_available', config('app.job_open_status'))
                     ->where('out_date', '>=', date(self::FORMAT_DATE))
                     ->whereIn('user_id', $userIds)
-                    ->whereIn('id', $jobIds)
+                    ->whereIn('id', $jobIds->toArray())
                     ->get();
             });
         } else {
