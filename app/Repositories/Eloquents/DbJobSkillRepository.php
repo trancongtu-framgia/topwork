@@ -5,6 +5,7 @@ namespace App\Repositories\Eloquents;
 use App\Models\JobSkill;
 use App\Repositories\Eloquents\DbBaseRepository;
 use App\Repositories\Interfaces\JobSkillRepository;
+use Cache;
 
 class DbJobSkillRepository extends DbBaseRepository implements JobSkillRepository
 {
@@ -50,10 +51,26 @@ class DbJobSkillRepository extends DbBaseRepository implements JobSkillRepositor
             $this->create(['job_id' => $jobId, 'skill_id' => $skill]);
         }
     }
+    public function getAllJobSkill()
+    {
+        $jobSkills = Cache::rememberForever('getAllJobSkill', function () {
+            return $this->model->all()->toArray();
+        });
+
+        return $jobSkills;
+    }
 
     public function findAllByJobId(int $jobId)
     {
-        return $this->model::with('skillJobs')->where('job_id', $jobId)->get();
+        $skills = [];
+        $jobskills = $this->getAllJobSkill();
+        foreach ($jobskills as $jobskill) {
+            if ($jobskill['job_id'] == $jobId) {
+                    $skills[] = $jobskill['skill_id'];
+            }
+        }
+
+        return $skills;
     }
 
     public function findAllJobBySkill($skills)

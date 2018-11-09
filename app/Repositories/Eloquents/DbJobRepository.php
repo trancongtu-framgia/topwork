@@ -133,7 +133,7 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
             $skills = $this->jobSkillRepository->findAllByJobId($job->id);
             if ($skills) {
                 foreach ($skills as $skill) {
-                    $skillName[] = $skill->skillJobs->name;
+                    $skillName[] = $this->skill->getNameSkillById($skill);
                 }
             }
             $companyUserInfo = $this->user->getInformationCompanyByUserId($job->user_id);
@@ -393,7 +393,7 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
 
     public function getAllActiveCompany()
     {
-        $roleId = $this->role->getSpecifiedColumn('name', config('app.company_role'), ['id'])->id;
+        $roleId = $this->role->getRoleIdByName(config('app.company_role'));
         $companies = $this->user->getCompanyByStatus(config('app.status_account_activate'), $roleId, ['id']);
         $companyIds = [];
         foreach ($companies as $company) {

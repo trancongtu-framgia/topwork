@@ -48,6 +48,7 @@ class RoleController extends Controller
     {
         $role = $this->roleRepository->create($request->all());
         if ($role) {
+            $this->removeCache('getAllRole');
             flash(__('Add role successfully'))->success();
 
             return redirect()->route('roles.index');
@@ -82,6 +83,7 @@ class RoleController extends Controller
     {
         $role = $this->roleRepository->update($request->validated(), 'id', $id);
         if ($role) {
+            $this->removeCache('getAllRole');
             flash(__('Update role success'))->success();
         } else {
             flash(__('Update role failed, Please try again'))->error();
@@ -100,6 +102,7 @@ class RoleController extends Controller
     {
         $role = $this->roleRepository->delete('id', $id);
         if ($role) {
+            $this->removeCache('getAllRole');
             flash(__('Delete role success'))->success();
         } else {
             flash(__('Delete role failed, Please try again!'));

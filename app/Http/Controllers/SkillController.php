@@ -55,6 +55,7 @@ class SkillController extends Controller
         $validatedData = $request->validated();
         $recentlyAddedSkill = $this->skillRepository->create($validatedData);
         if ($recentlyAddedSkill) {
+            $this->removeCache('getAllSkills');
             flash(__('Add successfully'))->success();
 
             return redirect()->route('skills.index');
@@ -101,6 +102,7 @@ class SkillController extends Controller
     {
         $recentlyUpdatedSkill = $this->skillRepository->update($request->validated(), 'id', $skillId);
         if ($recentlyUpdatedSkill) {
+            $this->removeCache('getAllSkills');
             flash(__('Edit successfully'))->success();
 
             return redirect()->route('skills.index');
@@ -121,6 +123,7 @@ class SkillController extends Controller
     {
         $recentlyDeletedSkill = $this->skillRepository->delete('id', $skillId);
         if ($recentlyDeletedSkill) {
+            $this->removeCache('getAllSkills');
             flash(__('Delete successfully'))->success();
 
             return redirect()->route('skills.index');

@@ -143,9 +143,17 @@ class JobController extends Controller
 
     public function removeCacheJob()
     {
+        $keys = [
+            'getAllJobByCompany',
+            'getAllAvailableJob',
+            'getAllJobSkill',
+        ];
         $getKeyCache = 'getAllJobByCompany' . Auth::id();
         $this->removeCache($getKeyCache);
-        $this->removeCache('getAllAvailableJob');
+        foreach ($keys as $key) {
+            $this->removeCache($key);
+        }
+
     }
     public function show(int $jobId)
     {
