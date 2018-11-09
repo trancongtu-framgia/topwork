@@ -9,5 +9,7 @@ interface CandidateRepository extends BaseRepository
 	public function updateInfoCandidate($data, $key, $value);
 
     public function updateStatus($token);
+
+    public function getAllCandidate();
 }
 

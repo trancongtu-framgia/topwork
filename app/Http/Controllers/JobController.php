@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\JobRequest;
 use App\Models\Job;
+use App\Repositories\Interfaces\CandidateRepository;
 use App\Repositories\Interfaces\CategoryRepository;
 use App\Repositories\Interfaces\CompanyRepository;
 use App\Repositories\Interfaces\JobCategoryRepository;
@@ -32,6 +33,7 @@ class JobController extends Controller
     private $companyRepository;
     private $applicationRepository;
     private $jobCategory;
+    private $candidateRipository;
 
     /**
      * Display a listing of the resource.
@@ -49,7 +51,8 @@ class JobController extends Controller
         UserRepository $userRepository,
         CompanyRepository $companyRepository,
         ApplicationRepository $applicationRepository,
-        JobCategoryRepository $JobCategoryRepository
+        JobCategoryRepository $JobCategoryRepository,
+        CandidateRepository $candidateRepository
     ) {
         $this->jobRepository = $jobRepository;
         $this->categoryRepository = $categoryRepository;
@@ -62,6 +65,7 @@ class JobController extends Controller
         $this->companyRepository = $companyRepository;
         $this->applicationRepository = $applicationRepository;
         $this->jobCategory = $JobCategoryRepository;
+        $this->candidateRipository = $candidateRepository;
     }
 
     public function index()
@@ -154,6 +158,12 @@ class JobController extends Controller
             $this->removeCache($key);
         }
 
+        $idCandidates = $this->candidateRipository->getAllCandidate();
+        if ($idCandidates) {
+            foreach ($idCandidates as $idCandidate) {
+                $this->removeCache('getAllAvailableJobByBookMarks' . $idCandidate);
+            }
+        }
     }
     public function show(int $jobId)
     {
