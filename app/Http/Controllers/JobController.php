@@ -17,7 +17,7 @@ use App\Repositories\Interfaces\ApplicationRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-
+use Cache;
 class JobController extends Controller
 {
     private const RECORD_PER_PAGE = 10;
@@ -80,9 +80,10 @@ class JobController extends Controller
      */
     public function create()
     {
-        $categories = $this->categoryRepository->getAllWithOutPaginate()->toArray();
-        $jobTypes = $this->jobTypeRepository->getAllWithOutPaginate()->toArray();
-        $locations = $this->locationRepository->getAllWithOutPaginate()->toArray();
+        $items = $this->getItemForJob();
+        $categories = $items['categories'];
+        $jobTypes = $items['jobTypes'];
+        $locations = $items['locations'];
         $skills = [];
         $jobSkills = [];
         $jobCategory = [];
@@ -123,6 +124,7 @@ class JobController extends Controller
 
         if ($recentlyAddedJob) {
             flash(__('Add successfully'))->success();
+            $this->removeCacheJob();
 
             return redirect()->route('jobs.index');
         } else {
@@ -138,6 +140,13 @@ class JobController extends Controller
      * @param  \App\Models\Job $job
      * @return \Illuminate\Http\Response
      */
+
+    public function removeCacheJob()
+    {
+        $getKeyCache = 'getAllJobByCompany' . Auth::id();
+        $this->removeCache($getKeyCache);
+        $this->removeCache('getAllAvailableJob');
+    }
     public function show(int $jobId)
     {
         try {
@@ -157,14 +166,29 @@ class JobController extends Controller
      * @param  \App\Models\Job $job
      * @return \Illuminate\Http\Response
      */
+
+    public function getItemForJob()
+    {
+        $categories = $this->categoryRepository->getAllWithOutPaginate()->toArray();
+        $jobTypes = $this->jobTypeRepository->getAllWithOutPaginate()->toArray();
+        $locations = $this->locationRepository->getAllWithOutPaginate()->toArray();
+        $items = [
+            'categories' => $categories,
+            'jobTypes' => $jobTypes,
+            'locations' => $locations,
+        ];
+
+        return $items;
+    }
     public function edit($id)
     {
         $job = $this->jobRepository->get('id', $id);
         $authenticatedCompanyUser = Auth::user();
         if ($authenticatedCompanyUser->can('edit', $job)) {
-            $categories = $this->categoryRepository->getAllWithOutPaginate()->toArray();
-            $jobTypes = $this->jobTypeRepository->getAllWithOutPaginate()->toArray();
-            $locations = $this->locationRepository->getAllWithOutPaginate()->toArray();
+            $items = $this->getItemForJob();
+            $categories = $items['categories'];
+            $jobTypes = $items['jobTypes'];
+            $locations = $items['locations'];
             $jobCategory = [];
             $listJobCategory = $this->jobCategory->getCategoryByJobId($id);
             if ($listJobCategory) {
@@ -206,6 +230,7 @@ class JobController extends Controller
             $this->jobSkillRepository->createByJobId($id, $skillArray);
 
             if ($jobs) {
+                $this->removeCacheJob();
                 flash(__('Update role success'))->success();
             } else {
                 flash(__('Update role failed, Please try again'))->error();
@@ -233,6 +258,7 @@ class JobController extends Controller
                 flash(__('Delete successfully'))->success();
                 $this->jobSkillRepository->delete('job_id', $jobId);
                 $this->jobCategoryRepository->delete('job_id', $jobId);
+                $this->removeCacheJob();
 
                 return redirect()->route('jobs.index');
             } else {
@@ -249,6 +275,7 @@ class JobController extends Controller
     public function changeJobStatus(Request $request)
     {
         $updatedJob = $this->jobRepository->updateJobStatus($request->id);
+        $this->removeCacheJob();
 
         return response()->json('ok');
     }

@@ -28,7 +28,7 @@
                                 {{ number_format($job['job']->salary_min) . ' - ' . number_format($job['job']->salary_max) }}
                             </li>
                             <li>
-                                <i class="fa fa-map-marker"></i>&nbsp; {{ $job['job']->locationJobs->name }}
+                                <i class="fa fa-map-marker"></i>&nbsp; {{ $job['location'] }}
                             </li>
                             <li>
                                 <i class="fa fa-hashtag"></i>&nbsp;
@@ -36,7 +36,7 @@
                             </li>
                             <li>
                                 <i class="fa fa-clock-o" aria-hidden="true"></i>
-                                <a href="#">{{ $job['job']->jobTypeJobs->name }}</a>
+                                <a href="#">{{ $job['jobType'] }}</a>
                             </li>
                             <li>
                                 @if ($job['job']->candidate_number != null)

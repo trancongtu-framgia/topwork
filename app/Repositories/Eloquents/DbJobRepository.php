@@ -8,11 +8,13 @@ use App\Repositories\Interfaces\CompanyRepository;
 use App\Repositories\Interfaces\JobRepository;
 use App\Repositories\Interfaces\JobSkillRepository;
 use App\Repositories\Interfaces\JobTypeRepository;
+use App\Repositories\Interfaces\LocationRepository;
 use App\Repositories\Interfaces\RoleRepository;
 use App\Repositories\Interfaces\SkillRepository;
 use App\Repositories\Interfaces\UserRepository;
 use App\Repositories\Interfaces\JobCategoryRepository;
 use App\Repositories\Interfaces\BookMarkRepository;
+use Cache;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,6 +31,7 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
     protected $applicationRepository;
     protected $role;
     protected $bookMarkRepository;
+    protected $locationRepository;
     private const FORMAT_DATE = 'Y-m-d';
 
     /**
@@ -45,7 +48,8 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
         JobCategoryRepository $jobCategoryRepository,
         ApplicationRepository $applicationRepository,
         RoleRepository $roleRepository,
-        BookMarkRepository $bookMarkRepository
+        BookMarkRepository $bookMarkRepository,
+        LocationRepository $locationRepository
     ) {
         $this->model = $model;
         $this->jobSkillRepository = $jobSkillRepository;
@@ -57,6 +61,7 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
         $this->applicationRepository = $applicationRepository;
         $this->role = $roleRepository;
         $this->bookMarkRepository = $bookMarkRepository;
+        $this->locationRepository = $locationRepository;
     }
 
     public function getAll($per)
@@ -110,7 +115,9 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
 
     public function getAllJobByCompany(int $companyId, int $per)
     {
-        $jobs = $this->model::where('user_id', $companyId)->with('locationJobs', 'jobTypeJobs')->get();
+        $jobs = Cache::rememberForever('getAllJobByCompany' . $companyId, function () use ($companyId) {
+            return $this->model::where('user_id', $companyId)->with('locationJobs', 'jobTypeJobs')->get();
+        });
 
         return $this->getJobWithSkillName($jobs);
     }
@@ -129,15 +136,16 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
                     $skillName[] = $skill->skillJobs->name;
                 }
             }
-            $companyUserInfo = $this->user->getSpecifiedColumn('id', $job->user_id, ['name', 'token']);
+            $companyUserInfo = $this->user->getInformationCompanyByUserId($job->user_id);
             $jobsWithSkill[] = [
                 'job' => $job,
                 'skills' => $skillName,
-                'company_name' => $companyUserInfo->name,
-                'company_logo' => $this->companyRepository->getSpecifiedColumn('user_id', $job->user_id,
-                    ['logo_url'])->logo_url,
-                'token' => $companyUserInfo->token,
+                'company_name' => $companyUserInfo['name'],
+                'company_logo' => $companyUserInfo['company_logo'],
+                'token' => $companyUserInfo['token'],
                 'role_name' => $roleName,
+                'location' => $this->locationRepository->getNameById($job->location_id),
+                'jobType' => $this->jobType->getNameById($job->job_type_id),
                 'can_apply' => $isUserAuthenticated ? $this->applicationRepository->checkDuplicate($authenticatedUser->id,
                     $job->id) : true,
             ];
@@ -241,6 +249,7 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
         $company_available = $this->getAllActiveCompany();
         if ($jobs) {
             $listJobs = $this->model->where('out_date', '>=', date(self::FORMAT_DATE))
+                ->where('is_available', config('app.job_open_status'))
                 ->whereIn('user_id', $company_available)
                 ->whereIn('id', $jobs)->get();
         }
@@ -354,27 +363,32 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
             ->take(config('app.record_number'))->get();
     }
 
-    public function getAllAvailableJob(int $recordPerPage, $userIds)
+    public function getAllAvailableJob(int $recordPerPage, $userIds, $url = null)
     {
         if (Auth::check()) {
-            $bookMarks = $this->bookMarkRepository->getBookMarkByUser('user_id', Auth::user()->id);
+            $userId = Auth::user()->id;
+            $bookMarks = $this->bookMarkRepository->getBookMarkByUser('user_id', $userId);
         }
 
         if (isset($bookMarks)) {
             $jobIds = $this->jobCategory->getJobByCategoryId('category_id', $bookMarks);
-            $listJobs = $this->model->where('is_available', config('app.job_open_status'))
-                ->where('out_date', '>=', date(self::FORMAT_DATE))
-                ->whereIn('id', $jobIds)
-                ->get();
+            $getJobs = Cache::rememberForever('getAllAvailableJobByBookMarks' . $userId, function () use ($userIds, $jobIds) {
+                return $this->model::where('is_available', config('app.job_open_status'))
+                    ->where('out_date', '>=', date(self::FORMAT_DATE))
+                    ->whereIn('user_id', $userIds)
+                    ->whereIn('id', $jobIds)
+                    ->get();
+            });
         } else {
-            $listJobs = $this->model->where('is_available', config('app.job_open_status'))
-                ->where('out_date', '>=', date(self::FORMAT_DATE))
-                ->whereIn('user_id', $userIds)
-                ->get();
+            $getJobs = Cache::rememberForever('getAllAvailableJob', function () use ($userIds) {
+                return $this->model::where('is_available', config('app.job_open_status'))
+                    ->where('out_date', '>=', date(self::FORMAT_DATE))
+                    ->whereIn('user_id', $userIds)
+                    ->get();
+            });
         }
-        $jobs = $this->getJobWithSkillName($listJobs);
 
-        return $this->paginatorJob($jobs, $recordPerPage);
+        return $this->paginatorJob($this->getJobWithSkillName($getJobs), $recordPerPage, $url);
     }
 
     public function getAllActiveCompany()

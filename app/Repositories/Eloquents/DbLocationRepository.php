@@ -5,6 +5,7 @@ namespace App\Repositories\Eloquents;
 use App\Models\Location;
 use App\Repositories\Eloquents\DbBaseRepository;
 use App\Repositories\Interfaces\LocationRepository;
+use Cache;
 
 class DbLocationRepository extends DbBaseRepository implements LocationRepository
 {
@@ -36,7 +37,17 @@ class DbLocationRepository extends DbBaseRepository implements LocationRepositor
 
     public function getAllWithOutPaginate()
     {
-        return $this->model::pluck('name', 'id');
+        $getLocation = Cache::rememberForever('getLocation', function () {
+            return $this->model::pluck('name', 'id');
+        });
+
+        return $getLocation;
+    }
+
+    public function getNameById($id){
+        $locations = $this->getAllWithOutPaginate();
+
+        return $locations[$id];
     }
 
     public function create($param)

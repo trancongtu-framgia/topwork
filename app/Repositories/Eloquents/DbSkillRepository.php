@@ -5,6 +5,7 @@ namespace App\Repositories\Eloquents;
 use App\Models\Skill;
 use App\Repositories\Eloquents\DbBaseRepository;
 use App\Repositories\Interfaces\SkillRepository;
+use Cache;
 
 class DbSkillRepository extends DbBaseRepository implements SkillRepository
 {
@@ -69,23 +70,10 @@ class DbSkillRepository extends DbBaseRepository implements SkillRepository
 
     public function getSkillByCategory($categories)
     {
-        $listSkills = [];
         if ($categories) {
-            foreach ($categories as $category) {
-                $skills = $this->model->where('category_id', $category)->get();
-                if ($skills) {
-                    foreach ($skills as $skill) {
-                        if (!array_key_exists($skill->id, $listSkills)) {
-                            $listSkills[] = [
-                                'id' => $skill->id,
-                                'name' => $skill->name,
-                            ];
-                        }
-                    }
-                }
-            }
+            $skills = $this->model->whereIn('category_id', $categories)->get(['id', 'name'])->toArray();
         }
 
-        return $listSkills;
+        return $skills;
     }
 }

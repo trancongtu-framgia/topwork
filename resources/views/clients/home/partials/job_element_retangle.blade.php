@@ -29,11 +29,11 @@
                             </li>
                             <li>
                                 <i class="fa fa-map-marker"></i>&nbsp;
-                                {{ $job['job']->locationJobs->name }}
+                                {{ $job['location'] }}
                             </li>
                             <li>
                                 <i class="fa fa-clock-o" aria-hidden="true"></i>
-                                <a href="#">{{ $job['job']->jobTypeJobs->name }}</a>
+                                <a href="#">{{ $job['jobType'] }}</a>
                             </li>
                             <li>
                                 @if ($job['job']->candidate_number != null)
