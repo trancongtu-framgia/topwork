@@ -76,4 +76,27 @@ class DbSkillRepository extends DbBaseRepository implements SkillRepository
 
         return $skills;
     }
+
+    public function getAllSkills ()
+    {
+        $skills = Cache::rememberForever('getAllSkills', function () {
+            return $this->model->all()->toArray();
+        });
+
+        return $skills;
+    }
+
+    public function getNameSkillById($id)
+    {
+        $skills = $this->getAllSkills();
+        $skillName = '';
+        foreach ($skills as $skill) {
+            if ($skill['id'] == $id) {
+                $skillName = $skill['name'];
+            }
+        }
+
+        return $skillName;
+    }
+
 }
