@@ -52,7 +52,6 @@ class CategoryController extends Controller
 
         return view('admin.categories.create', compact('categories'));
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -64,6 +63,7 @@ class CategoryController extends Controller
         $validatedData = $request->validated();
         $recentlyAddedCategory = $this->categoryRepository->create($validatedData);
         if ($recentlyAddedCategory) {
+            $this->removeCache('getCategory');
             flash(__('Add successfully'))->success();
 
             return redirect()->route('categories.index');
@@ -111,6 +111,7 @@ class CategoryController extends Controller
     {
         $recentlyUpdatedCategory = $this->categoryRepository->update($request->validated(), 'id', $categoryId);
         if ($recentlyUpdatedCategory) {
+            $this->removeCache('getCategory');
             flash(__('Edit successfully'))->success();
 
             return redirect()->route('categories.index');
@@ -131,6 +132,7 @@ class CategoryController extends Controller
     {
         $recentlyDeletedCategory = $this->categoryRepository->delete('id', $categoryId);
         if ($recentlyDeletedCategory) {
+            $this->removeCache('getCategory');
             flash(__('Delete successfully'))->success();
 
             return redirect()->route('categories.index');

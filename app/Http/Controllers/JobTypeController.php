@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Repositories\Interfaces\JobTypeRepository;
 use App\Http\Requests\CreateJobTypeRequest;
 use App\Http\Requests\UpdateJobTypeRequest;
+use Cache;
 
 class JobTypeController extends Controller
 {
@@ -50,6 +51,7 @@ class JobTypeController extends Controller
     {
         $jobType = $this->jobTypeRepository->create($request->all());
         if ($jobType) {
+            $this->removeCache('getJobType');
             flash(__('Add Job Type succes'))->success();
         } else {
             flash(__('Add Job failed, Please try again!'))->error();
@@ -78,10 +80,12 @@ class JobTypeController extends Controller
      * @param  \App\Models\JobType $jobType
      * @return \Illuminate\Http\Response
      */
+
     public function update(UpdateJobTypeRequest $request, int $id)
     {
         $jobType = $this->jobTypeRepository->update($request->validated(), 'id', $id);
         if ($jobType) {
+            $this->removeCache('getJobType');
             flash(__('Update Job Type succes'))->success();
 
             return redirect()->route('job-types.index');
@@ -102,6 +106,7 @@ class JobTypeController extends Controller
     {
         $jobType = $this->jobTypeRepository->delete('id', $id);
         if ($jobType) {
+            $this->removeCache('getJobType');
             flash(__('Delete Job Type succes'))->success();
         } else {
             flash(__('Delete Job failed, Please try again!'))->error();

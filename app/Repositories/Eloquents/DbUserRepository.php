@@ -4,6 +4,7 @@ namespace App\Repositories\Eloquents;
 
 use App\User;
 use App\Repositories\Interfaces\UserRepository;
+use Cache;
 
 class DbUserRepository extends DbBaseRepository implements UserRepository
 {
@@ -59,5 +60,19 @@ class DbUserRepository extends DbBaseRepository implements UserRepository
     public function getCompanyByStatus(int $statusCode, int $roleId, $columns = null)
     {
         return $this->model::where('status', $statusCode)->where('role_id', $roleId)->get($columns);
+    }
+
+    public function getInformationCompanyByUserId($userId)
+    {
+        $user = Cache::rememberForever('getInformationCompanyByUserId' . $userId, function () use ($userId) {
+             return $this->model->with('userCompany')->where('id', $userId)->first();
+        });
+        $data = [
+            'name' => $user->name,
+            'token' => $user->token,
+            'company_logo' => $user->userCompany->logo_url
+        ];
+
+        return $data;
     }
 }

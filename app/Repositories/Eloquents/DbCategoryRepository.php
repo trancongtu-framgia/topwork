@@ -5,6 +5,7 @@ namespace App\Repositories\Eloquents;
 use App\Models\Category;
 use App\Repositories\Eloquents\DbBaseRepository;
 use App\Repositories\Interfaces\CategoryRepository;
+use Cache;
 
 class DbCategoryRepository extends DbBaseRepository implements CategoryRepository
 {
@@ -36,9 +37,12 @@ class DbCategoryRepository extends DbBaseRepository implements CategoryRepositor
 
     public function getAllWithOutPaginate()
     {
-        return $this->model::pluck('name', 'id');
-    }
+        $getCategories = Cache::rememberForever('getCategory', function () {
+            return $this->model::pluck('name', 'id');
+        });
 
+        return $getCategories;
+    }
     public function create($param)
     {
         return $this->baseCreate($param);

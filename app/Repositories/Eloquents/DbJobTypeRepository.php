@@ -4,6 +4,7 @@ namespace App\Repositories\Eloquents;
 
 use App\Models\JobType;
 use App\Repositories\Interfaces\JobTypeRepository;
+use Cache;
 
 class DbJobTypeRepository extends DbBaseRepository implements JobTypeRepository
 {
@@ -35,7 +36,18 @@ class DbJobTypeRepository extends DbBaseRepository implements JobTypeRepository
 
     public function getAllWithOutPaginate()
     {
-        return $this->model::pluck('name', 'id');
+        $jobTypes  = Cache::rememberForever('getJobType', function () {
+            return $this->model::pluck('name', 'id');
+        });
+
+        return $jobTypes;
+    }
+
+    public function getNameById($id)
+    {
+        $jobTypes = $this->getAllWithOutPaginate();
+
+        return $jobTypes[$id];
     }
 
     public function create($param)

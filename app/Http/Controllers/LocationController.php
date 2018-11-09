@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Repositories\Interfaces\LocationRepository;
 use App\Http\Requests\UpdateLocationRequest;
 use App\Http\Requests\CreateLocationRequest;
+use Cache;
 
 class LocationController extends Controller
 {
@@ -45,10 +46,12 @@ class LocationController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(CreateLocationRequest $request)
     {
         $location = $this->locationRepository->create($request->all());
         if ($location) {
+            $this->removeCache('getLocation');
             flash(__('Add location successfully'))->success();
 
             return redirect()->route('locations.index');
@@ -84,6 +87,7 @@ class LocationController extends Controller
         $location = $this->locationRepository->update($request->validated(), 'id', $id);
 
         if ($location) {
+            $this->removeCache('getLocation');
             flash(__('Update location success'))->success();
         } else {
             flash(__('Update location failed, Please try again'))->error();
@@ -103,6 +107,7 @@ class LocationController extends Controller
         $location = $this->locationRepository->delete('id', $id);
 
         if ($location) {
+            $this->removeCache('getLocation');
             flash(__('Delete location success'))->success();
         } else {
             flash(__('Delete location failed, Please try again!'));
