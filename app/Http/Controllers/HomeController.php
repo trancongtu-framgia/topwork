@@ -11,7 +11,7 @@ use App\Repositories\Interfaces\SkillRepository;
 use App\Repositories\Interfaces\CategoryRepository;
 use phpDocumentor\Reflection\Location;
 use App\Repositories\Interfaces\JobRepository;
-
+use Illuminate\Support\Facades\Auth;
 class HomeController extends Controller
 {
     private $location;

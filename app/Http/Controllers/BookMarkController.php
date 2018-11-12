@@ -93,17 +93,21 @@ class BookMarkController extends Controller
         //
     }
 
-    public function addCategoryInterest($data)
+    public function addCategoryInterest(Request $data)
     {
-        if ($data == self::EXIT_POP_UP) {
-            $dataUser['is_first_login'] = config('app.is_first_logged');
-            $user = $this->userRepository->update($dataUser, 'id', Auth::User()->id);
-
-            return $user;
-        } else {
-            $categoryIds = explode(',', $data);
+//        dd($data);
+//        if ($data == self::EXIT_POP_UP) {
+//            $dataUser['is_first_login'] = config('app.is_first_logged');
+//            $user = $this->userRepository->update($dataUser, 'id', Auth::User()->id);
+//
+//            return $user;
+//        } else {
+            $categoryIds = $data['categoryId'];
+//        return $data;
             return DB::transaction(function () use ($categoryIds) {
                 try {
+                    $deleteBookMark = $this->bookMarkRepository->delete('user_id', Auth::user()->id);
+
                     $bookMarks = [];
                     foreach ($categoryIds as $key => $categoryId) {
                         $dataBookMark['category_id'] = $categoryId;
@@ -113,6 +117,7 @@ class BookMarkController extends Controller
 
                     $dataUser['is_first_login'] = config('app.is_first_logged');
                     $user = $this->userRepository->update($dataUser, 'id', Auth::User()->id);
+
                     DB::commit();
 
                     return config('app.locale');
@@ -123,5 +128,5 @@ class BookMarkController extends Controller
                 }
             });
         }
-    }
+//    }
 }

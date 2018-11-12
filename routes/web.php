@@ -73,8 +73,8 @@ Route::group([
         ]
     ],
         function () {
-            Route::get('candidates/edit-profile/{id}', 'CandidateController@getEditInfoCandidate')->name('candidate.getEditInfo');
-            Route::put('candidates/{id}', 'CandidateController@putEditInfoCandidate')->name('candidate.putEditInfo');
+            Route::get('candidates/edit-profile/{token}', 'CandidateController@getEditInfoCandidate')->name('candidate.getEditInfo');
+            Route::put('candidates/{token}', 'CandidateController@putEditInfoCandidate')->name('candidate.putEditInfo');
             Route::post('candidate-change-status', 'CandidateController@changeStatus')->name('cadidate.changeStatus');
         }
     );
@@ -155,6 +155,6 @@ Route::group(['prefix' => 'register'], function () {
 });
 
 Route::group(['prefix' => 'bookmark'], function() {
-    Route::get('add-book-mark/{id}', 'BookMarkController@addCategoryInterest')->name('get.bookMark');
+    Route::post('add-book-mark', 'BookMarkController@addCategoryInterest')->name('post.bookMark');
 });
 

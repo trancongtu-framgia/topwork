@@ -178,43 +178,90 @@ function goBack() {
     window.history.back();
 }
 
+function getCategoryBookMark() {
+    var categoryIds = [];
+    $('input[name = "cb"]:checked').each(function(i){
+        categoryIds[i] = $(this).val();
+    });
+
+    return categoryIds;
+}
+
 $(document).ready(function() {
-    if ($('#pop-up-box').length) {
+    var array_name;
+    $('input[name = "cb"]').change(function () {
+        array_name = getCategoryBookMark();
+    });
+
+    $('#edit-book-mark').click(function () {
         $('#pop-up-box').fadeIn(300);
         $('body').append('<div id="over">');
         $('#over').fadeIn(500);
+    })
 
-        var array_name = [];
-        var i = 0;
-        $('input[name = "cb"]').change(function () {
-            var cb = $(this).val();
-            if ($(this).prop('checked') == true) {
-                array_name[i] = cb;
-                i++;
-            } else {
-                array_name.forEach(function (currentValue, index, array_name) {
-                    if (cb == currentValue) {
-                        array_name.splice(index, 1);
-                        i--;
-                    }
+    $('#postBookMark').click(function () {
+        setupAjax();
+        alert('ng');
+        $.ajax({
+            url: route('post.bookMark'),
+            type: 'POST',
+            data: {categoryId:array_name},
+            success: function (data) {
+                var lang = data;
+                var content = 'Add category interesting';
+                getNotification(lang, content, 'success');
+                $('#over, .pop-up').fadeOut(300, function () {
+                    $('#over').remove();
                 });
             }
         });
+    })
+})
 
-        $('#postBookMark').click(function () {
-            $.get(window.location.origin + '/bookmark/add-book-mark/' + array_name, function (data) {
-                if (data) {
-                    var lang = data;
-                    var content = 'Add category interesting';
-                    getNotification(lang, content, 'success');
-                    $('#over, .pop-up').fadeOut(300, function () {
-                        $('#over').remove();
-                    });
-                }
-            });
-        });
-    }
 
+// function popUpBookMark() {
+//     var array_name = [];
+//     $('input[name = "cb"]:checked').each(function(i){
+//         array_name[i] = $(this).val();
+//     });
+//
+//     $('#pop-up-box').fadeIn(300);
+//     $('body').append('<div id="over">');
+//     $('#over').fadeIn(500);
+//
+//     // var array_name = [];
+//     var i = 0;
+//     $('input[name = "cb"]').change(function () {
+//         var cb = $(this).val();
+//         if ($(this).prop('checked') == true) {
+//             array_name[i] = cb;
+//             i++;
+//         } else {
+//             array_name.forEach(function (currentValue, index, array_name) {
+//                 if (cb == currentValue) {
+//                     array_name.splice(index, 1);
+//                     i--;
+//                 }
+//             });
+//         }
+//         alert(array_name);
+//     });
+//
+//     $('#postBookMark').click(function () {
+//         $.get(window.location.origin + '/bookmark/add-book-mark/' + array_name, function (data) {
+//             if (data) {
+//                 var lang = data;
+//                 var content = 'Add category interesting';
+//                 getNotification(lang, content, 'success');
+//                 $('#over, .pop-up').fadeOut(300, function () {
+//                     $('#over').remove();
+//                 });
+//             }
+//         });
+//     });
+// }
+
+$(document).ready(function() {
     $('a.exit').click( function() {
         var exit = 'exit';
         $.get(window.location.origin + '/bookmark/add-book-mark/' + exit, function (data) {

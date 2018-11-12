@@ -93,8 +93,8 @@ class ApplyJobController extends Controller
                 try {
                     $candidate = $this->getInfoCandidate($candidateId);
                     $company = $this->getInfoCompany($jobId);
-                    dispatch(new SendEmailToCandidate($candidate, $company));
-                    dispatch(new SendEmailToCompany($company, $candidate));
+                    dispatch(new SendEmailToCandidate($candidate, $company))->delay(now()->addSeconds(60));
+                    dispatch(new SendEmailToCompany($company, $candidate))->delay(now()->addSeconds(60));
                 } catch (\Exception $e) {
                     return $e;
                 }

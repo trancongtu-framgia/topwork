@@ -18,6 +18,36 @@
             });
         })
     </script>
+    {{--<script>--}}
+        {{--$(document).ready(function() {--}}
+            {{--var array_name = [];--}}
+            {{--$('input[name = "cb"]').change(function () {--}}
+                {{--$('input[name = "cb"]:checked').each(function(i){--}}
+                    {{--array_name[i] = $(this).val();--}}
+                {{--});--}}
+            {{--})--}}
+
+            {{--$('#edit-book-mark').click(function () {--}}
+                {{--$('#pop-up-box').fadeIn(300);--}}
+                {{--$('body').append('<div id="over">');--}}
+                {{--$('#over').fadeIn(500);--}}
+            {{--})--}}
+
+            {{--$('#postBookMark').click(function () {--}}
+                {{--setupAjax();--}}
+                {{--$.ajax({--}}
+                    {{--url: route('post.bookMark'),--}}
+                    {{--type: 'POST',--}}
+                    {{--data: {categoryId:array_name},--}}
+                    {{--success: function (data) {--}}
+                        {{--if (data) {--}}
+                            {{--alert('ngu');--}}
+                        {{--}--}}
+                    {{--}--}}
+                {{--});--}}
+            {{--})--}}
+        {{--});--}}
+    {{--</script>--}}
 @endsection
 @section('content')
 @section('breadcrumb_title')
@@ -30,6 +60,11 @@
     </ul>
 @endsection
 @include('clients.layouts.breadcrumb')
+    <div class="row">
+        @if(Auth::check() && strtolower(Auth::user()->userRole->name) == config('app.candidate_role') && Auth::user()->is_first_login == config('app.is_first_logged'))
+            @include('clients.candidates.partials.pop_up_add_book_marks')
+        @endif
+    </div>
     {{ Form::model($user->candidate, ['url' => route('candidate.putEditInfo', $user->token), 'enctype' => 'multipart/form-data', 'method' => 'PUT', 'class' => 'form-horizontal form-label-left', 'id' => 'editCandidate']) }}
     <div class="jp_cp_profile_main_wrapper">
         <div class="container">
@@ -140,6 +175,15 @@
                                             {{ Form::file('avatar', null) }}
                                             {!! $errors->first('avatar', '<span class="red">:message</span>') !!}
                                         </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-w25">{{ __('Book Mark') }}</td>
+                                    <td class="td-w10">:</td>
+                                    <td class="td-w65">
+                                        <a href="#"  id="edit-book-mark">
+                                            <input class="btn btn-danger" type="button" value="{{ __('Edit Book Mark') }}">
+                                        </a>
                                     </td>
                                 </tr>
                                 </tbody>
