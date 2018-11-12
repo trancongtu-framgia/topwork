@@ -16,3 +16,8 @@ use Illuminate\Foundation\Inspiring;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->describe('Display an inspiring quote');
+
+Artisan::command('test:queue', function () {
+    $job = new \App\Jobs\TestQueueJob();
+    dispatch($job)->delay(now()->addSeconds(60 ));
+})->describe('Display an inspiring quote');
