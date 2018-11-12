@@ -10,7 +10,7 @@
                     </div>
                     <div class="jp_job_post_right_cont">
                         <div class="pull-right" style="">
-                            @if (Route::currentRouteName() != 'home.index')
+                            @if (Route::currentRouteName() == 'jobs.index')
                                 @if ($job['job']->is_available)
                                     <label class="job-label label label-success">{{ __('Opening') }}</label>
                                 @else

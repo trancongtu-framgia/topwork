@@ -303,8 +303,9 @@ class JobController extends Controller
     {
         $jobs = $this->jobRepository->getJobBySalaryCategory($request->salary, $request->categoryId,
             self::RECORD_PER_PAGE, $request->fullUrl());
+        $route = 'getJobBySalaryCategory';
         if ($jobs) {
-            return view('clients.home.partials.contentShowJobs', compact('jobs'));
+            return view('clients.home.partials.contentShowJobs', compact('jobs', 'route'));
         }
 
         return __('No results were found');

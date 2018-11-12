@@ -9,7 +9,7 @@
                     @foreach($jobs as $job)
                         @include('clients.home.partials.job_element_square')
                     @endforeach
-                    @include('clients.home.partials.pagination')
+                    @include('clients.home.partials.paginationAjax')
                 </div>
             </div>
             <div id="list" class="tab-pane fade">
@@ -17,7 +17,7 @@
                     @foreach($jobs as $job)
                         @include('clients.home.partials.job_element_retangle')
                     @endforeach
-                    @include('clients.home.partials.pagination')
+                    @include('clients.home.partials.paginationAjax')
                 </div>
             </div>
         </div>

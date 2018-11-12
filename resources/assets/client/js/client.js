@@ -225,3 +225,34 @@ $(document).ready(function() {
         });
     });
 });
+
+function getJobByPaginate(page, type) {
+    setupAjax();
+    var __url = '';
+    var __data = null;
+    if (type == 'home') {
+        __url = route('home.getJobByPaginate');
+        __data = {page:page};
+    }
+    if (type == 'getJobBySalaryCategory') {
+        __url = route('job.getJobBySalaryCategory');
+        var categoryId = getJobByCategory();
+        var salary = getJobBySalaryValue();
+        __data = {page:page, categoryId:categoryId, salary:salary}
+    }
+    if (type == 'search') {
+        __url = route('home.search');
+        __keyword = $('#search-input').val();
+        __location = $('#location-search').val();
+        __data = {page:page, keyword:__keyword, location:__location, paginateAjax:true}
+    }
+
+    $.ajax({
+        url: __url,
+        type: 'GET',
+        data: __data,
+        success: function (data) {
+            $('#conten-job').html(data);
+        }
+    })
+}

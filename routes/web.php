@@ -91,6 +91,7 @@ Route::group([
         Route::get('/companies/detail/{token}', 'CompanyController@show')->name('companies.show');
         Route::post('applications/add-note', 'ApplicationController@addNote')->name('application.addNote');
         Route::get('/home', 'HomeController@redirectToHome')->name('home.redirect');
+        Route::get('/home/get-job-by-paginate', 'HomeController@getJobByPaginate')->name('home.getJobByPaginate');
     }
 );
 
