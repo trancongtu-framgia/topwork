@@ -13,6 +13,11 @@
         <div class="container">
             @include('flash::message')
             <div class="row">
+                @if(Auth::check() && strtolower(Auth::user()->userRole->name) == config('app.candidate_role') && Auth::user()->is_first_login == config('app.is_first_logged'))
+                    @include('clients.candidates.partials.pop_up_add_book_marks')
+                @endif
+            </div>
+            <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <div class="jp_cp_left_side_wrapper">
                         <div class="jp_cp_left_pro_wallpaper">
@@ -41,6 +46,13 @@
                             <li>
                                 <a href="{{ route('candidate.getEditInfo', $user->token) }}">
                                     <i class="fa fa-pencil-square-o set_padding" aria-hidden="true"></i>{{ __('EDIT PROFILE') }}
+                                </a>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li>
+                                <a href="#" id="edit-book-mark">
+                                    <i class="fa fa-pencil-square-o set_padding" aria-hidden="true"></i>{{ __('EDIT BOOK MARK') }}
                                 </a>
                             </li>
                         </ul>

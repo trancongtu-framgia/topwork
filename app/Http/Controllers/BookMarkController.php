@@ -93,26 +93,34 @@ class BookMarkController extends Controller
         //
     }
 
-    public function addCategoryInterest($data)
+    public function addCategoryInterest(Request $data)
     {
-        if ($data == self::EXIT_POP_UP) {
-            $dataUser['is_first_login'] = config('app.is_first_logged');
-            $user = $this->userRepository->update($dataUser, 'id', Auth::User()->id);
+        $categoryIds = $data['categoryId'];
+        if ($categoryIds === self::EXIT_POP_UP) {
+            if (Auth::user()->is_first_login == config('app.is_first_login')) {
+                $dataUser['is_first_login'] = config('app.is_first_logged');
+                $user = $this->userRepository->update($dataUser, 'id', Auth::User()->id);
+            }
 
-            return $user;
+            return 'true';
         } else {
-            $categoryIds = explode(',', $data);
             return DB::transaction(function () use ($categoryIds) {
                 try {
+                    $deleteBookMark = $this->bookMarkRepository->delete('user_id', Auth::user()->id);
+
                     $bookMarks = [];
-                    foreach ($categoryIds as $key => $categoryId) {
-                        $dataBookMark['category_id'] = $categoryId;
-                        $dataBookMark['user_id'] = Auth::User()->id;
-                        $bookMarks[] = $this->bookMarkRepository->create($dataBookMark);
+                    if (!empty($categoryIds)) {
+                        foreach ($categoryIds as $key => $categoryId) {
+                            $dataBookMark['category_id'] = $categoryId;
+                            $dataBookMark['user_id'] = Auth::User()->id;
+                            $bookMarks[] = $this->bookMarkRepository->create($dataBookMark);
+                        }
                     }
 
-                    $dataUser['is_first_login'] = config('app.is_first_logged');
-                    $user = $this->userRepository->update($dataUser, 'id', Auth::User()->id);
+                    if (Auth::user()->is_first_login == config('app.is_first_login')) {
+                        $dataUser['is_first_login'] = config('app.is_first_logged');
+                        $user = $this->userRepository->update($dataUser, 'id', Auth::User()->id);
+                    }
                     DB::commit();
 
                     return config('app.locale');

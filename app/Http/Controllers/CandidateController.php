@@ -6,18 +6,28 @@ use App\Models\Candidate;
 use Illuminate\Http\Request;
 use App\Repositories\Interfaces\CandidateRepository;
 use App\Repositories\Interfaces\UserRepository;
+use App\Repositories\Interfaces\CategoryRepository;
+use App\Repositories\Interfaces\BookMarkRepository;
 use App\Http\Requests\UpdateCandidateRequest;
 use Illuminate\Support\Facades\Auth;
 use Exception;
 
 class CandidateController extends Controller
 {
-    protected  $candidateRepository;
-    protected  $userRepository;
-    public function __construct(CandidateRepository $candidateRepository, UserRepository $userRepository)
-    {
+    protected $candidateRepository;
+    protected $userRepository;
+    protected $categoryRepository;
+    protected $bookMarkRepository;
+    public function __construct(
+        CandidateRepository $candidateRepository,
+        UserRepository $userRepository,
+        CategoryRepository $categoryRepository,
+        BookMarkRepository $bookMarkRepository
+    ) {
         $this->candidateRepository = $candidateRepository;
         $this->userRepository = $userRepository;
+        $this->categoryRepository = $categoryRepository;
+        $this->bookMarkRepository = $bookMarkRepository;
     }
 
     /**
@@ -101,10 +111,13 @@ class CandidateController extends Controller
         try {
             $user = $this->candidateRepository->showInfoCandidate($id);
             if (!empty($user) && $user->candidate) {
+                $categories = $this->categoryRepository->getAllWithOutPaginate();
+                $idCategoryByBookMarks = $this->bookMarkRepository->getBookMarkByUser('user_id', Auth::user()->id);
+                $categoriesByBookMarks = $this->categoryRepository->getCategoryByBookMark($idCategoryByBookMarks);
                 $checkAuth = Auth::check() && Auth::user()->token == $user->token;
                 $isPublicCandidate = $user->candidate->is_public == config('app.isPublicCandidate');
 
-                return view('clients.candidates.index', compact('user', 'isPublicCandidate', 'checkAuth'));
+                return view('clients.candidates.index', compact('user', 'isPublicCandidate', 'checkAuth', 'categories', 'categoriesByBookMarks'));
             } else {
                 throw new Exception(__('Cannot find!'));
             }
@@ -113,11 +126,15 @@ class CandidateController extends Controller
         }
     }
 
-    public function getEditInfoCandidate(string $id)
+    public function getEditInfoCandidate(string $token)
     {
-        if (Auth::user()->token == $id) {
+        if (Auth::user()->token == $token) {
             try {
-                $user = $this->candidateRepository->showInfoCandidate($id);
+//                $categories = $this->categoryRepository->getAllWithOutPaginate();
+                $user = $this->candidateRepository->showInfoCandidate($token);
+//                $idCategoryByBookMarks = $this->bookMarkRepository->getBookMarkByUser('user_id', Auth::user()->id);
+//                $categoriesByBookMarks = $this->categoryRepository->getCategoryByBookMark($idCategoryByBookMarks);
+////                dd($categoriesByBookMark);
                 if (!empty($user)) {
                     return view('clients.candidates.edit', compact('user'));
                 } else {
