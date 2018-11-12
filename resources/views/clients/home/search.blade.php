@@ -10,7 +10,9 @@
                     </div>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    @include('clients.home.partials.contentShowJobs')
+                    <div id="conten-job">
+                        @include('clients.home.partials.contentShowJobs')
+                    </div>
                 </div>
             </div>
         </div>

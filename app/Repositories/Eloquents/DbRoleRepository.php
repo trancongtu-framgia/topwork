@@ -67,4 +67,14 @@ class DbRoleRepository extends DbBaseRepository implements RoleRepository
         }
 
     }
+
+    public function getRoleNameById($id)
+    {
+        $roles = $this->getAllRole();
+        foreach ($roles as $role){
+            if ($role['id'] == $id) {
+                return $role['name'];
+            }
+        }
+    }
 }

@@ -128,7 +128,7 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
     {
         $authenticatedUser = Auth::user();
         $isUserAuthenticated = Auth::check();
-        $roleName = $isUserAuthenticated ? $authenticatedUser->userRole->name : config('app.guest_role');
+        $roleName = $isUserAuthenticated ? $this->role->getRoleNameById($authenticatedUser->role_id) : config('app.guest_role');
         $jobsWithSkill = [];
         foreach ($jobs as $job) {
             $skillName = [];
@@ -148,7 +148,7 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
                 'role_name' => $roleName,
                 'location' => $this->locationRepository->getNameById($job->location_id),
                 'jobType' => $this->jobType->getNameById($job->job_type_id),
-                'can_apply' => $isUserAuthenticated ? $this->applicationRepository->checkDuplicate($authenticatedUser->id,
+                'can_apply' => $isUserAuthenticated && $roleName == config('app.candidate_role') ? $this->applicationRepository->checkDuplicate($authenticatedUser->id,
                     $job->id) : true,
             ];
         }

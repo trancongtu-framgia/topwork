@@ -11,7 +11,6 @@ use App\Repositories\Interfaces\SkillRepository;
 use App\Repositories\Interfaces\CategoryRepository;
 use phpDocumentor\Reflection\Location;
 use App\Repositories\Interfaces\JobRepository;
-
 class HomeController extends Controller
 {
     private $location;
@@ -40,12 +39,28 @@ class HomeController extends Controller
 
     public function index()
     {
-        $activeCompanies = $this->jobRepository->getAllActiveCompany();
+        $jobs = $this->getJob();
         $categories = $this->category->getAllWithOutPaginate();
-        $jobs = $this->jobRepository->getAllAvailableJob(self::RECORD_PER_PAGE, $activeCompanies);
         $location = $this->location->getAllWithOutPaginate();
+        $route = 'home';
 
-        return view('clients.index', compact('location', 'jobs', 'categories'));
+        return view('clients.index', compact('location', 'jobs', 'categories', 'route'));
+    }
+
+    public function getJob()
+    {
+        $activeCompanies = $this->jobRepository->getAllActiveCompany();
+        $jobs = $this->jobRepository->getAllAvailableJob(self::RECORD_PER_PAGE, $activeCompanies);
+
+        return $jobs;
+    }
+
+    public function getJobByPaginate()
+    {
+        $jobs = $this->getJob();
+        $route = 'home';
+
+        return view('clients.home.partials.contentShowJobs', compact('jobs', 'route'));
     }
 
     public function redirectToHome()
@@ -57,8 +72,12 @@ class HomeController extends Controller
     {
         $jobs = $this->jobRepository->searchJob($request->keyword, $request->location, self::RECORD_PER_PAGE, $request->fullUrl());
         $location = $this->location->getAllWithOutPaginate();
+        $route = 'search';
+        if (isset($request->paginateAjax)) {
+            return view('clients.home.partials.contentShowJobs', compact('jobs', 'route'));
+        }
 
-        return view('clients.home.search', compact('jobs', 'location'));
+        return view('clients.home.search', compact('jobs', 'location', 'route'));
     }
 
     public function searchJob(Request $request)
