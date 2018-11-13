@@ -37,6 +37,8 @@ class ApplicationRequest extends FormRequest
             'job_id' => 'required|numeric',
             'self_introduction' => 'nullable|max:300',
             'cv_url' => 'required|file|max:1024|mimes:pdf,csv,doc,docx,zip',
+            'candidate_name' => 'required',
+            'job_title' => 'required',
         ];
     }
 }

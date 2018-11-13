@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Classes\ApplicationService;
+use App\Classes\PushNotificationService;
 use App\Http\Requests\ApplicationRequest;
 use App\Models\Application;
 use App\Repositories\Interfaces\ApplicationRepository;
 use App\Repositories\Interfaces\CompanyRepository;
+use App\Repositories\Interfaces\NotificationRepository;
 use App\Repositories\Interfaces\UserRepository;
 use App\Repositories\Interfaces\JobRepository;
 use Illuminate\Http\Request;
@@ -21,7 +23,15 @@ class ApplyJobController extends Controller
     protected $companyRepository;
     protected $applicationService;
     protected $userRepository;
+    protected $notificationRepository;
     private const RECORD_PER_PAGE = 5;
+    protected $pushNotificationService;
+    protected $broadCastingChannel = [
+        'Application' => 'NewApplicationNotify',
+    ];
+    protected $events = [
+        'applyjobs.store' => 'new-application'
+    ];
     /**
      * Display a listing of the resource.
      *
@@ -32,13 +42,17 @@ class ApplyJobController extends Controller
         ApplicationRepository $applicationRepository,
         CompanyRepository $companyRepository,
         ApplicationService $applicationService,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        PushNotificationService $pushNotificationService,
+        NotificationRepository $notificationRepository
     ) {
         $this->jobRepository = $jobRepository;
         $this->applicationRepository = $applicationRepository;
         $this->companyRepository = $companyRepository;
         $this->applicationService = $applicationService;
         $this->userRepository = $userRepository;
+        $this->pushNotificationService = $pushNotificationService;
+        $this->notificationRepository = $notificationRepository;
     }
 
     public function index()
@@ -88,6 +102,28 @@ class ApplyJobController extends Controller
             $validatedData['cv_url'] = $cvUrl;
             $validatedData['status'] = config('app.job_application_new_status');
             $recentlyAddedApplication = $this->applicationRepository->create($validatedData);
+            $candidateToken = Auth::user()->token;
+
+            //get notification json
+            $notificationData = $this->notificationRepository->getNotificationDetail(
+                $validatedData,
+                $candidateToken,
+                $jobId,
+                $recentlyAddedApplication->created_at
+            );
+
+
+            //add notification to db
+            $recentlyAddedNotification = $this->notificationRepository->createNotification($notificationData);
+
+            //send push notification
+            //assign id
+            $notificationData['id'] = $recentlyAddedNotification->id;
+            $this->pushNotificationService->sendNotification(
+                $this->broadCastingChannel['Application'],
+                $this->events['applyjobs.store'],
+                json_encode($notificationData)
+            );
 
             if ($recentlyAddedApplication) {
                 try {

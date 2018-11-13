@@ -29,6 +29,13 @@ return [
     'job_close_status' => 0,
     'isPublicCandidate' => 1,
     'isNotPublicCandidate' => 0,
+    'notification_unread_status' => 0,
+    'notification_read_status' => 1,
+    'notification_type' => [
+        'job' => 1,
+    ],
+    'notification_number' => 5,
+    'notification_date_format' => 'H:m M d',
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -182,7 +189,7 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
