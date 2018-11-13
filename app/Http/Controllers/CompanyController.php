@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Repositories\Interfaces\UserRepository;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UpdateCompanyRequest;
+use Cache;
 
 class CompanyController extends Controller
 {
@@ -86,8 +87,11 @@ class CompanyController extends Controller
     public function update(UpdateCompanyRequest $request, $companyId)
     {
         $company = $this->company->updateInfoCompany($request, $companyId);
-
+        $cacheCompanyKey = 'getInformationCompanyByUserId' . $companyId;
         if ($company) {
+            if (Cache::has($cacheCompanyKey)) {
+                Cache::pull($cacheCompanyKey);
+            }
             flash(__('Edit Profile Success'))->success();
 
             return redirect()->route('companies.index');
