@@ -41,10 +41,11 @@ class SendEmailToCompany implements ShouldQueue
         Mail::send('emails.send_email_company', [
             'companyName' => $this->company->name,
             'candidateName' => $this->candidate->name,
+            'candidateLink' => route('candidate.getInfo', ['id' => $this->candidate->token]),
             'jobName' => $this->jobName,
-            'link' => route('application.getDetailCandidate', ['token' => $this->candidate->token, 'jobId' => $this->jobId]),
+            'linkJob' => route('application.getDetailCandidate', ['token' => $this->candidate->token, 'jobId' => $this->jobId]),
         ], function ($msg) {
-            $msg->to($this->company->email, $this->company->name)->subject(__('THÔNG BÁO TỪ TOPWORK'));
+            $msg->to($this->company->email, 'TOPWORK')->subject('Topwork');
         });
     }
 }

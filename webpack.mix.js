@@ -80,3 +80,4 @@ mix.copyDirectory('node_modules/pusher-js/', 'public/plugins/pusher-js');
 mix.copyDirectory('node_modules/ckeditor', 'public/plugins/ckeditor');
 mix.copyDirectory('resources/assets/client/js/job.js', 'public/js/job.js');
 mix.scripts('resources/assets/client/js/notification.js', 'public/assets/clients/notification.js');
+mix.sass('resources/assets/client/sass/mail.scss', 'public/css/mail.css');

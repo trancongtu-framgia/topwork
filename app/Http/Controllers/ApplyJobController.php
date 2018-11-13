@@ -32,6 +32,7 @@ class ApplyJobController extends Controller
     protected $events = [
         'applyjobs.store' => 'new-application'
     ];
+    private const DELAY_SECONDS = 10;
     /**
      * Display a listing of the resource.
      *
@@ -129,8 +130,8 @@ class ApplyJobController extends Controller
                 try {
                     $candidate = $this->getInfoCandidate($candidateId);
                     $company = $this->getInfoCompany($jobId);
-                    dispatch(new SendEmailToCandidate($candidate, $company))->delay(now()->addSeconds(60));
-                    dispatch(new SendEmailToCompany($company, $candidate))->delay(now()->addSeconds(60));
+                    dispatch(new SendEmailToCandidate($candidate, $company))->delay(now()->addSeconds(Self::DELAY_SECONDS));
+                    dispatch(new SendEmailToCompany($company, $candidate))->delay(now()->addSeconds(Self::DELAY_SECONDS));
                 } catch (\Exception $e) {
                     return $e;
                 }

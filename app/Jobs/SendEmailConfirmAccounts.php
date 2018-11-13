@@ -33,9 +33,9 @@ class SendEmailConfirmAccounts implements ShouldQueue
     {
         Mail::send('emails.send_email_confirm_accounts', [
             'name' => $this->userInfo['name'],
-            'link' => route('user.confirmAccount', $this->userInfo['user_id']),
+            'link' => route('user.confirmAccount', $this->userInfo['token']),
         ], function ($msg) {
-            $msg->to($this->userInfo['email'], $this->userInfo['name'])->subject(__('Inform From Topwork'));
+            $msg->to($this->userInfo['email'], 'TOPWORK')->subject('Topwork');
         });
     }
 }

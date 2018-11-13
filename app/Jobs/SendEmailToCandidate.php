@@ -41,11 +41,12 @@ class SendEmailToCandidate implements ShouldQueue
     {
         Mail::send('emails.send_mail_candidates', [
             'companyName' => $this->company->name,
+            'linkCompany' => route('companies.show', $this->company->token),
             'candidateName' => $this->candidate->name,
             'nameJob' => $this->jobName,
-            'link' => route('jobs.detail', $this->jobId),
+            'linkJob' => route('jobs.detail', $this->jobId),
         ], function ($msg) {
-            $msg->to($this->candidate->email, $this->candidate->name)->subject(__('THÔNG BÁO TỪ TOPWORK'));
+            $msg->to($this->candidate->email, 'TOPWORK')->subject('Topwork');
         });
     }
 }
