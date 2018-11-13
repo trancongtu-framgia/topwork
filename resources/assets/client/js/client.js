@@ -114,6 +114,18 @@ function changeJobStatus(lang, content) {
     })
 }
 
+function changeNotificationStatus(id, url) {
+    setupAjax();
+    $.ajax({
+        url: route('notification.change_status'),
+        type: 'POST',
+        data: {id:id},
+        success: function (data) {
+            window.location.href = url;
+        }
+    })
+}
+
 function getJob(salary, categoryId) {
     $.ajax({
         url: route('job.getJobBySalaryCategory'),
@@ -215,12 +227,12 @@ $(document).ready(function() {
         });
     }
 
-    $('a.exit').click( function() {
+    $('a.exit').click(function () {
         var exit = 'exit';
         $.get(window.location.origin + '/bookmark/add-book-mark/' + exit, function (data) {
             alert(data);
         });
-        $('#over, .pop-up').fadeOut(300 , function() {
+        $('#over, .pop-up').fadeOut(300, function () {
             $('#over').remove();
         });
     });
@@ -256,3 +268,37 @@ function getJobByPaginate(page, type) {
         }
     })
 }
+
+$(document).ready(function () {
+    // ANIMATEDLY DISPLAY THE NOTIFICATION COUNTER.
+    $('#noti_Counter')
+        .css({ opacity: 0 })
+        .text('7')      // ADD DYNAMIC VALUE (YOU CAN EXTRACT DATA FROM DATABASE OR XML).
+        .css({ top: '-10px' })
+        .animate({ top: '-2px', opacity: 1 }, 500);
+
+    $('#noti_Button').click(function () {
+        // TOGGLE (SHOW OR HIDE) NOTIFICATION WINDOW.
+        $('#notifications').fadeToggle('fast', 'linear', function () {
+            if ($('#notifications').is(':hidden')) {
+                $('#noti_Button').css('color', '#FFF');
+            }
+            // CHANGE BACKGROUND COLOR OF THE BUTTON.
+            else $('#noti_Button').css('color', '#ffffff94');
+        });
+
+        $('#noti_Counter').fadeOut('slow');     // HIDE THE COUNTER.
+
+        return false;
+    });
+
+    // HIDE NOTIFICATIONS WHEN CLICKED ANYWHERE ON THE PAGE.
+    $(document).click(function () {
+        $('#notifications').hide();
+        $('#noti_Button').css('color', '#ffffff94');
+    });
+
+    $('#notifications').click(function () {
+        return false;       // DO NOTHING WHEN CONTAINER IS CLICKED.
+    });
+});

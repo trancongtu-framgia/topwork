@@ -26,6 +26,29 @@
                                 !!}
                             </li>
                             @auth
+                                <li class="notify_ul" id="noti_Container">
+                                    <!--A CIRCLE LIKE BUTTON TO DISPLAY NOTIFICATION DROPDOWN.-->
+                                    <div id="noti_Button"><i class="fa fa-bell-o" aria-hidden="true"></i>
+                                    </div>
+
+                                    <!--THE NOTIFICAIONS DROPDOWN BOX.-->
+                                    <div id="notifications">
+                                        <h3 class="notify_h3">{{ __('Notifications') }}</h3>
+                                        <div id="notify_drawer" class="notify_drawer">
+                                            <span id="first_element"></span>
+                                            @foreach ($notifications as $notification)
+                                                <a class="notify_element_a" href="javascript:void(0)"
+                                                   onclick="changeNotificationStatus(
+                                                        {{ $notification->id }}, '{{ route('application.getDetailCandidate', ['token' => $notification->sender, 'jobId' => $notification->key]) }}');">
+                                                        <div class="{{ $notification->status == config('app.notification_unread_status') ? 'notify_element_unread' : 'notify_element' }}">
+                                                            {!! $notification->content !!}
+                                                            <span class="pull-right">{{ date(config('app.notification_date_format'), strtotime($notification->created_at)) }}</span>
+                                                        </div>
+                                                </a>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </li>
                                 <li><a href="#" class="white_important">
                                         <i class="fa fa-user" aria-hidden="true"></i>&nbsp;
                                         @if (strtolower(Auth::user()->userRole->name) == config('app.candidate_role'))

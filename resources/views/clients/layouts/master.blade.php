@@ -35,6 +35,7 @@
     @include('clients.layouts.footer')
 </div>
 @include('clients.layouts.js')
+@include('clients.layouts.company_notification_js')
 </body>
 </html>
 

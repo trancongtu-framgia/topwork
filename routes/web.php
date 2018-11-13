@@ -92,6 +92,7 @@ Route::group([
         Route::post('applications/add-note', 'ApplicationController@addNote')->name('application.addNote');
         Route::get('/home', 'HomeController@redirectToHome')->name('home.redirect');
         Route::get('/home/get-job-by-paginate', 'HomeController@getJobByPaginate')->name('home.getJobByPaginate');
+        Route::post('/notification', 'NotificationController@changeStatus')->name('notification.change_status');
     }
 );
 
@@ -158,4 +159,3 @@ Route::group(['prefix' => 'register'], function () {
 Route::group(['prefix' => 'bookmark'], function() {
     Route::get('add-book-mark/{id}', 'BookMarkController@addCategoryInterest')->name('get.bookMark');
 });
-

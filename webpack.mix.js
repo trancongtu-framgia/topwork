@@ -49,6 +49,7 @@ mix.styles(
         'resources/assets/client/css/login.css',
         'resources/assets/client/css/client.css',
         'resources/assets/client/css/notifIt.css',
+        'resources/assets/client/css/notification_layout.css',
     ], 'public/css/app_client.css');
 
 mix.copyDirectory('resources/assets/client/images', 'public/assets/clients/images');
@@ -75,5 +76,7 @@ mix.copyDirectory('resources/assets/admin/image', 'public/assets/admin/images');
 /*mix.copyDirectory('resources/assets/plugins/ckfinder', 'public/plugins/ckfinder');*/
 mix.copyDirectory('resources/assets/admin/fonts', 'public/assets/admin/fonts');
 mix.copyDirectory('node_modules/select2', 'public/plugins/select2');
+mix.copyDirectory('node_modules/pusher-js/', 'public/plugins/pusher-js');
 mix.copyDirectory('node_modules/ckeditor', 'public/plugins/ckeditor');
 mix.copyDirectory('resources/assets/client/js/job.js', 'public/js/job.js');
+mix.scripts('resources/assets/client/js/notification.js', 'public/assets/clients/notification.js');
