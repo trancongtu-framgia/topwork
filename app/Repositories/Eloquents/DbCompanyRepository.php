@@ -3,9 +3,9 @@
 namespace App\Repositories\Eloquents;
 
 use App\Models\Company;
-use App\Repositories\Eloquents\DbBaseRepository;
 use App\Repositories\Interfaces\CompanyRepository;
 use App\Repositories\Interfaces\UserRepository;
+use DB;
 
 class DbCompanyRepository extends DbBaseRepository implements CompanyRepository
 {
@@ -73,5 +73,38 @@ class DbCompanyRepository extends DbBaseRepository implements CompanyRepository
     public function getCompanyName(int $companyId)
     {
         return $this->get('user_id', $companyId)->load('companyUser')->name;
+    }
+
+    public function updateInfoCompany($data, $idCompany)
+    {
+        $update = DB::transaction(function () use ($data, $idCompany) {
+            try {
+                $company = $this->model->where('id', $idCompany)->first();
+                if ($data->hasFile('avatar')) {
+                    $file = $data->file('avatar');
+                    $name = $file->getClientOriginalName();
+                    $image = str_random(4) . '_' . $name;
+                    $file->move(config('app.company_media_url'), $image);
+                    if (!empty($company->logo_url) &&
+                        file_exists(config('app.company_media_url') . $company->logo_url)) {
+                        unlink(config('app.company_media_url') . $company->logo_url);
+                    }
+                    $data['logo_url'] = $image;
+                }
+                $saveCompany = $company->update($data->toArray());
+
+                $saveUser = $company->companyUser->update($data->toArray());
+
+                DB::commit();
+
+                return true;
+            } catch (Exception $exception) {
+                DB::rollback();
+
+                return ['errorMessage' => $exception->getMessage()];
+            }
+        });
+
+        return $update;
     }
 }

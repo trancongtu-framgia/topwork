@@ -8,6 +8,7 @@ use App\Repositories\Interfaces\JobRepository;
 use Illuminate\Http\Request;
 use App\Repositories\Interfaces\UserRepository;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\UpdateCompanyRequest;
 
 class CompanyController extends Controller
 {
@@ -77,14 +78,24 @@ class CompanyController extends Controller
 
     public function edit()
     {
-        $company = $this->company->get('id', Auth::id());
+        $company = $this->company->get('user_id', Auth::id());
 
         return view('clients.companies.update', ['company' => $company]);
     }
 
-    public function update(Request $request, Company $company)
+    public function update(UpdateCompanyRequest $request, $companyId)
     {
-        //
+        $company = $this->company->updateInfoCompany($request, $companyId);
+
+        if ($company) {
+            flash(__('Edit Profile Success'))->success();
+
+            return redirect()->route('companies.index');
+        } else {
+            flash(__('Edit Profile Failed, Please try again!'))->error();
+
+            return redirect()->back();
+        }
     }
 
     /**

@@ -34,7 +34,7 @@
         </div>
         <div class="jp_jop_overview_img_wrapper">
             <div class="jp_jop_overview_img">
-                <img class="img-responsive" src="{{ asset(config('app.client_media_url') . $company['logo']) }}" alt="post_img">
+                <img class="img-responsive" src="{{ asset(config('app.company_media_url') . $company['logo']) }}" alt="post_img">
             </div>
         </div>
         <div class="jp_job_listing_single_post_right_cont">
@@ -76,6 +76,15 @@
                         <li>{{ $company['working_day'] }}</li>
                     </ul>
                 </div>
+            </div>
+        </div>
+        <div class="jp_listing_right_bar_btn_wrapper">
+            <div class="jp_add_resume_cont jp_add_resume_wrapper">
+                <ul>
+                    <li>
+                        <a href="{{ route('companies.edit') }}"><i class="fa fa-hand-o-right"></i> {{ __('EDIT PROFILE') }}</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
