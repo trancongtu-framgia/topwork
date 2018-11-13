@@ -53,4 +53,19 @@ class DbCategoryRepository extends DbBaseRepository implements CategoryRepositor
         return $this->baseUpdate($data, $key, $value);
     }
 
+    public function getCategoryByBookMark($idCategories)
+    {
+        $categories = $this->getAllWithOutPaginate();
+        $listCategories = [];
+        foreach ($categories as $key => $value) {
+            foreach ($idCategories as $idCategory) {
+                if ($idCategory == $key) {
+                    $listCategories[$key] = $value;
+                }
+            }
+        }
+
+        return $listCategories;
+    }
+
 }

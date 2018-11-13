@@ -4,40 +4,8 @@
     <div class="jp_listing_sidebar_main_wrapper">
         <div class="container">
             <div class="row">
-                @if(Auth::check() && strtolower(Auth::user()->userRole->name) == config('app.candidate_role') && Auth::user()->is_first_login == config('app.is_first_login'))
-                    <div class="pop-up" id="pop-up-box">
-                        {{ Form::open(['url' => '', 'method' => 'POST', 'class' => 'pop-up-content', 'id' => 'postForm']) }}
-                            <div>
-                                <h2 class="title-pop-up">{{ __('What category are you interesting?') }}</h2>
-                            </div>
-                            <div class="pricing_cont_wrapper">
-                                <div class="pricing_cont handyman_sec1_wrapper" >
-                                    <div class="book-mark-list-category">
-                                        <ul>
-                                            @foreach ($categories as $key => $category)
-                                                <li>
-                                                    <p>
-                                                        {!! Form::checkbox('cb', $key, null, ['id' => $key]) !!}
-                                                        {!! Form::label($key, $category) !!}
-                                                    </p>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="pricing_btn_wrapper">
-                                <div class="pricing_btn2">
-                                    <ul>
-                                        <li><a id="postBookMark"><i class=" btn-primary login_btn"></i>{{ __('Save') }}</a></li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <a class="exit" >Bỏ qua</a>
-                                </div>
-                            </div>
-                        {{ Form::close() }}
-                    </div>
+                @if (Auth::check() && strtolower(Auth::user()->userRole->name) == config('app.candidate_role') && Auth::user()->is_first_login == config('app.is_first_login'))
+                    @include('clients.candidates.partials.pop_up_add_book_marks')
                 @endif
                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 hidden-sm hidden-xs">
                     <div class="row">
@@ -131,4 +99,13 @@
             </div>
         </div>
     </div>
+@endsection
+@section('js_client')
+    <script>
+        $(document).ready(function() {
+            if ($('#pop-up-box').length) {
+                showPopUp();
+            }
+        });
+    </script>
 @endsection
