@@ -8128,6 +8128,7 @@ a, a:visited, a:active{
 .exit {
     line-height:1;
     text-decoration: underline;
+    color:
 }
 .exit:hover {
     color: #23c0e9;
@@ -8136,4 +8137,9 @@ a, a:visited, a:active{
 .title-pop-up {
     text-align: center;
     font-weight: bold;
+}
+
+#edit-book-mark {
+    background: #58a59a;
+    margin-top: 10px;
 }

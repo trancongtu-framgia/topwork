@@ -108,7 +108,7 @@ class RegisterController extends Controller
                     $company = $this->companyRepository->create($data);
                 }
 
-                $sendmail = dispatch(new SendEmailConfirmAccounts($data));
+                $sendmail = dispatch(new SendEmailConfirmAccounts($data))->delay(now()->addSeconds(60));
 
                 DB::commit();
 

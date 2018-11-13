@@ -41,7 +41,7 @@ class DbBookMarkRepository extends DbBaseRepository implements BookMarkRepositor
 
     public function delete($key, $value)
     {
-        // TODO: Implement delete() method.
+        return $this->baseDestroy($key, $value);
     }
 
     public function getBookMarkByUser($key, $value)
