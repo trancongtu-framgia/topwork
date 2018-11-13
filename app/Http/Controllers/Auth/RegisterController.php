@@ -42,6 +42,7 @@ class RegisterController extends Controller
     protected $candidateRepository;
     protected $companyRepository;
     protected $roleRepository;
+    protected const IMG_USER_DEFAULT = 'user.png';
 
     /**
      * Create a new controller instance.
@@ -102,6 +103,8 @@ class RegisterController extends Controller
                 $data['role_id'] = $this->roleRepository->get('name', $data['role_name'])->id;
                 $user = $this->userRepository->create($data);
                 $data['user_id'] = $user->id;
+                $data['logo_url'] = self::IMG_USER_DEFAULT;
+                $data['avatar_url'] = self::IMG_USER_DEFAULT;
                 if ($data['role_name'] == config('app.candidate_role')) {
                     $candidate = $this->candidateRepository->create($data);
                 } else {

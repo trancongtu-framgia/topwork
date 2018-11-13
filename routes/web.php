@@ -57,7 +57,7 @@ Route::group([
     function () {
         Route::get('/', 'CompanyController@index')->name('companies.index');
         Route::get('/edit', 'CompanyController@edit')->name('companies.edit');
-        Route::put('/update', 'CompanyController@update')->name('companies.update');
+        Route::put('/update/{id}', 'CompanyController@update')->name('companies.update');
     }
 );
 
@@ -153,7 +153,7 @@ Route::group([
 });
 
 Route::group(['prefix' => 'register'], function () {
-    Route::get('confirm-user/{idUser}', 'Auth\RegisterController@confirmAccount')->name('user.confirmAccount');
+    Route::get('confirm-user/{tokenUser}', 'Auth\RegisterController@confirmAccount')->name('user.confirmAccount');
 });
 
 Route::group(['prefix' => 'bookmark'], function() {
