@@ -17,6 +17,7 @@ use DB;
 use Uuid;
 use App\Jobs\SendEmailConfirmAccounts;
 use App\Http\Requests\CreateAccountRequest;
+use Cache;
 
 class RegisterController extends Controller
 {
@@ -110,6 +111,12 @@ class RegisterController extends Controller
                     $candidate = $this->candidateRepository->create($data);
                 } else {
                     $company = $this->companyRepository->create($data);
+                    if ($company) {
+                        $cacheCompanyKey = 'getInformationCompanyByUserId' . $company->id;
+                        if (Cache::has($cacheCompanyKey)) {
+                            Cache::pull($cacheCompanyKey);
+                        }
+                    }
                 }
 
                 $sendmail = dispatch(new SendEmailConfirmAccounts($data))->delay(now()->addSeconds(10));
