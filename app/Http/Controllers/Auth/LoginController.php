@@ -72,9 +72,16 @@ class LoginController extends Controller
                 return redirect()->route('admin.index');
             }
 
-            return redirect(session()->pull('previousUrl'));
+            return $this->authenticated($request, Auth::user());
         }
 
         return $this->sendFailedLoginResponse($request);
+    }
+
+    protected function authenticated(Request $request, $user)
+    {
+        session(['authenticated_user' => $user->token]);
+
+        return redirect(session()->pull('previousUrl'));
     }
 }

@@ -4,7 +4,7 @@
     <div class="jp_listing_sidebar_main_wrapper">
         <div class="container">
             <div class="row">
-                @if (Auth::check() && strtolower(Auth::user()->userRole->name) == config('app.candidate_role') && Auth::user()->is_first_login == config('app.is_first_login'))
+                @if (session()->has('authenticated_user') && strtolower(Auth::user()->userRole->name) == config('app.candidate_role') && Auth::user()->is_first_login == config('app.is_first_login'))
                     @include('clients.candidates.partials.pop_up_add_book_marks')
                 @endif
                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 hidden-sm hidden-xs">
