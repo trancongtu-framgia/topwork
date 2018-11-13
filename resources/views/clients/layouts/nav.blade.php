@@ -10,7 +10,7 @@
                     </div>
                 </div>
             </div>
-            @if (Auth::check() && Auth::user()->userRole->name == config('app.company_role'))
+            @if (session()->has('authenticated_user') && Auth::user()->userRole->name == config('app.company_role'))
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 center_responsive">
                     <div class="header-area hidden-menu-bar stick" id="sticker">
                         <!-- mainmenu start -->
@@ -42,7 +42,7 @@
                         </ul>
                     </div>
                 </div>
-            @elseif (Auth::check() && Auth::user()->userRole->name == config('app.candidate_role'))
+            @elseif (session()->has('authenticated_user') && Auth::user()->userRole->name == config('app.candidate_role'))
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 center_responsive">
                     <div class="header-area hidden-menu-bar stick" id="sticker">
                         <!-- mainmenu start -->

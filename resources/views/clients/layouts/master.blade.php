@@ -27,8 +27,8 @@
 @endif
 @include('clients.layouts.top_header')
 <div class="jp_top_header_img_wrapper">
-    @includeWhen(Auth::check(), 'clients.layouts.nav')
-    @includeWhen(!Auth::check(), 'clients.layouts.nav_not_auth')
+    @includeWhen(session()->has('authenticated_user'), 'clients.layouts.nav')
+    @includeWhen(!session()->has('authenticated_user'), 'clients.layouts.nav_not_auth')
 </div>
 @yield('content')
 <div class="jp_main_footer_img_wrapper">
