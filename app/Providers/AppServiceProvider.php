@@ -42,6 +42,7 @@ class AppServiceProvider extends ServiceProvider
             'Role',
             'Skill',
             'User',
+            'Notification',
         );
 
         foreach ($models as $model)

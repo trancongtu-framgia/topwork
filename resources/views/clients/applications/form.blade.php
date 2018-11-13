@@ -2,7 +2,8 @@
     <div class="jp_adp_form_wrapper">
         <div class="jp_adp_form_wrapper">
             {{ Form::label(__('Your Name')) }}
-            {{ Form::text('', $user->name, ['maxlength' => 100, 'readonly' => 'true']) }}
+            {{ Form::text('candidate_name', $user->name, ['maxlength' => 100, 'readonly' => 'true']) }}
+            {{ Form::hidden('job_title', $job['job']->title) }}
             {!! $errors->first('title', '<span class="red">:message</span>') !!}
         </div>
         <div class="jp_adp_form_wrapper">
