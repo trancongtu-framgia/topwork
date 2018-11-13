@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -111,7 +112,7 @@ class RegisterController extends Controller
                     $company = $this->companyRepository->create($data);
                 }
 
-                $sendmail = dispatch(new SendEmailConfirmAccounts($data))->delay(now()->addSeconds(60));
+                $sendmail = dispatch(new SendEmailConfirmAccounts($data))->delay(now()->addSeconds(10));
 
                 DB::commit();
 
@@ -132,25 +133,29 @@ class RegisterController extends Controller
         return $register;
     }
 
-    public function confirmAccount($idUser)
+    public function confirmAccount($token)
     {
-        $user = $this->userRepository->get('id', $idUser);
-        $message ='';
+        if (Auth::check()) {
+            Auth::logout();
+        }
+        $user = $this->userRepository->get('token', $token);
+        if ($user->status != config('app.status_account_activate')) {
+            $message ='';
+            if ($user->userRole->name == config('app.company_role')) {
+                $user->status = config('app.status_account_waiting_approve');
+                $message = __('Confirm account successfully! Please contact admin to activate your account');
+            } elseif ($user->userRole->name == config('app.candidate_role')) {
+                $user->status = config('app.status_account_activate');
+                $this->removeCache('getAllCandidate');
+                $message = __('Confirm account successfully! You can sign in now.');
+            }
 
-        if ($user->userRole->name == config('app.company_role')) {
-            $user->status = config('app.status_account_waiting_approve');
-            $message = __('Confirm account success! Please contact admin to activate your account');
-        } elseif ($user->userRole->name == config('app.candidate_role')) {
-            $user->status = config('app.status_account_activate');
-            $this->removeCache('getAllCandidate');
-            $message = __('Confirm account success! You can sign in now.');
+            $updateUser = $this->userRepository->update($user->toArray(), 'token', $token);
+            if ($updateUser) {
+                return view('auth.notifications')->with('msg', $message);
+            }
         }
 
-        $updateUser = $this->userRepository->update($user->toArray(), 'id', $idUser);
-        if ($updateUser) {
-            return view('auth.notifications')->with('msg', $message);
-        } else {
-            return view('auth.notifications')->with('msg', $message);
-        }
+        return redirect()->route('home.index');
     }
 }
