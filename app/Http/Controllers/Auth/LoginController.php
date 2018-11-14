@@ -67,8 +67,11 @@ class LoginController extends Controller
             'password' => $request->password,
             'status' => self::USER_STATUS,
         ], $request->remember)) {
-            $role = strtolower(Auth::user()->userRole->name);
+            $authenticatedUser = Auth::user();
+            $role = strtolower($authenticatedUser->userRole->name);
             if ($role == config('app.admin_role')) {
+                session(['authenticated_user' => $authenticatedUser->token]);
+
                 return redirect()->route('admin.index');
             }
 
