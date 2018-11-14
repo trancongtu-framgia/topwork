@@ -6,6 +6,7 @@ use App\Models\Company;
 use App\Repositories\Interfaces\CompanyRepository;
 use App\Repositories\Interfaces\UserRepository;
 use DB;
+use Cache;
 
 class DbCompanyRepository extends DbBaseRepository implements CompanyRepository
 {
@@ -94,6 +95,12 @@ class DbCompanyRepository extends DbBaseRepository implements CompanyRepository
                 $saveCompany = $company->update($data->toArray());
 
                 $saveUser = $company->companyUser->update($data->toArray());
+                if ($saveCompany && $saveUser) {
+                    $keyCache = 'getInformationCompanyByUserId' . $company->user_id;
+                     if (Cache::has($keyCache)) {
+                         Cache::pull($keyCache);
+                     }
+                }
 
                 DB::commit();
 
