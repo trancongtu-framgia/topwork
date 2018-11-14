@@ -1,7 +1,8 @@
 <?php
 
 return [
-    'image_default' => 'user.png',
+    'image_default_candidate' => 'user.png',
+    'image_default_company' => 'company.jpg',
     'client_media_url' => '/assets/clients/images/',
     'admin_role' => 'admin',
     'candidate_role' => 'candidate',

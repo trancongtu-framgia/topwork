@@ -105,8 +105,8 @@ class RegisterController extends Controller
                 $data['role_id'] = $this->roleRepository->get('name', $data['role_name'])->id;
                 $user = $this->userRepository->create($data);
                 $data['user_id'] = $user->id;
-                $data['logo_url'] = self::IMG_USER_DEFAULT;
-                $data['avatar_url'] = self::IMG_USER_DEFAULT;
+                $data['logo_url'] = config('app.image_default_company');
+                $data['avatar_url'] = config('app.image_default_candidate');
                 if ($data['role_name'] == config('app.candidate_role')) {
                     $candidate = $this->candidateRepository->create($data);
                 } else {
@@ -146,6 +146,7 @@ class RegisterController extends Controller
             Auth::logout();
         }
         $user = $this->userRepository->get('token', $token);
+        $data = [];
         if ($user->status != config('app.status_account_activate')) {
             $message ='';
             if ($user->userRole->name == config('app.company_role')) {
