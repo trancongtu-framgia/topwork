@@ -112,7 +112,7 @@ class CandidateController extends Controller
             $user = $this->candidateRepository->showInfoCandidate($id);
             if (!empty($user) && $user->candidate) {
                 $categories = $this->categoryRepository->getAllWithOutPaginate();
-                $idCategoryByBookMarks = $this->bookMarkRepository->getBookMarkByUser('user_id', Auth::user()->id);
+                $idCategoryByBookMarks = Auth::check() ? $this->bookMarkRepository->getBookMarkByUser('user_id', Auth::user()->id) : [];
                 $categoriesByBookMarks = $this->categoryRepository->getCategoryByBookMark($idCategoryByBookMarks);
                 $checkAuth = Auth::check() && Auth::user()->token == $user->token;
                 $isPublicCandidate = $user->candidate->is_public == config('app.isPublicCandidate');

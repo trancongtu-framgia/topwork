@@ -149,7 +149,7 @@ class RegisterController extends Controller
         if ($user->status != config('app.status_account_activate')) {
             $message ='';
             if ($user->userRole->name == config('app.company_role')) {
-                $user->status = config('app.status_account_waiting_approve');
+                $user->status = config('app.status_account_pending');
                 $message = __('Confirm account successfully! Please contact admin to activate your account');
             } elseif ($user->userRole->name == config('app.candidate_role')) {
                 $user->status = config('app.status_account_activate');

@@ -35,9 +35,6 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
     private const FORMAT_DATE = 'Y-m-d';
     private const JOB_EXIST = 1;
     private const JOB_DOSENT_EXIST = 0;
-    private $isAuthenticated;
-    private $userAuthenticated;
-
     /**
      * @param Job $model
      *
@@ -66,8 +63,6 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
         $this->role = $roleRepository;
         $this->bookMarkRepository = $bookMarkRepository;
         $this->locationRepository = $locationRepository;
-        $this->isAuthenticated = Auth::check();
-        $this->userAuthenticated = Auth::user();
     }
 
     public function getAll($per)
@@ -130,8 +125,8 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
 
     public function getJobWithSkillName($jobs)
     {
-        $authenticatedUser = $this->userAuthenticated;
-        $isUserAuthenticated = $this->isAuthenticated;
+        $authenticatedUser = Auth::user();
+        $isUserAuthenticated = Auth::check();
         $roleName = $isUserAuthenticated ? $this->role->getRoleNameById($authenticatedUser->role_id) : config('app.guest_role');
         $jobsWithSkill = [];
         foreach ($jobs as $job) {
@@ -375,8 +370,8 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
         $jobIds = null;
         $checkJob = self::JOB_DOSENT_EXIST;
         $userId = 0;
-        if ($this->isAuthenticated) {
-            $userId = $this->userAuthenticated->id;
+        if (Auth::check()) {
+            $userId = Auth::id();
             $bookMarks = $this->bookMarkRepository->getBookMarkByUser('user_id', $userId);
             if (!empty($bookMarks->toArray())) {
                 $jobIds = $this->jobCategory->getJobByCategoryId('category_id', $bookMarks);
