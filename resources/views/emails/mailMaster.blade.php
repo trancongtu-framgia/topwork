@@ -1,6 +1,35 @@
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/mail.css') }}" />
+    <style>
+        .content-mail {
+            border: 1px solid  #23c0e9;
+        }
+
+        .content-mail .content-mail-header {
+            background-color: #23c0e9;
+        }
+
+        .content-mail .content-mail-header img {
+            width: 200px;
+        }
+
+        .content-mail .content-mail-body {
+            padding: 30px;
+        }
+
+        .content-mail .content-mail-body .content-mail-footer {
+            margin-top: 40px;
+        }
+
+        .content-mail .content-mail-body .content-mail-footer .content-mail-footer-information {
+            margin-top: 15px;
+        }
+
+        .content-mail .content-mail-body .content-mail-footer .content-mail-footer-information table {
+            font-size: 14px;
+            font-style: italic;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
