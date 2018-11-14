@@ -280,14 +280,18 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
                 $i++;
                 $jobIds = $this->jobCategory->getJobIdByCategory($categoryId);
                 if ($i == 1) {
-                    foreach ($jobIds as $jobId) {
-                        $listJobs[] = $jobId;
+                    if ($jobIds) {
+                        foreach ($jobIds as $jobId) {
+                            $listJobs[] = $jobId;
+                        }
                     }
                 } else {
                     $listJobs = $this->getJobByArray($listJobs, $jobIds);
-                    foreach ($listJobs as $listJob) {
-                        if (!in_array($listJob, $listJobs)) {
-                            $listJobs[] = $listJob;
+                    if ($listJobs) {
+                        foreach ($listJobs as $listJob) {
+                            if (!in_array($listJob, $listJobs)) {
+                                $listJobs[] = $listJob;
+                            }
                         }
                     }
                 }
