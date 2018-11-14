@@ -21,11 +21,7 @@
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <div class="jp_cp_left_side_wrapper">
                         <div class="jp_cp_left_pro_wallpaper">
-                            @if (file_exists(config('app.candidate_media_url') . $user->candidate->avatar_url))
-                                <img class="image_candidate" src="{{ asset(config('app.candidate_media_url') . $user->candidate->avatar_url) }}" alt="profile_img">
-                            @else
-                                <img class="image_candidate" src="{{ asset(config('app.candidate_media_url') . 'user.png') }}" alt="profile_img">
-                            @endif
+                            <img class="image_candidate" src="{{ asset(config('app.candidate_media_url') . $user->candidate->avatar_url) }}" alt="profile_img">
                             <h2 class="set_padding">{{ $user->name }}</h2>
                             <ul>
                                 @if ($user->candidate->facebook)

@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'image_default' => 'user.png',
     'client_media_url' => '/assets/clients/images/',
     'admin_role' => 'admin',
     'candidate_role' => 'candidate',

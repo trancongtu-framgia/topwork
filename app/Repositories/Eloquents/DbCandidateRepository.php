@@ -65,7 +65,7 @@ class DbCandidateRepository extends DbBaseRepository implements CandidateReposit
                     $name = $file->getClientOriginalName();
                     $image = str_random(4) . '_' . $name;
                     $file->move(config('app.candidate_media_url'), $image);
-                    if (!empty($candidate->avatar_url) &&
+                    if ($candidate->avatar_url != config('app.image_default') &&
                         file_exists(config('app.candidate_media_url') . $candidate->avatar_url)) {
                         unlink(config('app.candidate_media_url') . $candidate->avatar_url);
                     }

@@ -149,15 +149,14 @@ class RegisterController extends Controller
         if ($user->status != config('app.status_account_activate')) {
             $message ='';
             if ($user->userRole->name == config('app.company_role')) {
-                $user->status = config('app.status_account_pending');
+                $data['status'] = config('app.status_account_pending');
                 $message = __('Confirm account successfully! Please contact admin to activate your account');
             } elseif ($user->userRole->name == config('app.candidate_role')) {
-                $user->status = config('app.status_account_activate');
+                $data['status'] = config('app.status_account_activate');
                 $this->removeCache('getAllCandidate');
                 $message = __('Confirm account successfully! You can sign in now.');
             }
-
-            $updateUser = $this->userRepository->update($user->toArray(), 'token', $token);
+            $updateUser = $this->userRepository->update($data, 'token', $token);
             if ($updateUser) {
                 return view('auth.notifications')->with('msg', $message);
             }

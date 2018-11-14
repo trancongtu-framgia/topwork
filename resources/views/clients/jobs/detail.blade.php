@@ -16,7 +16,7 @@
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                         <div class="jp_job_post_side_img">
                             <a href="{{ route('companies.show', $jobDetail['token']) }}">
-                                <img class="img-responsive" src="{{ asset(config('app.client_media_url') . $jobDetail['company_logo']) }}" alt="post_img">
+                                <img class="img-responsive" src="{{ asset(config('app.company_media_url') . $jobDetail['company_logo']) }}" alt="post_img">
                             </a>
                         </div>
                         <div class="jp_job_post_right_cont">
@@ -141,7 +141,7 @@
             </div>
             <div class="jp_jop_overview_img_wrapper">
                 <div class="jp_jop_overview_img">
-                    <img class="img-responsive" src="{{ asset(config('app.client_media_url') . $jobDetail['company_logo']) }}" alt="post_img">
+                    <img class="img-responsive" src="{{ asset(config('app.company_media_url') . $jobDetail['company_logo']) }}" alt="post_img">
                 </div>
             </div>
             <div class="jp_job_listing_single_post_right_cont">

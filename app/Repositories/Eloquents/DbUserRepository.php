@@ -67,11 +67,14 @@ class DbUserRepository extends DbBaseRepository implements UserRepository
         $user = Cache::rememberForever('getInformationCompanyByUserId' . $userId, function () use ($userId) {
              return $this->model->with('userCompany')->where('id', $userId)->first();
         });
-        $data = [
-            'name' => $user->name,
-            'token' => $user->token,
-            'company_logo' => $user->userCompany->logo_url
-        ];
+        $data = [];
+        if ($user) {
+            $data = [
+                'name' => $user->name,
+                'token' => $user->token,
+                'company_logo' => $user->userCompany->logo_url
+            ];
+        }
 
         return $data;
     }

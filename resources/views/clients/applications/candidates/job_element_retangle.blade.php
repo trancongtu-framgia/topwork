@@ -5,7 +5,7 @@
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                     <div class="jp_job_post_side_img">
                         <a href="{{ route('jobs.detail', ['id' => $job['job']->id]) }}">
-                            <img class="img-responsive" src="{{ asset(config('app.client_media_url') . $job['company_logo']) }}" alt="post_img">
+                            <img class="img-responsive" src="{{ asset(config('app.company_media_url') . $job['company_logo']) }}" alt="post_img">
                         </a>                    </div>
                     <div class="jp_job_post_right_cont">
                         <h3 class="text-dark"><a href="{{ route('jobs.detail', ['id' => $job['job']->id]) }}">{{ $job['job']->title }}</a></h3>
