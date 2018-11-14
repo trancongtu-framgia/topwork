@@ -7,7 +7,7 @@
 @section('base.content')
     <div class="jumbotron">
         <div class="center-text">
-            <img class="h-25 w-25 img-responsive" src="{{ asset(config('app.client_media_url') . $company['logo']) }}" alt="post_img">
+            <img class="h-25 w-25 img-responsive" src="{{ asset(config('app.company_media_url') . $company['logo']) }}" alt="post_img">
         </div>
         <div class="col-sm-12 mx-auto">
             <h1>{{ $company['name'] }}</h1>

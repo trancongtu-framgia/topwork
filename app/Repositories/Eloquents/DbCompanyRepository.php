@@ -85,7 +85,7 @@ class DbCompanyRepository extends DbBaseRepository implements CompanyRepository
                     $name = $file->getClientOriginalName();
                     $image = str_random(4) . '_' . $name;
                     $file->move(config('app.company_media_url'), $image);
-                    if (!empty($company->logo_url) &&
+                    if ($company->logo_url != config('app.image_default') &&
                         file_exists(config('app.company_media_url') . $company->logo_url)) {
                         unlink(config('app.company_media_url') . $company->logo_url);
                     }

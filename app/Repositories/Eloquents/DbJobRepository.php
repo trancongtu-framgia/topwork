@@ -138,18 +138,20 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
                 }
             }
             $companyUserInfo = $this->user->getInformationCompanyByUserId($job->user_id);
-            $jobsWithSkill[] = [
-                'job' => $job,
-                'skills' => $skillName,
-                'company_name' => $companyUserInfo['name'],
-                'company_logo' => $companyUserInfo['company_logo'],
-                'token' => $companyUserInfo['token'],
-                'role_name' => $roleName,
-                'location' => $this->locationRepository->getNameById($job->location_id),
-                'jobType' => $this->jobType->getNameById($job->job_type_id),
-                'can_apply' => $isUserAuthenticated && $roleName == config('app.candidate_role') ? $this->applicationRepository->checkDuplicate($authenticatedUser->id,
-                    $job->id) : true,
-            ];
+            if (!empty($companyUserInfo)) {
+                $jobsWithSkill[] = [
+                    'job' => $job,
+                    'skills' => $skillName,
+                    'company_name' => $companyUserInfo['name'],
+                    'company_logo' => $companyUserInfo['company_logo'],
+                    'token' => $companyUserInfo['token'],
+                    'role_name' => $roleName,
+                    'location' => $this->locationRepository->getNameById($job->location_id),
+                    'jobType' => $this->jobType->getNameById($job->job_type_id),
+                    'can_apply' => $isUserAuthenticated && $roleName == config('app.candidate_role') ? $this->applicationRepository->checkDuplicate($authenticatedUser->id,
+                        $job->id) : true,
+                ];
+            }
         }
 
         return array_reverse($jobsWithSkill);
