@@ -72,7 +72,7 @@
                                     <td class="td-w10">:</td>
                                     <td class="td-w65">
                                         {{ Form::text('range', null, ['class' => 'form-control', 'maxlength' => 100]) }}
-                                        {!! $errors->first('address', '<span class="red">:message</span>') !!}
+                                        {!! $errors->first('range', '<span class="red">:message</span>') !!}
                                     </td>
                                 </tr>
                                 <tr>
@@ -80,7 +80,7 @@
                                     <td class="td-w10">:</td>
                                     <td class="td-w65">
                                         {{ Form::text('country', null, ['class' => 'form-control', 'maxlength' => 100]) }}
-                                        {!! $errors->first('address', '<span class="red">:message</span>') !!}
+                                        {!! $errors->first('country', '<span class="red">:message</span>') !!}
                                     </td>
                                 </tr>
                                 <tr>
@@ -88,7 +88,7 @@
                                     <td class="td-w10">:</td>
                                     <td class="td-w65">
                                         {{ Form::text('working_day', null, ['class' => 'form-control', 'maxlength' => 100]) }}
-                                        {!! $errors->first('address', '<span class="red">:message</span>') !!}
+                                        {!! $errors->first('working_day', '<span class="red">:message</span>') !!}
                                     </td>
                                 </tr>
                                 <tr>
