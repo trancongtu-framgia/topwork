@@ -6,7 +6,7 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="jp_job_heading_wrapper">
                         <div class="jp_job_heading">
-                            <h1><span>3,000+</span> {{ __('jobs') }}</h1>
+                            <h1 class="title-header">{{ __('Many Jobs are waiting for you !') }}</h1>
                         </div>
                     </div>
                 </div>
@@ -63,13 +63,7 @@
                     <div class="jp_banner_main_jobs_wrapper">
                         <div class="jp_banner_main_jobs">
                             <ul>
-                                <li><i class="fa fa-tags"></i> Trending Keywords :</li>
-                                <li><a href="#">ui designer,</a></li>
-                                <li><a href="#">developer,</a></li>
-                                <li><a href="#">senior</a></li>
-                                <li><a href="#">it company,</a></li>
-                                <li><a href="#">design,</a></li>
-                                <li><a href="#">call center</a></li>
+                                <li class="slogan">Do IT Awesome !</li>
                             </ul>
                         </div>
                     </div>

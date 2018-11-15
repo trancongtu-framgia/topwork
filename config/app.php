@@ -2,7 +2,7 @@
 
 return [
     'image_default_candidate' => 'user.png',
-    'image_default_company' => 'company.jpg',
+    'image_default_company' => 'company.png',
     'client_media_url' => '/assets/clients/images/',
     'admin_role' => 'admin',
     'candidate_role' => 'candidate',
@@ -76,7 +76,7 @@ return [
     |
     */
 
-    'debug' => env('APP_DEBUG', false),
+    'debug' => false,
 
     /*
     |--------------------------------------------------------------------------

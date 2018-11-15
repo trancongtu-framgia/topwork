@@ -18,7 +18,7 @@
                                 @endif
                             @endif
                         </div>
-                        <h4 class="text-dark"><a href="{{ route('jobs.detail', ['id' => $job['job']->id]) }}">{{ $job['job']->title }}</a></h4>
+                        <h3 class="text-dark"><a class="title-job" href="{{ route('jobs.detail', ['id' => $job['job']->id]) }}">{{ $job['job']->title }}</a></h3>
                         <p>
                         <h4><a href="{{ route('companies.show',  $job['token']) }}">{{ $job['company_name'] }}</a></h4>
                         </p>
@@ -36,7 +36,7 @@
                             </li>
                             <li>
                                 <i class="fa fa-clock-o" aria-hidden="true"></i>
-                                <a href="#">{{ $job['jobType'] }}</a>
+                                {{ $job['jobType'] }}
                             </li>
                             <li>
                                 @if ($job['job']->candidate_number != null)

@@ -44,3 +44,12 @@
 .content-cadidate-description{
     overflow: auto;
 }
+.title-job {
+    color: black;
+}
+.title-header {
+    font-size: 36px !important;
+}
+.slogan {
+    font-size: 24px;
+}
