@@ -7942,7 +7942,11 @@ input[type="checkbox"]:checked + label:after {
     font-weight: bold;
 }
 .image_candidate {
-    border: #00c5dc 3px solid
+    border: #00c5dc 3px solid;
+    padding: 15px;
+}
+.image_company {
+    padding: 15px;
 }
 .red {
     color: red;
