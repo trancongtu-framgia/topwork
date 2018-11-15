@@ -34,7 +34,7 @@
         </div>
         <div class="jp_jop_overview_img_wrapper">
             <div class="jp_jop_overview_img">
-                <img class="img-responsive" src="{{ asset(config('app.company_media_url') . $company['logo']) }}" alt="post_img">
+                <img class="img-responsive image_company" src="{{ asset(config('app.company_media_url') . $company['logo']) }}" alt="post_img">
             </div>
         </div>
         <div class="jp_job_listing_single_post_right_cont">
