@@ -412,8 +412,10 @@ class DbJobRepository extends DbBaseRepository implements JobRepository
         $roleId = $this->role->getRoleIdByName(config('app.company_role'));
         $companies = $this->user->getCompanyByStatus(config('app.status_account_activate'), $roleId, ['id']);
         $companyIds = [];
-        foreach ($companies as $company) {
-            $companyIds[] = $company->id;
+        if ($companies) {
+            foreach ($companies as $company) {
+                $companyIds[] = $company->id;
+            }
         }
 
         return $companyIds;
